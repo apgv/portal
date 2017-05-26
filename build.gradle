@@ -14,6 +14,27 @@ buildscript {
 
 apply plugin: 'kotlin'
 
+task buildFrontEnd(type: Exec) {
+    workingDir 'frontend'
+    commandLine 'npm', 'run', 'build'
+}
+
+task copyFrontEnd(dependsOn: buildFrontEnd, type: Copy) {
+    from 'frontend/build'
+    into 'build/resources/main/frontend'
+}
+
+task fatJar(dependsOn: copyFrontEnd, type: Jar) {
+    manifest {
+        attributes "Implementation-Title": project.name,
+                "Implementation-Version": version,
+                "Main-Class": "no.skotbuvel.portal.ApplicationKt"
+    }
+    baseName = project.name + "-all"
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 repositories {
     mavenCentral()
 }
