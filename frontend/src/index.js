@@ -5,7 +5,14 @@ import registerServiceWorker from "./registerServiceWorker";
 import "./index.css";
 import {makeMainRoutes} from "./routes";
 
-const routes = makeMainRoutes();
+(() => {
+    fetch('/auth0/config')
+        .then(response => response.json())
+        .then(auth0Config => {
+            const routes = makeMainRoutes(auth0Config);
 
-ReactDOM.render(routes, document.getElementById('root'));
-registerServiceWorker();
+            ReactDOM.render(routes, document.getElementById('root'));
+            registerServiceWorker();
+        })
+        .catch(error => console.log(error));
+})();

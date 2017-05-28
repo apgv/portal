@@ -3,17 +3,19 @@ import history from '../history';
 import auth0 from 'auth0-js';
 
 export default class Auth extends EventEmitter {
-    auth0 = new auth0.WebAuth({
-        domain: 'skotbuvel.eu.auth0.com',
-        clientID: 'Py44O-Jo44CCQsEyBpBOLrIL1ozDJmZ5',
-        redirectUri: 'http://localhost:3000/callback',
-        audience: 'https://skotbuvel.eu.auth0.com/userinfo',
-        responseType: 'token id_token',
-        scope: 'openid'
-    });
 
-    constructor() {
+    constructor(auth0Config) {
         super();
+
+        this.auth0 = new auth0.WebAuth({
+            domain: auth0Config['domain'],
+            clientID: auth0Config['clientID'],
+            redirectUri: auth0Config['redirectUri'],
+            audience: auth0Config['audience'],
+            responseType: auth0Config['responseType'],
+            scope: auth0Config['scope']
+        });
+
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.handleAuthentication = this.handleAuthentication.bind(this);

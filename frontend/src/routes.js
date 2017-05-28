@@ -6,7 +6,7 @@ import Callback from './callback/Callback';
 import Auth from './auth/Auth';
 import history from './history';
 
-const auth = new Auth();
+let auth;
 
 const handleAuthentication = (nextState, replace) => {
     console.log('nextState=' + nextState);
@@ -15,7 +15,9 @@ const handleAuthentication = (nextState, replace) => {
     }
 };
 
-export const makeMainRoutes = () => {
+export const makeMainRoutes = (auth0Config) => {
+    auth = new Auth(auth0Config);
+
     return (
         <BrowserRouter history={history} component={App}>
             <div>
