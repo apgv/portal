@@ -6,16 +6,7 @@ export default class Auth extends EventEmitter {
 
     constructor(auth0Config) {
         super();
-
-        this.auth0 = new auth0.WebAuth({
-            domain: auth0Config['domain'],
-            clientID: auth0Config['clientID'],
-            redirectUri: auth0Config['redirectUri'],
-            audience: auth0Config['audience'],
-            responseType: auth0Config['responseType'],
-            scope: auth0Config['scope']
-        });
-
+        this.auth0 = new auth0.WebAuth(auth0Config);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.handleAuthentication = this.handleAuthentication.bind(this);
