@@ -17,12 +17,12 @@ fun main(args: Array<String>) {
     port(argsMap[Application.SERVER_PORT]!!.toInt())
     staticFiles.location("/frontend")
 
-    get("/hello", { request, response ->
+    get("/hello", { _, response ->
         response.type("application/json")
         Gson().toJson(mapOf("greeting" to "hello world"))
     })
 
-    get("/auth0/config", { request, response ->
+    get("/auth0/config", { _, response ->
         response.type("application/json")
         Gson().toJson(auth0Config(properties))
     })
