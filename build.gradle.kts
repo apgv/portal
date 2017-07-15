@@ -1,5 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.flywaydb.gradle.FlywayExtension
-import org.gradle.jvm.tasks.Jar
 import org.jooq.util.GenerationTool
 import org.jooq.util.jaxb.Configuration
 import org.jooq.util.jaxb.Database
@@ -9,6 +9,7 @@ import org.jooq.util.jaxb.Target
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version ("1.1.3-2")
+    id("com.github.johnrengelman.shadow") version ("2.0.1")
     id("org.flywaydb.flyway") version ("4.2.0")
 }
 
@@ -68,17 +69,15 @@ tasks {
     }
     jooqCodeGen.dependsOn(tasks["flywayMigrate"])
 
-    val fatJar by creating(Jar::class) {
+    val shadowJar: ShadowJar by tasks
+    shadowJar.apply {
         manifest {
             attributes["Implementation-Title"] = project.name
             attributes["Implementation-Version"] = version
             attributes["Main-Class"] = "no.skotbuvel.portal.ApplicationKt"
         }
-        baseName = project.name + "-all"
-        from(configurations.compile.copy().map { if (it.isDirectory) it else zipTree(it) })
-        with(tasks["jar"] as CopySpec)
     }
-    fatJar.dependsOn(copyFrontEnd, jooqCodeGen)
+    shadowJar.dependsOn(copyFrontEnd, jooqCodeGen)
 }
 
 repositories {
