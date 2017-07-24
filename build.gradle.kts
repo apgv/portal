@@ -43,12 +43,15 @@ tasks {
     }
 
     val copyFrontEnd by creating(Copy::class) {
+        dependsOn(buildFrontEnd)
+
         from("frontend/build")
         into("build/resources/main/frontend")
     }
-    copyFrontEnd.dependsOn(buildFrontEnd)
 
     val jooqCodeGen by creating(DefaultTask::class) {
+        dependsOn(tasks["flywayMigrate"])
+
         val configuration = Configuration()
                 .withJdbc(Jdbc()
                         .withDriver("org.h2.Driver")
@@ -67,17 +70,17 @@ tasks {
 
         GenerationTool.generate(configuration)
     }
-    jooqCodeGen.dependsOn(tasks["flywayMigrate"])
 
     val shadowJar: ShadowJar by tasks
     shadowJar.apply {
+        dependsOn(copyFrontEnd, jooqCodeGen)
+
         manifest {
             attributes["Implementation-Title"] = project.name
             attributes["Implementation-Version"] = version
             attributes["Main-Class"] = "no.skotbuvel.portal.ApplicationKt"
         }
     }
-    shadowJar.dependsOn(copyFrontEnd, jooqCodeGen)
 }
 
 repositories {
