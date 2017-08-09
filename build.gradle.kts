@@ -8,7 +8,7 @@ import org.jooq.util.jaxb.Jdbc
 import org.jooq.util.jaxb.Target
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version ("1.1.3-2")
+    kotlin("jvm")
     id("com.github.johnrengelman.shadow") version ("2.0.1")
     id("org.flywaydb.flyway") version ("4.2.0")
 }
