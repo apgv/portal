@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import './App.css';
 import NavigationDrawer from "react-md/lib/NavigationDrawers";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import NavLink from "./NavLink";
@@ -28,10 +27,6 @@ const handleAuthentication = (nextState, replace) => {
 };
 
 class App extends Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         auth = new Auth(this.props.auth0Config);
