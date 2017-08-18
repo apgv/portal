@@ -1,62 +1,63 @@
 import React, {Component} from 'react';
-import {Navbar, Button} from 'react-bootstrap';
 import './App.css';
+import NavigationDrawer from "react-md/lib/NavigationDrawers";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import NavLink from "./NavLink";
+import Home from "./home/Home";
+import Auth from "./auth/Auth";
+import Callback from "./callback/Callback";
+import Members from "./persons/Persons";
+
+const navItems = [{
+    exact: true,
+    label: 'Hjem',
+    to: '/',
+    icon: 'home',
+}, {
+    label: 'Personer',
+    to: '/persons',
+    icon: 'people',
+}];
+
+let auth;
+
+const handleAuthentication = (nextState, replace) => {
+    if (/access_token|id_token|error/.test(nextState.location.hash)) {
+        auth.handleAuthentication(nextState.location.hash);
+    }
+};
 
 class App extends Component {
-    goTo(route) {
-        this.props.history.replace(`/${route}`)
-    }
 
-    login() {
-        this.props.auth.login();
-    }
-
-    logout() {
-        this.props.auth.logout();
+    constructor(props) {
+        super(props);
     }
 
     render() {
-        const {isAuthenticated} = this.props.auth;
+        auth = new Auth(this.props.auth0Config);
 
         return (
-            <div>
-                <Navbar fluid>
-                    <Navbar.Header>
-                        <Navbar.Brand>
-                            <a href="#">Auth0 - React</a>
-                        </Navbar.Brand>
-                        <Button
-                            bsStyle="primary"
-                            className="btn-margin"
-                            onClick={this.goTo.bind(this, 'home')}
+            <BrowserRouter>
+                <Route
+                    render={({location}) => (
+                        <NavigationDrawer
+                            drawerTitle="Portal"
+                            toolbarTitle="Skotbu Vel"
+                            navItems={navItems.map(props => <NavLink {...props} key={props.to}/>)}
                         >
-                            Home
-                        </Button>
-                        {
-                            !isAuthenticated() && (
-                                <Button
-                                    bsStyle="primary"
-                                    className="btn-margin"
-                                    onClick={this.login.bind(this)}
-                                >
-                                    Log In
-                                </Button>
-                            )
-                        }
-                        {
-                            isAuthenticated() && (
-                                <Button
-                                    bsStyle="primary"
-                                    className="btn-margin"
-                                    onClick={this.logout.bind(this)}
-                                >
-                                    Log Out
-                                </Button>
-                            )
-                        }
-                    </Navbar.Header>
-                </Navbar>
-            </div>
+                            <Switch key={location.key}>
+                                <Route exact path="/" location={location} component={Home}/>
+                                <Route path="/home" location={location} component={Home}/>
+                                <Route path="/persons" location={location} component={Members}/>
+                                <Route path="/callback" render={(props) => {
+                                    handleAuthentication(props);
+                                    return <Callback {...props} />
+                                }}/>
+                            </Switch>
+                        </NavigationDrawer>
+                    )}
+                />
+            </BrowserRouter>
         );
     }
 }

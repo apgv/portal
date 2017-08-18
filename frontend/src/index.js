@@ -1,17 +1,21 @@
-import "bootstrap/dist/css/bootstrap.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import registerServiceWorker from "./registerServiceWorker";
 import "./index.css";
-import {makeMainRoutes} from "./routes";
+import WebFontLoader from "webfontloader";
+import App from "./App";
+
+WebFontLoader.load({
+    google: {
+        families: ['Roboto:300,400,500,700', 'Material Icons'],
+    },
+});
 
 (() => {
     fetch('/auth0/config')
         .then(response => response.json())
         .then(auth0Config => {
-            const routes = makeMainRoutes(auth0Config);
-
-            ReactDOM.render(routes, document.getElementById('root'));
+            ReactDOM.render(<App auth0Config={auth0Config}/>, document.getElementById('root'));
             registerServiceWorker();
         })
         .catch(error => console.log(error));
