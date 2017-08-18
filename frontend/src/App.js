@@ -5,7 +5,7 @@ import NavLink from "./NavLink";
 import Home from "./home/Home";
 import Auth from "./auth/Auth";
 import Callback from "./callback/Callback";
-import Members from "./persons/Persons";
+import Persons from "./persons/Persons";
 
 const navItems = [{
     exact: true,
@@ -43,7 +43,7 @@ class App extends Component {
                             <Switch key={location.key}>
                                 <Route exact path="/" location={location} component={Home}/>
                                 <Route path="/home" location={location} component={Home}/>
-                                <Route path="/persons" location={location} component={Members}/>
+                                <Route path="/persons" location={location} component={Persons}/>
                                 <Route path="/callback" render={(props) => {
                                     handleAuthentication(props);
                                     return <Callback {...props} />
