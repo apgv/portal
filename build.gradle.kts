@@ -88,7 +88,7 @@ repositories {
 }
 
 dependencies {
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.3-2")
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.4-3")
     compile("com.sparkjava:spark-core:2.6.0")
     compile("org.slf4j:slf4j-simple:1.7.25")
     compile("com.google.code.gson:gson:2.8.1")
