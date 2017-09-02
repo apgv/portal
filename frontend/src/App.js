@@ -5,7 +5,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./home/Home";
 import Auth from "./auth/Auth";
 import Callback from "./callback/Callback";
-import Persons from "./persons/Persons";
+import People from "./people/People";
 import {AppBar, Divider, Drawer, List, Toolbar, Typography} from "material-ui";
 import NavLink from "./NavLink";
 import PeopleIcon from "material-ui-icons/People";
@@ -18,7 +18,7 @@ const navItems = [{
     icon: <HomeIcon/>,
 }, {
     label: 'Personer',
-    path: '/persons',
+    path: '/people',
     icon: <PeopleIcon/>,
 }];
 
@@ -114,7 +114,7 @@ class App extends Component {
                                         <Switch key={location.key}>
                                             <Route exact path="/" location={location} component={Home}/>
                                             <Route path="/home" location={location} component={Home}/>
-                                            <Route path="/persons" location={location} component={Persons}/>
+                                            <Route path="/people" location={location} component={People}/>
                                             <Route path="/callback" render={(props) => {
                                                 handleAuthentication(props);
                                                 return <Callback {...props} />
