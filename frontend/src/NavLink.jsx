@@ -1,25 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link as RouterLink, Route } from 'react-router-dom';
-import FontIcon from 'react-md/lib/FontIcons';
-import ListItem from 'react-md/lib/Lists/ListItem';
+import {ListItem, ListItemIcon, ListItemText} from "material-ui/List";
+import {Link, Route} from "react-router-dom";
 
-const NavLink = ({ label, to, exact, icon }) => (
-    <Route path={to} exact={exact}>
-        {({ match }) => {
-            let leftIcon;
-            if (icon) {
-                leftIcon = <FontIcon>{icon}</FontIcon>;
-            }
-
+const NavLink = ({label, path, exact, icon}) => (
+    <Route path={path} exact={exact}>
+        {({match}) => {
             return (
-                <ListItem
-                    component={RouterLink}
-                    active={!!match}
-                    to={to}
-                    primaryText={label}
-                    leftIcon={leftIcon}
-                />
+                <ListItem button
+                          component={Link}
+                          to={path}
+                >
+                    <ListItemIcon>
+                        {icon}
+                    </ListItemIcon>
+                    <ListItemText primary={label}/>
+                </ListItem>
             );
         }}
     </Route>
@@ -27,7 +23,7 @@ const NavLink = ({ label, to, exact, icon }) => (
 
 NavLink.propTypes = {
     label: PropTypes.string.isRequired,
-    to: PropTypes.string,
+    path: PropTypes.string,
     exact: PropTypes.bool,
     icon: PropTypes.node,
 };

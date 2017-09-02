@@ -2,14 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import registerServiceWorker from "./registerServiceWorker";
 import "./index.css";
-import WebFontLoader from "webfontloader";
 import App from "./App";
-
-WebFontLoader.load({
-    google: {
-        families: ['Roboto:300,400,500,700', 'Material Icons'],
-    },
-});
 
 (() => {
     fetch('/auth0/config')
