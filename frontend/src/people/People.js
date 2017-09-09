@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {withStyles} from "material-ui/styles";
 import Table, {TableBody, TableCell, TableHead, TableRow, TableSortLabel} from "material-ui/Table";
-import {Paper, Toolbar, Typography} from "material-ui";
+import {Button, Paper, Toolbar, Typography} from "material-ui";
+import AddIcon from 'material-ui-icons/Add';
 
 let counter = 0;
 
@@ -92,6 +93,13 @@ const styles = theme => ({
     table: {
         paddingLeft: 24,
     },
+    button: {
+        margin: theme.spacing.unit,
+        float: 'right',
+        position: 'fixed',
+        bottom: theme.spacing.unit,
+        right: theme.spacing.unit,
+    },
 });
 
 class People extends Component {
@@ -154,6 +162,9 @@ class People extends Component {
                             })}
                         </TableBody>
                     </Table>
+                    <Button fab={true} color="accent" aria-label="add" className={classes.button}>
+                        <AddIcon/>
+                    </Button>
                 </div>
             </Paper>
         );
