@@ -11,17 +11,17 @@ import FilterListIcon from "material-ui-icons/FilterList";
 
 let counter = 0;
 
-function createData(name, calories, fat, carbs, protein) {
+function createData(firstName, lastName, email, phone, membership) {
     counter += 1;
-    return {id: counter, name, calories, fat, carbs, protein};
+    return {id: counter, firstName: firstName, lastName: lastName, email: email, phone: phone, membership: membership};
 }
 
 const columnData = [
-    {id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)'},
-    {id: 'calories', numeric: true, disablePadding: false, label: 'Calories'},
-    {id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)'},
-    {id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)'},
-    {id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)'},
+    {id: 'firstName', numeric: false, disablePadding: true, label: 'Fornavn'},
+    {id: 'lastName', numeric: false, disablePadding: true, label: 'Etternavn'},
+    {id: 'email', numeric: false, disablePadding: true, label: 'E-post'},
+    {id: 'phone', numeric: false, disablePadding: true, label: 'Telefon'},
+    {id: 'membership', numeric: false, disablePadding: true, label: 'Medlemskap'},
 ];
 
 class EnhancedTableHead extends Component {
@@ -148,14 +148,14 @@ const styles = theme => ({
 class People extends Component {
     state = {
         order: 'asc',
-        orderBy: 'calories',
+        orderBy: 'firstName',
         selected: [],
         data: [
-            createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-            createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-            createData('Eclair', 262, 16.0, 24, 6.0),
-            createData('Cupcake', 305, 3.7, 67, 4.3),
-            createData('Gingerbread', 356, 16.0, 49, 3.9),
+            createData('Scott', 'Tiger', 'scott.tiger@oracle.com', '44444444', 'FAMILY'),
+            createData('Adams', 'Wood', 'adams.wood@oracle.com', '44444444', 'FAMILY'),
+            createData('Jones', 'Steel', 'jones.steel@oracle.com', '44444444', 'FAMILY'),
+            createData('Clark', 'Cloth', 'clark.cloth@oracle.com', '44444444', 'FAMILY'),
+            createData('Blake', 'Paper', 'blake.paper@oracle.com', '44444444', 'FAMILY'),
         ],
     };
 
@@ -243,11 +243,11 @@ class People extends Component {
                                     <TableCell checkbox>
                                         <Checkbox checked={isSelected}/>
                                     </TableCell>
-                                    <TableCell disablePadding>{n.name}</TableCell>
-                                    <TableCell numeric>{n.calories}</TableCell>
-                                    <TableCell numeric>{n.fat}</TableCell>
-                                    <TableCell numeric>{n.carbs}</TableCell>
-                                    <TableCell numeric>{n.protein}</TableCell>
+                                    <TableCell disablePadding>{n.firstName}</TableCell>
+                                    <TableCell disablePadding>{n.lastName}</TableCell>
+                                    <TableCell disablePadding>{n.email}</TableCell>
+                                    <TableCell disablePadding>{n.phone}</TableCell>
+                                    <TableCell disablePadding>{n.membership}</TableCell>
                                 </TableRow>
                             );
                         })}
