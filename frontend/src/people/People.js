@@ -92,13 +92,14 @@ const styles = theme => ({
     },
     table: {
         paddingLeft: 24,
+        width: '90%'
     },
     button: {
         margin: theme.spacing.unit,
         float: 'right',
         position: 'fixed',
         bottom: theme.spacing.unit,
-        right: theme.spacing.unit,
+        right: theme.spacing.unit * 3,
     },
 });
 
