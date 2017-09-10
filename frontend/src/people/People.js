@@ -163,10 +163,10 @@ class People extends Component {
                             })}
                         </TableBody>
                     </Table>
-                    <Button fab={true} color="accent" aria-label="add" className={classes.button}>
-                        <AddIcon/>
-                    </Button>
                 </div>
+                <Button fab={true} color="accent" aria-label="add" className={classes.button}>
+                    <AddIcon/>
+                </Button>
             </Paper>
         );
     }
