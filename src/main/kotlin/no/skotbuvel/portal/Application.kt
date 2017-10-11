@@ -1,9 +1,12 @@
 package no.skotbuvel.portal
 
 import com.google.gson.Gson
+import com.zaxxer.hikari.HikariDataSource
 import no.skotbuvel.portal.config.Auth0Config
+import org.flywaydb.core.Flyway
 import spark.Spark.*
 import java.util.*
+import javax.sql.DataSource
 
 object Application {
     const val SERVER_PORT = "server.port"
@@ -17,6 +20,10 @@ fun main(args: Array<String>) {
     port(argsMap[Application.SERVER_PORT]!!.toInt())
     staticFiles.location("/frontend")
 
+    val flyway = Flyway()
+    flyway.dataSource = datasource()
+    flyway.migrate()
+
     get("/hello", { _, response ->
         response.type("application/json")
         Gson().toJson(mapOf("greeting" to "hello world"))
@@ -27,6 +34,15 @@ fun main(args: Array<String>) {
         Gson().toJson(auth0Config(properties))
     })
 
+}
+
+fun datasource(): DataSource {
+    return HikariDataSource().apply {
+        jdbcUrl = "jdbc:h2:mem:;MODE=PostgreSQL"
+        driverClassName = "org.h2.Driver"
+        username = "sa"
+        password = ""
+    };
 }
 
 private fun mapAndCheckArguments(args: Array<String>): Map<String, String> {
