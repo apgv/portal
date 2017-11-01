@@ -78,7 +78,7 @@ tasks {
         manifest {
             attributes["Implementation-Title"] = project.name
             attributes["Implementation-Version"] = version
-            attributes["Main-Class"] = "no.skotbuvel.portal.ApplicationKt"
+            attributes["Main-Class"] = "no.skotbuvel.portal.MainKt"
         }
     }
 }
