@@ -20,9 +20,9 @@ buildscript {
 
     dependencies {
         classpath("com.h2database:h2:1.4.196")
-        classpath("org.jooq:jooq:3.9.3")
-        classpath("org.jooq:jooq-meta:3.9.3")
-        classpath("org.jooq:jooq-codegen:3.9.3")
+        classpath("org.jooq:jooq:3.10.1")
+        classpath("org.jooq:jooq-meta:3.10.1")
+        classpath("org.jooq:jooq-codegen:3.10.1")
     }
 }
 
@@ -88,11 +88,11 @@ repositories {
 }
 
 dependencies {
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.4-3")
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.51")
     compile("com.sparkjava:spark-core:2.6.0")
     compile("org.slf4j:slf4j-simple:1.7.25")
-    compile("com.google.code.gson:gson:2.8.1")
-    compile("com.zaxxer:HikariCP:2.7.1")
+    compile("com.google.code.gson:gson:2.8.2")
+    compile("com.zaxxer:HikariCP:2.7.2")
     compile("org.flywaydb:flyway-core:4.2.0")
     compile("com.h2database:h2:1.4.196")
 }
