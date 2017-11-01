@@ -24,14 +24,17 @@ fun main(args: Array<String>) {
     flyway.dataSource = datasource()
     flyway.migrate()
 
-    get("/hello", { _, response ->
-        response.type("application/json")
-        Gson().toJson(mapOf("greeting" to "hello world"))
-    })
+    path("api", {
+        get("/hello", { _, response ->
+            println("called /hello")
+            response.type("application/json")
+            Gson().toJson(mapOf("greeting" to "hello world"))
+        })
 
-    get("/auth0/config", { _, response ->
-        response.type("application/json")
-        Gson().toJson(auth0Config(properties))
+        get("/auth0/config", { _, response ->
+            response.type("application/json")
+            Gson().toJson(auth0Config(properties))
+        })
     })
 
 }
