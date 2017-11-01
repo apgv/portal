@@ -52,21 +52,27 @@ tasks {
     val jooqCodeGen by creating(DefaultTask::class) {
         dependsOn(tasks["flywayMigrate"])
 
-        val configuration = Configuration()
-                .withJdbc(Jdbc()
-                        .withDriver("org.h2.Driver")
-                        .withUrl("jdbc:h2:./jooq_db")
-                        .withUser("sa")
-                        .withPassword(""))
-                .withGenerator(Generator()
-                        .withDatabase(Database()
-                                .withName("org.jooq.util.h2.H2Database")
-                                .withIncludes(".*")
-                                .withExcludes("")
-                                .withInputSchema("public"))
-                        .withTarget(Target()
-                                .withPackageName("no.skotbuvel.portal.jooq.generated")
-                                .withDirectory("build/classes/java/main")))
+        val configuration = Configuration().apply {
+            jdbc = Jdbc().apply {
+                driver = "org.h2.Driver"
+                url = "jdbc:h2:./jooq_db"
+                user = "sa"
+                password = ""
+            }
+            generator = Generator().apply {
+                database = Database().apply {
+                    name = "org.jooq.util.h2.H2Database"
+                    includes = ".*"
+                    excludes = "schema_version"
+                    inputSchema = "public"
+
+                }
+                target = Target().apply {
+                    packageName = "org.jooq.no.skotbuvel.portal"
+                    directory = "src/main/kotlin"
+                }
+            }
+        }
 
         GenerationTool.generate(configuration)
     }
