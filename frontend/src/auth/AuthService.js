@@ -14,12 +14,12 @@ export default class AuthService {
     }
 
     auth0 = new auth0.WebAuth({
-        domain: 'skotbuvel.eu.auth0.com',
-        clientID: 'Py44O-Jo44CCQsEyBpBOLrIL1ozDJmZ5',
-        redirectUri: 'http://localhost:8080/callback',
-        audience: 'https://skotbuvel.eu.auth0.com/userinfo',
-        responseType: 'token id_token',
-        scope: 'openid'
+        domain: process.env.AUTH0_DOMAIN,
+        clientID: process.env.AUTH0_CLIENTID,
+        redirectUri: process.env.AUTH0_REDIRECTURI,
+        audience: process.env.AUTH0_AUDIENCE,
+        responseType: process.env.AUTH0_RESPONSETYPE,
+        scope: process.env.AUTH0_SCOPE
     })
 
     login () {
