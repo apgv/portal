@@ -1,5 +1,6 @@
 <template>
-    <div class="hello">
+    <div v-if="authenticated"
+         class="hello">
         <h1>Personregister</h1>
 
         <table>
@@ -30,6 +31,7 @@
 <script>
     export default {
         name: 'PersonRegistry',
+        props: ['authenticated'],
         data () {
             return {
                 persons: [
