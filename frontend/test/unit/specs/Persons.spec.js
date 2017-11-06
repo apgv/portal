@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import PersonRegistry from '@/components/PersonRegistry'
+import Persons from '@/components/Persons'
 
-describe('PersonRegistry.vue', () => {
+describe('Persons.vue', () => {
     it('should render correct contents', () => {
-        const Constructor = Vue.extend(PersonRegistry)
+        const Constructor = Vue.extend(Persons)
         const vm = new Constructor().$mount()
         expect(vm.$el.querySelector('.hello h1').textContent)
             .to.equal('Personregister')

@@ -30,7 +30,7 @@
 
 <script>
     export default {
-        name: 'PersonRegistry',
+        name: 'Persons',
         props: ['authenticated'],
         data () {
             return {
