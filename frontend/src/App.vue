@@ -1,6 +1,5 @@
 <template>
     <div id="app">
-        <img src="./assets/logo.png">
         <router-link :to="'/'">
             Home
         </router-link>
@@ -14,7 +13,6 @@
                 @click="logout()">
             Log out
         </button>
-        <div>authenticated={{authenticated}}</div>
         <router-view
                 :auth="auth"
                 :authenticated="authenticated">
