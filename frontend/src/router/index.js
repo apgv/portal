@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import VueResource from 'vue-resource'
-import HelloWorld from '@/components/HelloWorld'
+import PersonRegistry from '@/components/PersonRegistry'
 import Callback from '@/components/Callback'
 
 Vue.use(Router)
@@ -13,7 +13,7 @@ const router = new Router({
         {
             path: '/home',
             name: 'Home',
-            component: HelloWorld
+            component: PersonRegistry
         },
         {
             path: '/callback',
