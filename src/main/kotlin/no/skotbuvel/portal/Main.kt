@@ -3,7 +3,11 @@ package no.skotbuvel.portal
 import com.google.gson.Gson
 import com.zaxxer.hikari.HikariDataSource
 import no.skotbuvel.portal.config.Auth0Config
+import no.skotbuvel.portal.domain.Person
 import org.flywaydb.core.Flyway
+import org.jooq.SQLDialect
+import org.jooq.impl.DSL
+import org.jooq.no.skotbuvel.portal.Tables.person
 import spark.Spark.*
 import java.util.*
 import javax.sql.DataSource
@@ -31,6 +35,23 @@ fun main(args: Array<String>) {
             Gson().toJson(mapOf("greeting" to "hello world"))
         })
 
+        get("/persons", { _, response ->
+            val dsl = DSL.using(datasource(), SQLDialect.POSTGRES)
+
+            val persons = dsl.selectFrom(person).fetch().map {
+                Person(
+                        id = it.id(),
+                        firstName = it.first_name(),
+                        lastName = it.last_name(),
+                        email = it.email(),
+                        phone = it.phone()
+                )
+            }
+
+            response.type("application/json")
+            Gson().toJson(persons)
+        })
+
         get("/auth0/config", { _, response ->
             response.type("application/json")
             Gson().toJson(auth0Config(properties))
@@ -41,11 +62,14 @@ fun main(args: Array<String>) {
 
 fun datasource(): DataSource {
     return HikariDataSource().apply {
-        jdbcUrl = "jdbc:h2:mem:;MODE=PostgreSQL"
-        driverClassName = "org.h2.Driver"
-        username = "sa"
-        password = ""
-    };
+        dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
+        username = "postgres"
+        password = "mysecretpassword"
+        schema = "public"
+        addDataSourceProperty("databaseName", "postgres")
+        addDataSourceProperty("portNumber", "5432")
+        addDataSourceProperty("serverName", "172.17.0.2")
+    }
 }
 
 private fun mapAndCheckArguments(args: Array<String>): Map<String, String> {
