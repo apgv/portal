@@ -3,6 +3,10 @@
         <router-link :to="'/'">
             Home
         </router-link>
+
+        <router-link :to="'/persons'">
+            Personregister
+        </router-link>
         <button
                 v-if="!authenticated"
                 @click="login()">
