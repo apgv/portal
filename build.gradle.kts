@@ -1,10 +1,8 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.flywaydb.gradle.FlywayExtension
 import org.jooq.util.GenerationTool
-import org.jooq.util.jaxb.Configuration
-import org.jooq.util.jaxb.Database
-import org.jooq.util.jaxb.Generator
-import org.jooq.util.jaxb.Jdbc
+import org.jooq.util.KeepNamesGeneratorStrategy
+import org.jooq.util.jaxb.*
 import org.jooq.util.jaxb.Target
 
 plugins {
@@ -19,7 +17,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.h2database:h2:1.4.196")
+        classpath("org.postgresql:postgresql:42.1.4")
         classpath("org.jooq:jooq:3.10.1")
         classpath("org.jooq:jooq-meta:3.10.1")
         classpath("org.jooq:jooq-codegen:3.10.1")
@@ -27,9 +25,9 @@ buildscript {
 }
 
 configure<FlywayExtension> {
-    url = "jdbc:h2:./jooq_db"
-    user = "sa"
-    password = ""
+    url = "jdbc:postgresql://172.17.0.2:5432/postgres"
+    user = "postgres"
+    password = "mysecretpassword"
     schemas = arrayOf("public")
 }
 
@@ -54,18 +52,21 @@ tasks {
 
         val configuration = Configuration().apply {
             jdbc = Jdbc().apply {
-                driver = "org.h2.Driver"
-                url = "jdbc:h2:./jooq_db"
-                user = "sa"
-                password = ""
+                driver = "org.postgresql.Driver"
+                url = "jdbc:postgresql://172.17.0.2:5432/postgres"
+                user = "postgres"
+                password = "mysecretpassword"
             }
             generator = Generator().apply {
+                strategy = Strategy().apply {
+                    name = "org.jooq.util.KeepNamesGeneratorStrategy"
+                }
                 database = Database().apply {
-                    name = "org.jooq.util.h2.H2Database"
+                    name = "org.jooq.util.postgres.PostgresDatabase"
                     includes = ".*"
                     excludes = "schema_version"
                     inputSchema = "public"
-
+                    isOutputSchemaToDefault = true
                 }
                 target = Target().apply {
                     packageName = "org.jooq.no.skotbuvel.portal"
@@ -99,6 +100,7 @@ dependencies {
     compile("org.slf4j:slf4j-simple:1.7.25")
     compile("com.google.code.gson:gson:2.8.2")
     compile("com.zaxxer:HikariCP:2.7.2")
+    compile("org.jooq:jooq:3.10.1")
     compile("org.flywaydb:flyway-core:4.2.0")
-    compile("com.h2database:h2:1.4.196")
+    compile("org.postgresql:postgresql:42.1.4")
 }
