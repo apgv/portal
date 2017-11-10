@@ -107,4 +107,5 @@ dependencies {
     compile("org.postgresql:postgresql:42.1.4")
     testCompile("org.junit.jupiter:junit-jupiter-api:5.0.1")
     testCompile("org.assertj:assertj-core:3.8.0")
+    testCompile("org.mockito:mockito-core:2.+")
 }
