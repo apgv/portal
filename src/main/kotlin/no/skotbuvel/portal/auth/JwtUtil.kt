@@ -10,6 +10,7 @@ import java.security.interfaces.RSAPublicKey
 object JwtUtil {
     private val AUTH0_URL = "https://skotbuvel.eu.auth0.com/"
     private val urlJwkProvider = UrlJwkProvider(AUTH0_URL)
+    val AUTH0_ROLES = "https://portal.skotbuvel.no/roles"
 
     fun verifyAndDecode(request: Request): DecodedJWT {
         val jwt = request.headers("X-JWT")
@@ -23,8 +24,13 @@ object JwtUtil {
         return jwtVerifier.verify(jwt)
     }
 
-    fun roles(decodedJWT: DecodedJWT): List<String> {
-        val roleClaims = decodedJWT.getClaim("https://portal.skotbuvel.no/roles")
-        return roleClaims.asList(String::class.java)
+    fun email(decodedJWT: DecodedJWT): String {
+        return decodedJWT.getClaim("email").asString()
+    }
+
+    fun roles(decodedJWT: DecodedJWT): List<Role> {
+        val roleClaims = decodedJWT.getClaim(AUTH0_ROLES)
+        val roles = roleClaims.asList(String::class.java)
+        return roles.map { s -> Role.valueOfIgnoreCase(s) }
     }
 }

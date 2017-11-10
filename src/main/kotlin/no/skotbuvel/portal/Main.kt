@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.zaxxer.hikari.HikariDataSource
 import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
-import no.skotbuvel.portal.auth.RoleChecker
+import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.Auth0Config
 import no.skotbuvel.portal.domain.Person
 import org.flywaydb.core.Flyway
@@ -68,14 +68,14 @@ fun main(args: Array<String>) {
 
 private fun verifyTokenAndCheckRole(request: Request) {
     val decodedJWT = JwtUtil.verifyAndDecode(request)
-    val roles = JwtUtil.roles(decodedJWT)
-    if (!RoleChecker.hasRole(Role.BOARD_MEMBER, roles)) {
+    val user = userFromJWT(decodedJWT)
+    if (!user.hasRole(Role.BOARD_MEMBER)) {
         val exceptionMessage = String.format(
                 "User %s (%s) is missing role %s, has roles %s",
-                decodedJWT.getClaim("email").asString(),
-                decodedJWT.subject,
+                user.email,
+                user.subject,
                 Role.BOARD_MEMBER,
-                roles
+                user.roles
         )
         throw IllegalAccessException(exceptionMessage)
     }
