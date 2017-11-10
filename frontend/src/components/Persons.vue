@@ -39,8 +39,9 @@
         },
         methods: {
             fetchPersons () {
+                let jwtToken = localStorage.getItem('id_token')
                 if (this.authenticated) {
-                    this.$http.get('api/persons').then(response => {
+                    this.$http.get('api/persons', {headers: {'X-Jwt-Token': jwtToken}}).then(response => {
                         this.persons = response.body
                     })
                 }

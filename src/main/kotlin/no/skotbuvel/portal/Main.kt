@@ -1,5 +1,9 @@
 package no.skotbuvel.portal
 
+import com.auth0.jwk.UrlJwkProvider
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.interfaces.DecodedJWT
 import com.google.gson.Gson
 import com.zaxxer.hikari.HikariDataSource
 import no.skotbuvel.portal.config.Auth0Config
@@ -8,7 +12,9 @@ import org.flywaydb.core.Flyway
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import org.jooq.no.skotbuvel.portal.Tables.person
+import spark.Request
 import spark.Spark.*
+import java.security.interfaces.RSAPublicKey
 import java.util.*
 import javax.sql.DataSource
 
@@ -35,7 +41,9 @@ fun main(args: Array<String>) {
             Gson().toJson(mapOf("greeting" to "hello world"))
         })
 
-        get("/persons", { _, response ->
+        get("/persons", { request, response ->
+            checkRole(request)
+
             val dsl = DSL.using(datasource(), SQLDialect.POSTGRES)
 
             val persons = dsl.selectFrom(person).fetch().map {
@@ -58,6 +66,28 @@ fun main(args: Array<String>) {
         })
     })
 
+}
+
+private fun checkRole(request: Request) {
+    val decodedJWT = verifyAndDecodeJwtToken(request)
+    val roleClaims = decodedJWT.getClaim("https://portal.skotbuvel.no/roles")
+    val roles = roleClaims.asList(String::class.java)
+    if (!roles.contains("board_member")) {
+        throw IllegalAccessException("Missing role")
+    }
+}
+
+private fun verifyAndDecodeJwtToken(request: Request): DecodedJWT {
+    val jwtToken = request.headers("X-Jwt-Token")
+    val decodedJWT1 = JWT.decode(jwtToken)
+    val urlJwkProvider = UrlJwkProvider("https://skotbuvel.eu.auth0.com/")
+    val jwk = urlJwkProvider.get(decodedJWT1.keyId)
+    val publicKey = jwk.publicKey
+    val algorithm = Algorithm.RSA256(publicKey as RSAPublicKey, null)
+    val jwtVerifier = JWT.require(algorithm)
+            .withIssuer("https://skotbuvel.eu.auth0.com/")
+            .build()
+    return jwtVerifier.verify(jwtToken)
 }
 
 fun datasource(): DataSource {
