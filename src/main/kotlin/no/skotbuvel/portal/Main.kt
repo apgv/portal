@@ -2,7 +2,7 @@ package no.skotbuvel.portal
 
 import com.google.gson.Gson
 import com.zaxxer.hikari.HikariDataSource
-import no.skotbuvel.portal.auth.JwtTokenUtil
+import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.RoleChecker
 import no.skotbuvel.portal.config.Auth0Config
@@ -67,11 +67,18 @@ fun main(args: Array<String>) {
 }
 
 private fun verifyTokenAndCheckRole(request: Request) {
-    val decodedJWT = JwtTokenUtil.verifyAndDecode(request)
+    val decodedJWT = JwtUtil.verifyAndDecode(request)
     val roleClaims = decodedJWT.getClaim("https://portal.skotbuvel.no/roles")
     val roles = roleClaims.asList(String::class.java)
-    if (RoleChecker.hasRole(Role.BOARD_MEMBER, roles)) {
-        throw IllegalAccessException("Missing role")
+    if (!RoleChecker.hasRole(Role.BOARD_MEMBER, roles)) {
+        val exceptionMessage = String.format(
+                "User %s (%s) is missing role %s, has roles %s",
+                decodedJWT.getClaim("email").asString(),
+                decodedJWT.subject,
+                Role.BOARD_MEMBER,
+                roles
+        )
+        throw IllegalAccessException(exceptionMessage)
     }
 }
 
