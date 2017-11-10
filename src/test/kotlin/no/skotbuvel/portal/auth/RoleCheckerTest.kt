@@ -8,17 +8,17 @@ internal class RoleCheckerTest {
 
     @Test
     internal fun hasRole() {
-        assertThat(RoleChecker.hasRole(BOARD_MEMBER, arrayOf("board_member"))).isTrue()
+        assertThat(RoleChecker.hasRole(BOARD_MEMBER, listOf("board_member"))).isTrue()
     }
 
     @Test
     internal fun hasRoleIgnoreCasing() {
-        assertThat(RoleChecker.hasRole(BOARD_MEMBER, arrayOf("BOARD_MEMBER"))).isTrue()
+        assertThat(RoleChecker.hasRole(BOARD_MEMBER, listOf("BOARD_MEMBER"))).isTrue()
     }
 
     @Test
     internal fun missesRole() {
-        assertThat(RoleChecker.hasRole(BOARD_MEMBER, arrayOf("role"))).isFalse()
+        assertThat(RoleChecker.hasRole(BOARD_MEMBER, listOf("role"))).isFalse()
     }
 }
 
