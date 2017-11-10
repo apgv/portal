@@ -105,4 +105,6 @@ dependencies {
     compile("org.jooq:jooq:3.10.1")
     compile("org.flywaydb:flyway-core:4.2.0")
     compile("org.postgresql:postgresql:42.1.4")
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.1")
+    testCompile("org.assertj:assertj-core:3.8.0")
 }
