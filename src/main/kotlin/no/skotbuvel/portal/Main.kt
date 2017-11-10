@@ -1,11 +1,10 @@
 package no.skotbuvel.portal
 
-import com.auth0.jwk.UrlJwkProvider
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
-import com.auth0.jwt.interfaces.DecodedJWT
 import com.google.gson.Gson
 import com.zaxxer.hikari.HikariDataSource
+import no.skotbuvel.portal.auth.JwtTokenUtil
+import no.skotbuvel.portal.auth.Role
+import no.skotbuvel.portal.auth.RoleChecker
 import no.skotbuvel.portal.config.Auth0Config
 import no.skotbuvel.portal.domain.Person
 import org.flywaydb.core.Flyway
@@ -14,7 +13,6 @@ import org.jooq.impl.DSL
 import org.jooq.no.skotbuvel.portal.Tables.person
 import spark.Request
 import spark.Spark.*
-import java.security.interfaces.RSAPublicKey
 import java.util.*
 import javax.sql.DataSource
 
@@ -42,7 +40,7 @@ fun main(args: Array<String>) {
         })
 
         get("/persons", { request, response ->
-            checkRole(request)
+            verifyTokenAndCheckRole(request)
 
             val dsl = DSL.using(datasource(), SQLDialect.POSTGRES)
 
@@ -68,26 +66,13 @@ fun main(args: Array<String>) {
 
 }
 
-private fun checkRole(request: Request) {
-    val decodedJWT = verifyAndDecodeJwtToken(request)
+private fun verifyTokenAndCheckRole(request: Request) {
+    val decodedJWT = JwtTokenUtil.verifyAndDecode(request)
     val roleClaims = decodedJWT.getClaim("https://portal.skotbuvel.no/roles")
     val roles = roleClaims.asList(String::class.java)
-    if (!roles.contains("board_member")) {
+    if (RoleChecker.hasRole(Role.BOARD_MEMBER, roles)) {
         throw IllegalAccessException("Missing role")
     }
-}
-
-private fun verifyAndDecodeJwtToken(request: Request): DecodedJWT {
-    val jwtToken = request.headers("X-Jwt-Token")
-    val decodedJWT1 = JWT.decode(jwtToken)
-    val urlJwkProvider = UrlJwkProvider("https://skotbuvel.eu.auth0.com/")
-    val jwk = urlJwkProvider.get(decodedJWT1.keyId)
-    val publicKey = jwk.publicKey
-    val algorithm = Algorithm.RSA256(publicKey as RSAPublicKey, null)
-    val jwtVerifier = JWT.require(algorithm)
-            .withIssuer("https://skotbuvel.eu.auth0.com/")
-            .build()
-    return jwtVerifier.verify(jwtToken)
 }
 
 fun datasource(): DataSource {
