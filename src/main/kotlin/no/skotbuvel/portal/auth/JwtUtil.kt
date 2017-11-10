@@ -22,4 +22,9 @@ object JwtUtil {
                 .build()
         return jwtVerifier.verify(jwt)
     }
+
+    fun roles(decodedJWT: DecodedJWT): List<String> {
+        val roleClaims = decodedJWT.getClaim("https://portal.skotbuvel.no/roles")
+        return roleClaims.asList(String::class.java)
+    }
 }

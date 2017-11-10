@@ -68,8 +68,7 @@ fun main(args: Array<String>) {
 
 private fun verifyTokenAndCheckRole(request: Request) {
     val decodedJWT = JwtUtil.verifyAndDecode(request)
-    val roleClaims = decodedJWT.getClaim("https://portal.skotbuvel.no/roles")
-    val roles = roleClaims.asList(String::class.java)
+    val roles = JwtUtil.roles(decodedJWT)
     if (!RoleChecker.hasRole(Role.BOARD_MEMBER, roles)) {
         val exceptionMessage = String.format(
                 "User %s (%s) is missing role %s, has roles %s",
