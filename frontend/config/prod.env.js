@@ -6,5 +6,5 @@ module.exports = {
     AUTH0_REDIRECTURI: '"http://skotbuvel.herokuapp.com/callback"',
     AUTH0_AUDIENCE: '"https://skotbuvel.eu.auth0.com/userinfo"',
     AUTH0_RESPONSETYPE: '"token id_token"',
-    AUTH0_SCOPE: '"openid"'
+    AUTH0_SCOPE: '"openid profile email"'
 }
