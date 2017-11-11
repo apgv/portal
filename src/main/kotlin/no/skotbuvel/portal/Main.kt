@@ -1,7 +1,6 @@
 package no.skotbuvel.portal
 
 import com.google.gson.Gson
-import com.zaxxer.hikari.HikariDataSource
 import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
@@ -14,7 +13,6 @@ import org.jooq.no.skotbuvel.portal.Tables.person
 import spark.Request
 import spark.Spark.*
 import java.util.*
-import javax.sql.DataSource
 
 object Application {
     const val SERVER_PORT = "server.port"
@@ -29,14 +27,14 @@ fun main(args: Array<String>) {
     staticFiles.location("/frontend")
 
     val flyway = Flyway()
-    flyway.dataSource = datasource()
+    flyway.dataSource = DbUtil.datasource
     flyway.migrate()
 
     path("api", {
         get("/persons", { request, response ->
             verifyTokenAndCheckRole(request)
 
-            val dsl = DSL.using(datasource(), SQLDialect.POSTGRES)
+            val dsl = DSL.using(DbUtil.datasource, SQLDialect.POSTGRES)
 
             val persons = dsl.selectFrom(person).fetch().map {
                 Person(
@@ -72,18 +70,6 @@ private fun verifyTokenAndCheckRole(request: Request) {
                 user.roles
         )
         throw IllegalAccessException(exceptionMessage)
-    }
-}
-
-fun datasource(): DataSource {
-    return HikariDataSource().apply {
-        dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
-        username = "postgres"
-        password = "mysecretpassword"
-        schema = "public"
-        addDataSourceProperty("databaseName", "postgres")
-        addDataSourceProperty("portNumber", "5432")
-        addDataSourceProperty("serverName", "172.17.0.2")
     }
 }
 
