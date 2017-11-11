@@ -33,12 +33,6 @@ fun main(args: Array<String>) {
     flyway.migrate()
 
     path("api", {
-        get("/hello", { _, response ->
-            println("called /hello")
-            response.type("application/json")
-            Gson().toJson(mapOf("greeting" to "hello world"))
-        })
-
         get("/persons", { request, response ->
             verifyTokenAndCheckRole(request)
 
