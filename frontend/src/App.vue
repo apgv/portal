@@ -1,22 +1,38 @@
 <template>
     <div id="app">
-        <router-link :to="'/'">
-            Home
-        </router-link>
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-menu">
+                    <div class="navbar-start">
+                        <router-link :to="'/'"
+                                     class="navbar-item">
+                            Home
+                        </router-link>
+                        <router-link :to="'/persons'"
+                                     class="navbar-item">
+                            Personregister
+                        </router-link>
+                    </div>
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <button
+                                    v-if="!authenticated"
+                                    @click="login()"
+                                    class="button is-link">
+                                Log in
+                            </button>
+                            <a
+                                    v-if="authenticated"
+                                    @click="logout()"
+                                    class="button is-link">
+                                Log out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-        <router-link :to="'/persons'">
-            Personregister
-        </router-link>
-        <button
-                v-if="!authenticated"
-                @click="login()">
-            Log in
-        </button>
-        <button
-                v-if="authenticated"
-                @click="logout()">
-            Log out
-        </button>
         <router-view
                 :auth="auth"
                 :authenticated="authenticated">
@@ -49,12 +65,4 @@
 </script>
 
 <style>
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
-    }
 </style>

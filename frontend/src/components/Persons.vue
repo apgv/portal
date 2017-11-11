@@ -1,9 +1,8 @@
 <template>
-    <div v-if="authenticated"
-         class="hello">
-        <h1>Personregister</h1>
+    <div v-if="authenticated">
+        <h1 class="title">Personregister</h1>
 
-        <table>
+        <table class="table is-striped is-hoverable">
             <thead>
             <tr>
                 <td>ID</td>
@@ -55,36 +54,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    h1, h2 {
-        font-weight: normal;
-    }
-
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    li {
-        display: inline-block;
-        margin: 0 10px;
-    }
-
-    a {
-        color: #42b983;
-    }
-
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    tr:hover {
-        background-color: #f5f5f5
-    }
 </style>
