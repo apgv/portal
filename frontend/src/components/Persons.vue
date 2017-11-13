@@ -122,14 +122,17 @@
                 </tbody>
             </table>
         </div>
-        <div v-if="!authenticated">
-            Du er ikke logget inn. Vennligst <a @click="auth.login()">logg inn</a> for å fortsette.
-        </div>
+        <not-authenticated :auth="auth"
+                           :authenticated="authenticated">
+        </not-authenticated>
     </div>
 </template>
 
 <script>
+    import NotAuthenticated from './NotAuthenticated.vue'
+
     export default {
+        components: {NotAuthenticated},
         name: 'Persons',
         props: ['auth', 'authenticated'],
         data () {
