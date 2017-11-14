@@ -19,9 +19,17 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control has-icons-left">
-                                <input class="input" placeholder="Navn"/>
+                                <input v-model="person.name"
+                                       v-validate="'required|max:54'"
+                                       name="name"
+                                       class="input"
+                                       placeholder="Navn"/>
                                 <span class="icon is-small is-left">
                                     <i class="fa fa-user"></i>
+                                </span>
+                                <span v-show="errors.has('name')"
+                                      class="help is-danger">
+                                    {{errors.first('name')}}
                                 </span>
                             </p>
                         </div>
@@ -34,10 +42,19 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control has-icons-left">
-                                <input class="input" type="email" placeholder="E-post"/>
+                                <input v-model="person.email"
+                                       v-validate="'required|email|max:40'"
+                                       name="email"
+                                       class="input"
+                                       type="email"
+                                       placeholder="E-post"/>
                                 <span class="icon is-small is-left">
-                                            <i class="fa fa-envelope"></i>
-                                        </span>
+                                    <i class="fa fa-envelope"></i>
+                                </span>
+                                <span v-show="errors.has('email')"
+                                      class="help is-danger">
+                                    {{errors.first('email')}}
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -49,10 +66,18 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control has-icons-left">
-                                <input class="input" placeholder="Telefon"/>
+                                <input v-model="person.phone"
+                                       v-validate="'required|digits:8'"
+                                       name="phone"
+                                       class="input"
+                                       placeholder="Telefon"/>
                                 <span class="icon is-small is-left">
-                                            <i class="fa fa-mobile"></i>
-                                        </span>
+                                    <i class="fa fa-mobile"></i>
+                                </span>
+                                <span v-show="errors.has('phone')"
+                                      class="help is-danger">
+                                    {{errors.first('phone')}}
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -65,16 +90,25 @@
                         <div class="field">
                             <div class="control">
                                 <label class="checkbox">
-                                    <input type="checkbox" v-model="member"/>
+                                    <input v-model="person.member.checked"
+                                           type="checkbox"/>
                                     Medlem
                                 </label>
                             </div>
                         </div>
-                        <div v-if="member"
+                        <div v-if="person.member.checked"
                              class="field">
                             <p class="control">
-                                <input class="input" placeholder="Årstall medlemsskap"/>
+                                <input v-model="person.member.year"
+                                       v-validate="'required|date_format:YYYY|date_between:2017,2018,[]'"
+                                       name="year_membership"
+                                       class="input"
+                                       placeholder="Årstall medlemsskap"/>
                             </p>
+                            <span v-show="errors.has('year_membership')"
+                                  class="help is-danger">
+                                {{errors.first('year_membership')}}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -99,11 +133,32 @@
         props: ['auth', 'authenticated', 'showModal'],
         data () {
             return {
-                member: false
+                person: {
+                    name: '',
+                    email: '',
+                    phone: '',
+                    member: {
+                        checked: false,
+                        year: ''
+                    }
+                }
             }
         },
         methods: {
+            resetModel () {
+                this.person = {
+                    name: '',
+                    email: '',
+                    phone: '',
+                    member: {
+                        checked: false,
+                        year: ''
+                    }
+                }
+            },
             closeModal () {
+                this.resetModel()
+                this.$validator.errors.clear()
                 this.$emit('close-modal-add-person')
             }
         }
