@@ -8,7 +8,8 @@
                 <p class="modal-card-title">Legg til person</p>
                 <button @click="closeModal()"
                         class="delete"
-                        aria-label="close"></button>
+                        aria-label="close">
+                </button>
             </header>
             <section class="modal-card-body">
                 <!-- Content ... -->
@@ -100,7 +101,15 @@
                              class="field">
                             <p class="control">
                                 <input v-model="person.member.year"
-                                       v-validate="'required|date_format:YYYY|date_between:2017,2018,[]'"
+                                       v-validate="{
+                                           required: true,
+                                           date_format: 'YYYY',
+                                           date_between: [
+                                               new Date().getFullYear(),
+                                               new Date().getFullYear() + 1,
+                                               '[]'
+                                           ]
+                                       }"
                                        name="year_membership"
                                        class="input"
                                        placeholder="Årstall medlemsskap"/>
