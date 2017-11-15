@@ -44,6 +44,7 @@
 <script>
     import NotAuthenticated from './NotAuthenticated.vue'
     import AddPerson from './AddPerson.vue'
+    import axios from 'axios'
 
     export default {
         components: {
@@ -62,9 +63,13 @@
             fetchPersons () {
                 let jwt = localStorage.getItem('id_token')
                 if (this.authenticated) {
-                    this.$http.get('api/persons', {headers: {'X-JWT': jwt}}).then(response => {
-                        this.persons = response.body
-                    })
+                    axios.get('api/persons', {headers: {'X-JWT': jwt}})
+                        .then(response => {
+                            this.persons = response.data
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
                 }
             },
             toggleAddPersonModal () {
