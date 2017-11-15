@@ -61,9 +61,8 @@
         },
         methods: {
             fetchPersons () {
-                let jwt = localStorage.getItem('id_token')
                 if (this.authenticated) {
-                    axios.get('api/persons', {headers: {'X-JWT': jwt}})
+                    axios.get('api/persons', {headers: {'X-JWT': this.auth.jwt()}})
                         .then(response => {
                             this.persons = response.data
                         })
