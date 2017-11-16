@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Field;
+import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
@@ -38,7 +39,7 @@ import org.jooq.no.skotbuvel.portal.tables.records.PersonRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Person extends TableImpl<PersonRecord> {
 
-    private static final long serialVersionUID = 101023080;
+    private static final long serialVersionUID = -99170587;
 
     /**
      * The reference instance of <code>person</code>
@@ -56,17 +57,22 @@ public class Person extends TableImpl<PersonRecord> {
     /**
      * The column <code>person.id</code>.
      */
-    public final TableField<PersonRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<PersonRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('person_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>person.first_name</code>.
+     * The column <code>person.original_id</code>.
      */
-    public final TableField<PersonRecord, String> FIRST_NAME = createField("first_name", org.jooq.impl.SQLDataType.VARCHAR(40), this, "");
+    public final TableField<PersonRecord, Integer> ORIGINAL_ID = createField("original_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>person.last_name</code>.
+     * The column <code>person.active</code>.
      */
-    public final TableField<PersonRecord, String> LAST_NAME = createField("last_name", org.jooq.impl.SQLDataType.VARCHAR(40), this, "");
+    public final TableField<PersonRecord, Boolean> ACTIVE = createField("active", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
+
+    /**
+     * The column <code>person.full_name</code>.
+     */
+    public final TableField<PersonRecord, String> FULL_NAME = createField("full_name", org.jooq.impl.SQLDataType.VARCHAR(54).nullable(false), this, "");
 
     /**
      * The column <code>person.email</code>.
@@ -81,22 +87,12 @@ public class Person extends TableImpl<PersonRecord> {
     /**
      * The column <code>person.created_by</code>.
      */
-    public final TableField<PersonRecord, String> CREATED_BY = createField("created_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
+    public final TableField<PersonRecord, String> CREATED_BY = createField("created_by", org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
      * The column <code>person.created_date</code>.
      */
-    public final TableField<PersonRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
-
-    /**
-     * The column <code>person.updated_by</code>.
-     */
-    public final TableField<PersonRecord, String> UPDATED_BY = createField("updated_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
-
-    /**
-     * The column <code>person.updated_date</code>.
-     */
-    public final TableField<PersonRecord, OffsetDateTime> UPDATED_DATE = createField("updated_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
+    public final TableField<PersonRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
 
     /**
      * Create a <code>person</code> table reference
@@ -141,6 +137,14 @@ public class Person extends TableImpl<PersonRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.PERSON_PKEY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Identity<PersonRecord, Integer> getIdentity() {
+        return Keys.IDENTITY_PERSON;
     }
 
     /**

@@ -1,34 +1,30 @@
 CREATE TABLE person (
-  id           INTEGER PRIMARY KEY,
-  first_name   VARCHAR(40),
-  last_name    VARCHAR(40),
+  id           SERIAL PRIMARY KEY,
+  original_id  INTEGER                  NOT NULL,
+  active       BOOLEAN                  NOT NULL,
+  full_name    VARCHAR(54)              NOT NULL,
   email        VARCHAR(40),
   phone        VARCHAR(15),
-  created_by   VARCHAR(50),
-  created_date TIMESTAMP WITH TIME ZONE,
-  updated_by   VARCHAR(50),
-  updated_date TIMESTAMP WITH TIME ZONE
+  created_by   VARCHAR(50)              NOT NULL,
+  created_date TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
-
 CREATE TABLE membership (
-  id           INTEGER PRIMARY KEY,
-  type         VARCHAR(25) NOT NULL,
-  year         DATE        NOT NULL,
-  price        INTEGER     NOT NULL,
-  created_by   VARCHAR(50),
-  created_date TIMESTAMP WITH TIME ZONE,
-  updated_by   VARCHAR(50),
-  updated_date TIMESTAMP WITH TIME ZONE
+  id         SERIAL PRIMARY KEY,
+  type       VARCHAR(25)              NOT NULL,
+  year       DATE                     NOT NULL,
+  price      INTEGER                  NOT NULL,
+  start_date TIMESTAMP WITH TIME ZONE NOT NULL,
+  end_date   TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 CREATE TABLE member (
-  id            INTEGER PRIMARY KEY,
+  id            SERIAL PRIMARY KEY,
+  original_id   INTEGER                  NOT NULL,
+  active        BOOLEAN                  NOT NULL,
   person_id     INTEGER REFERENCES person (id),
-  payment_date  TIMESTAMP WITH TIME ZONE,
-  membership_id INTEGER,
-  created_by    VARCHAR(50),
-  created_date  TIMESTAMP WITH TIME ZONE,
-  updated_by    VARCHAR(50),
-  updated_date  TIMESTAMP WITH TIME ZONE
+  payment_date  TIMESTAMP WITH TIME ZONE NOT NULL,
+  membership_id INTEGER                  NOT NULL,
+  created_by    VARCHAR(50)              NOT NULL,
+  created_date  TIMESTAMP WITH TIME ZONE NOT NULL
 );

@@ -7,6 +7,7 @@ package org.jooq.no.skotbuvel.portal;
 import javax.annotation.Generated;
 
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
 import org.jooq.no.skotbuvel.portal.tables.Member;
@@ -35,6 +36,9 @@ public class Keys {
     // IDENTITY definitions
     // -------------------------------------------------------------------------
 
+    public static final Identity<MemberRecord, Integer> IDENTITY_MEMBER = Identities0.IDENTITY_MEMBER;
+    public static final Identity<MembershipRecord, Integer> IDENTITY_MEMBERSHIP = Identities0.IDENTITY_MEMBERSHIP;
+    public static final Identity<PersonRecord, Integer> IDENTITY_PERSON = Identities0.IDENTITY_PERSON;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
@@ -53,6 +57,12 @@ public class Keys {
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
     // -------------------------------------------------------------------------
+
+    private static class Identities0 extends AbstractKeys {
+        public static Identity<MemberRecord, Integer> IDENTITY_MEMBER = createIdentity(Member.MEMBER, Member.MEMBER.ID);
+        public static Identity<MembershipRecord, Integer> IDENTITY_MEMBERSHIP = createIdentity(Membership.MEMBERSHIP, Membership.MEMBERSHIP.ID);
+        public static Identity<PersonRecord, Integer> IDENTITY_PERSON = createIdentity(Person.PERSON, Person.PERSON.ID);
+    }
 
     private static class UniqueKeys0 extends AbstractKeys {
         public static final UniqueKey<MemberRecord> MEMBER_PKEY = createUniqueKey(Member.MEMBER, "member_pkey", Member.MEMBER.ID);

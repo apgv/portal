@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Catalog;
+import org.jooq.Sequence;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 import org.jooq.no.skotbuvel.portal.tables.Member;
@@ -31,7 +32,7 @@ import org.jooq.no.skotbuvel.portal.tables.Person;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultSchema extends SchemaImpl {
 
-    private static final long serialVersionUID = 151196445;
+    private static final long serialVersionUID = -1514500567;
 
     /**
      * The reference instance of <code></code>
@@ -67,6 +68,20 @@ public class DefaultSchema extends SchemaImpl {
     @Override
     public Catalog getCatalog() {
         return DefaultCatalog.DEFAULT_CATALOG;
+    }
+
+    @Override
+    public final List<Sequence<?>> getSequences() {
+        List result = new ArrayList();
+        result.addAll(getSequences0());
+        return result;
+    }
+
+    private final List<Sequence<?>> getSequences0() {
+        return Arrays.<Sequence<?>>asList(
+            Sequences.MEMBER_ID_SEQ,
+            Sequences.MEMBERSHIP_ID_SEQ,
+            Sequences.PERSON_ID_SEQ);
     }
 
     @Override

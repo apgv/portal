@@ -12,6 +12,7 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
@@ -39,7 +40,7 @@ import org.jooq.no.skotbuvel.portal.tables.records.MemberRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Member extends TableImpl<MemberRecord> {
 
-    private static final long serialVersionUID = -1430704688;
+    private static final long serialVersionUID = -1789160266;
 
     /**
      * The reference instance of <code>member</code>
@@ -57,7 +58,17 @@ public class Member extends TableImpl<MemberRecord> {
     /**
      * The column <code>member.id</code>.
      */
-    public final TableField<MemberRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MemberRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('member_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>member.original_id</code>.
+     */
+    public final TableField<MemberRecord, Integer> ORIGINAL_ID = createField("original_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>member.active</code>.
+     */
+    public final TableField<MemberRecord, Boolean> ACTIVE = createField("active", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>member.person_id</code>.
@@ -67,32 +78,22 @@ public class Member extends TableImpl<MemberRecord> {
     /**
      * The column <code>member.payment_date</code>.
      */
-    public final TableField<MemberRecord, OffsetDateTime> PAYMENT_DATE = createField("payment_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
+    public final TableField<MemberRecord, OffsetDateTime> PAYMENT_DATE = createField("payment_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
 
     /**
      * The column <code>member.membership_id</code>.
      */
-    public final TableField<MemberRecord, Integer> MEMBERSHIP_ID = createField("membership_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
+    public final TableField<MemberRecord, Integer> MEMBERSHIP_ID = createField("membership_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>member.created_by</code>.
      */
-    public final TableField<MemberRecord, String> CREATED_BY = createField("created_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
+    public final TableField<MemberRecord, String> CREATED_BY = createField("created_by", org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
      * The column <code>member.created_date</code>.
      */
-    public final TableField<MemberRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
-
-    /**
-     * The column <code>member.updated_by</code>.
-     */
-    public final TableField<MemberRecord, String> UPDATED_BY = createField("updated_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
-
-    /**
-     * The column <code>member.updated_date</code>.
-     */
-    public final TableField<MemberRecord, OffsetDateTime> UPDATED_DATE = createField("updated_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
+    public final TableField<MemberRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
 
     /**
      * Create a <code>member</code> table reference
@@ -137,6 +138,14 @@ public class Member extends TableImpl<MemberRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.MEMBER_PKEY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Identity<MemberRecord, Integer> getIdentity() {
+        return Keys.IDENTITY_MEMBER;
     }
 
     /**

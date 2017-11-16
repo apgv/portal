@@ -12,6 +12,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Field;
+import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
@@ -39,7 +40,7 @@ import org.jooq.no.skotbuvel.portal.tables.records.MembershipRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Membership extends TableImpl<MembershipRecord> {
 
-    private static final long serialVersionUID = 1367443939;
+    private static final long serialVersionUID = -763423801;
 
     /**
      * The reference instance of <code>membership</code>
@@ -57,7 +58,7 @@ public class Membership extends TableImpl<MembershipRecord> {
     /**
      * The column <code>membership.id</code>.
      */
-    public final TableField<MembershipRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MembershipRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('membership_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>membership.type</code>.
@@ -75,24 +76,14 @@ public class Membership extends TableImpl<MembershipRecord> {
     public final TableField<MembershipRecord, Integer> PRICE = createField("price", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>membership.created_by</code>.
+     * The column <code>membership.start_date</code>.
      */
-    public final TableField<MembershipRecord, String> CREATED_BY = createField("created_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
+    public final TableField<MembershipRecord, OffsetDateTime> START_DATE = createField("start_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
 
     /**
-     * The column <code>membership.created_date</code>.
+     * The column <code>membership.end_date</code>.
      */
-    public final TableField<MembershipRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
-
-    /**
-     * The column <code>membership.updated_by</code>.
-     */
-    public final TableField<MembershipRecord, String> UPDATED_BY = createField("updated_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
-
-    /**
-     * The column <code>membership.updated_date</code>.
-     */
-    public final TableField<MembershipRecord, OffsetDateTime> UPDATED_DATE = createField("updated_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
+    public final TableField<MembershipRecord, OffsetDateTime> END_DATE = createField("end_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
 
     /**
      * Create a <code>membership</code> table reference
@@ -137,6 +128,14 @@ public class Membership extends TableImpl<MembershipRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.MEMBERSHIP_PKEY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Identity<MembershipRecord, Integer> getIdentity() {
+        return Keys.IDENTITY_MEMBERSHIP;
     }
 
     /**
