@@ -58,9 +58,6 @@ tasks {
                 password = "mysecretpassword"
             }
             generator = Generator().apply {
-                strategy = Strategy().apply {
-                    name = "org.jooq.util.KeepNamesGeneratorStrategy"
-                }
                 database = Database().apply {
                     name = "org.jooq.util.postgres.PostgresDatabase"
                     includes = ".*"

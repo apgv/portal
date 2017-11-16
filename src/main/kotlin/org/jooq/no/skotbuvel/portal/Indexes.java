@@ -9,9 +9,9 @@ import javax.annotation.Generated;
 import org.jooq.Index;
 import org.jooq.OrderField;
 import org.jooq.impl.AbstractKeys;
-import org.jooq.no.skotbuvel.portal.tables.member;
-import org.jooq.no.skotbuvel.portal.tables.membership;
-import org.jooq.no.skotbuvel.portal.tables.person;
+import org.jooq.no.skotbuvel.portal.tables.Member;
+import org.jooq.no.skotbuvel.portal.tables.Membership;
+import org.jooq.no.skotbuvel.portal.tables.Person;
 
 
 /**
@@ -31,17 +31,17 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index member_pkey = Indexes0.member_pkey;
-    public static final Index membership_pkey = Indexes0.membership_pkey;
-    public static final Index person_pkey = Indexes0.person_pkey;
+    public static final Index MEMBER_PKEY = Indexes0.MEMBER_PKEY;
+    public static final Index MEMBERSHIP_PKEY = Indexes0.MEMBERSHIP_PKEY;
+    public static final Index PERSON_PKEY = Indexes0.PERSON_PKEY;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
     // -------------------------------------------------------------------------
 
     private static class Indexes0 extends AbstractKeys {
-        public static Index member_pkey = createIndex("member_pkey", member.member, new OrderField[] { member.member.id }, true);
-        public static Index membership_pkey = createIndex("membership_pkey", membership.membership, new OrderField[] { membership.membership.id }, true);
-        public static Index person_pkey = createIndex("person_pkey", person.person, new OrderField[] { person.person.id }, true);
+        public static Index MEMBER_PKEY = createIndex("member_pkey", Member.MEMBER, new OrderField[] { Member.MEMBER.ID }, true);
+        public static Index MEMBERSHIP_PKEY = createIndex("membership_pkey", Membership.MEMBERSHIP, new OrderField[] { Membership.MEMBERSHIP.ID }, true);
+        public static Index PERSON_PKEY = createIndex("person_pkey", Person.PERSON, new OrderField[] { Person.PERSON.ID }, true);
     }
 }

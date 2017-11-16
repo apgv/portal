@@ -13,9 +13,9 @@ import javax.annotation.Generated;
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
-import org.jooq.no.skotbuvel.portal.tables.member;
-import org.jooq.no.skotbuvel.portal.tables.membership;
-import org.jooq.no.skotbuvel.portal.tables.person;
+import org.jooq.no.skotbuvel.portal.tables.Member;
+import org.jooq.no.skotbuvel.portal.tables.Membership;
+import org.jooq.no.skotbuvel.portal.tables.Person;
 
 
 /**
@@ -31,7 +31,7 @@ import org.jooq.no.skotbuvel.portal.tables.person;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultSchema extends SchemaImpl {
 
-    private static final long serialVersionUID = 807437021;
+    private static final long serialVersionUID = 151196445;
 
     /**
      * The reference instance of <code></code>
@@ -41,17 +41,17 @@ public class DefaultSchema extends SchemaImpl {
     /**
      * The table <code>member</code>.
      */
-    public final member member = org.jooq.no.skotbuvel.portal.tables.member.member;
+    public final Member MEMBER = org.jooq.no.skotbuvel.portal.tables.Member.MEMBER;
 
     /**
      * The table <code>membership</code>.
      */
-    public final membership membership = org.jooq.no.skotbuvel.portal.tables.membership.membership;
+    public final Membership MEMBERSHIP = org.jooq.no.skotbuvel.portal.tables.Membership.MEMBERSHIP;
 
     /**
      * The table <code>person</code>.
      */
-    public final person person = org.jooq.no.skotbuvel.portal.tables.person.person;
+    public final Person PERSON = org.jooq.no.skotbuvel.portal.tables.Person.PERSON;
 
     /**
      * No further instances allowed
@@ -78,8 +78,8 @@ public class DefaultSchema extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-            member.member,
-            membership.membership,
-            person.person);
+            Member.MEMBER,
+            Membership.MEMBERSHIP,
+            Person.PERSON);
     }
 }
