@@ -11,8 +11,7 @@
                 <thead>
                 <tr>
                     <td>ID</td>
-                    <td>Fornavn</td>
-                    <td>Etternavn</td>
+                    <td>Navn</td>
                     <td>E-post</td>
                     <td>Telefon</td>
                     <td>Medlem</td>
@@ -21,8 +20,7 @@
                 <tbody>
                 <tr v-for="person in persons">
                     <td>{{person.id}}</td>
-                    <td>{{person.firstName}}</td>
-                    <td>{{person.lastName}}</td>
+                    <td>{{person.fullName}}</td>
                     <td>{{person.email}}</td>
                     <td>{{person.phone}}</td>
                     <td>{{person.member ? 'Ja' : 'Nei'}}</td>

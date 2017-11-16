@@ -20,7 +20,7 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control has-icons-left">
-                                <input v-model="person.name"
+                                <input v-model="person.fullName"
                                        v-validate="'required|max:54'"
                                        name="name"
                                        class="input"
@@ -123,7 +123,7 @@
                 </div>
             </section>
             <footer class="modal-card-foot">
-                <button @click="closeModal()"
+                <button @click="save()"
                         class="button is-success">
                     Lagre
                 </button>
@@ -137,13 +137,17 @@
 </template>
 
 <script>
+    import PersonService from '../PersonService'
+
+    const personService = new PersonService()
+
     export default {
         name: 'add-person',
         props: ['auth', 'authenticated', 'showModal'],
         data () {
             return {
                 person: {
-                    name: '',
+                    fullName: '',
                     email: '',
                     phone: '',
                     member: {
@@ -156,7 +160,7 @@
         methods: {
             resetModel () {
                 this.person = {
-                    name: '',
+                    fullName: '',
                     email: '',
                     phone: '',
                     member: {
@@ -164,6 +168,9 @@
                         year: ''
                     }
                 }
+            },
+            save () {
+                personService.save(this.person, this.auth.jwt())
             },
             closeModal () {
                 this.resetModel()

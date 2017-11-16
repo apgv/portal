@@ -1,6 +1,8 @@
 package no.skotbuvel.portal
 
+import com.auth0.jwt.interfaces.DecodedJWT
 import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
@@ -8,10 +10,14 @@ import no.skotbuvel.portal.config.Auth0Config
 import no.skotbuvel.portal.domain.Person
 import org.flywaydb.core.Flyway
 import org.jooq.SQLDialect
+import org.jooq.TransactionalRunnable
 import org.jooq.impl.DSL
-import org.jooq.no.skotbuvel.portal.Tables.person
+import org.jooq.no.skotbuvel.portal.Sequences.PERSON_ID_SEQ
+import org.jooq.no.skotbuvel.portal.Tables.PERSON
 import spark.Request
 import spark.Spark.*
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.*
 
 object Application {
@@ -36,18 +42,57 @@ fun main(args: Array<String>) {
 
             val dsl = DSL.using(DbUtil.datasource, SQLDialect.POSTGRES)
 
-            val persons = dsl.selectFrom(person).fetch().map {
+            val persons = dsl.selectFrom(PERSON).fetch().map {
                 Person(
-                        id = it.id(),
-                        firstName = it.first_name(),
-                        lastName = it.last_name(),
-                        email = it.email(),
-                        phone = it.phone()
+                        id = it.id,
+                        fullName = it.fullName,
+                        email = it.email,
+                        phone = it.phone
                 )
             }
 
             response.type("application/json")
             Gson().toJson(persons)
+        })
+
+        post("/persons", { request, response ->
+            val decodedJWT = verifyTokenAndCheckRole(request)
+
+            val dsl = DSL.using(DbUtil.datasource, SQLDialect.POSTGRES)
+
+            val moshi = Moshi.Builder().build()
+            val jsonAdapter = moshi.adapter(Person::class.java)
+            val person = jsonAdapter.fromJson(request.body())
+
+            if (person != null) {
+                dsl.transaction(TransactionalRunnable {
+                    val id = dsl.insertInto(PERSON,
+                            PERSON.ID,
+                            PERSON.ORIGINAL_ID,
+                            PERSON.ACTIVE,
+                            PERSON.FULL_NAME,
+                            PERSON.EMAIL,
+                            PERSON.PHONE,
+                            PERSON.CREATED_BY,
+                            PERSON.CREATED_DATE
+                    ).values(
+                            dsl.nextval(PERSON_ID_SEQ).toInt(),
+                            dsl.currval(PERSON_ID_SEQ).toInt(),
+                            true,
+                            person.fullName,
+                            person.email,
+                            person.phone,
+                            JwtUtil.email(decodedJWT),
+                            ZonedDateTime.now(ZoneId.of("Europe/Oslo")).toOffsetDateTime()
+                    )
+                            .returning(PERSON.ID)
+                            .execute()
+
+                    println("person got ID: $id")
+                })
+            }
+
+            response.status(204)
         })
 
         get("/auth0/config", { _, response ->
@@ -58,7 +103,7 @@ fun main(args: Array<String>) {
 
 }
 
-private fun verifyTokenAndCheckRole(request: Request) {
+private fun verifyTokenAndCheckRole(request: Request): DecodedJWT {
     val decodedJWT = JwtUtil.verifyAndDecode(request)
     val user = userFromJWT(decodedJWT)
     if (!user.hasRole(Role.BOARD_MEMBER)) {
@@ -71,6 +116,8 @@ private fun verifyTokenAndCheckRole(request: Request) {
         )
         throw IllegalAccessException(exceptionMessage)
     }
+
+    return decodedJWT
 }
 
 private fun mapAndCheckArguments(args: Array<String>): Map<String, String> {
