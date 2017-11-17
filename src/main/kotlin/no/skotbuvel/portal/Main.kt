@@ -8,6 +8,7 @@ import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.Auth0Config
 import no.skotbuvel.portal.domain.Person
+import no.skotbuvel.portal.person.PersonRepository
 import org.flywaydb.core.Flyway
 import org.jooq.SQLDialect
 import org.jooq.TransactionalRunnable
@@ -36,20 +37,13 @@ fun main(args: Array<String>) {
     flyway.dataSource = DbUtil.datasource
     flyway.migrate()
 
+    val personRepository = PersonRepository()
+
     path("api", {
         get("/persons", { request, response ->
             verifyTokenAndCheckRole(request)
 
-            val dsl = DSL.using(DbUtil.datasource, SQLDialect.POSTGRES)
-
-            val persons = dsl.selectFrom(PERSON).fetch().map {
-                Person(
-                        id = it.id,
-                        fullName = it.fullName,
-                        email = it.email,
-                        phone = it.phone
-                )
-            }
+            val persons = personRepository.findAll()
 
             response.type("application/json")
             Gson().toJson(persons)
