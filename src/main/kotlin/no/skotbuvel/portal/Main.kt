@@ -10,15 +10,8 @@ import no.skotbuvel.portal.config.Auth0Config
 import no.skotbuvel.portal.domain.Person
 import no.skotbuvel.portal.person.PersonRepository
 import org.flywaydb.core.Flyway
-import org.jooq.SQLDialect
-import org.jooq.TransactionalRunnable
-import org.jooq.impl.DSL
-import org.jooq.no.skotbuvel.portal.Sequences.PERSON_ID_SEQ
-import org.jooq.no.skotbuvel.portal.Tables.PERSON
 import spark.Request
 import spark.Spark.*
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.util.*
 
 object Application {
@@ -52,41 +45,18 @@ fun main(args: Array<String>) {
         post("/persons", { request, response ->
             val decodedJWT = verifyTokenAndCheckRole(request)
 
-            val dsl = DSL.using(DbUtil.datasource, SQLDialect.POSTGRES)
-
             val moshi = Moshi.Builder().build()
             val jsonAdapter = moshi.adapter(Person::class.java)
             val person = jsonAdapter.fromJson(request.body())
 
             if (person != null) {
-                dsl.transaction(TransactionalRunnable {
-                    val id = dsl.insertInto(PERSON,
-                            PERSON.ID,
-                            PERSON.ORIGINAL_ID,
-                            PERSON.ACTIVE,
-                            PERSON.FULL_NAME,
-                            PERSON.EMAIL,
-                            PERSON.PHONE,
-                            PERSON.CREATED_BY,
-                            PERSON.CREATED_DATE
-                    ).values(
-                            dsl.nextval(PERSON_ID_SEQ).toInt(),
-                            dsl.currval(PERSON_ID_SEQ).toInt(),
-                            true,
-                            person.fullName,
-                            person.email,
-                            person.phone,
-                            JwtUtil.email(decodedJWT),
-                            ZonedDateTime.now(ZoneId.of("Europe/Oslo")).toOffsetDateTime()
-                    )
-                            .returning(PERSON.ID)
-                            .execute()
+                val id = personRepository.save(person, JwtUtil.email(decodedJWT))
 
-                    println("person got ID: $id")
-                })
+                response.status(201)
+                moshi.adapter(Int::class.java).toJson(id)
+            } else {
+                response.status(400)
             }
-
-            response.status(204)
         })
 
         get("/auth0/config", { _, response ->
