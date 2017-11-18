@@ -1,6 +1,7 @@
 package no.skotbuvel.portal.person
 
 import no.skotbuvel.portal.DbUtil
+import org.jooq.DSLContext
 import org.jooq.SQLDialect
 import org.jooq.TransactionalCallable
 import org.jooq.impl.DSL
@@ -20,9 +21,9 @@ class PersonRepository {
     )
 
     fun findAll(): List<Person> {
-        val dsl = DSL.using(DbUtil.datasource, SQLDialect.POSTGRES)
+        val dslContext = dslContext()
 
-        return dsl
+        return dslContext
                 .select(selectParameters)
                 .from(PERSON)
                 .fetch()
@@ -31,10 +32,10 @@ class PersonRepository {
     }
 
     fun save(personRegistration: PersonRegistration, createdBy: String): Int {
-        val dsl = DSL.using(DbUtil.datasource, SQLDialect.POSTGRES)
+        val dslContext = dslContext()
 
-        val person = dsl.transactionResult(TransactionalCallable {
-            return@TransactionalCallable dsl.insertInto(PERSON,
+        val person = dslContext.transactionResult(TransactionalCallable {
+            return@TransactionalCallable dslContext.insertInto(PERSON,
                     PERSON.ID,
                     PERSON.ORIGINAL_ID,
                     PERSON.ACTIVE,
@@ -44,8 +45,8 @@ class PersonRepository {
                     PERSON.CREATED_BY,
                     PERSON.CREATED_DATE
             ).values(
-                    dsl.nextval(PERSON_ID_SEQ).toInt(),
-                    dsl.currval(PERSON_ID_SEQ).toInt(),
+                    dslContext.nextval(PERSON_ID_SEQ).toInt(),
+                    dslContext.currval(PERSON_ID_SEQ).toInt(),
                     true,
                     personRegistration.fullName,
                     personRegistration.email,
@@ -61,5 +62,7 @@ class PersonRepository {
 
         return person.id
     }
+
+    private fun dslContext(): DSLContext = DSL.using(DbUtil.datasource, SQLDialect.POSTGRES)
 
 }
