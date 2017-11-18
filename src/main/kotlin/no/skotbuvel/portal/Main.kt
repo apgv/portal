@@ -7,7 +7,7 @@ import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.Auth0Config
-import no.skotbuvel.portal.person.Person
+import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
 import org.flywaydb.core.Flyway
 import spark.Request
@@ -46,11 +46,11 @@ fun main(args: Array<String>) {
             val decodedJWT = verifyTokenAndCheckRole(request)
 
             val moshi = Moshi.Builder().build()
-            val jsonAdapter = moshi.adapter(Person::class.java)
-            val person = jsonAdapter.fromJson(request.body())
+            val jsonAdapter = moshi.adapter(PersonRegistration::class.java)
+            val personRegistration = jsonAdapter.fromJson(request.body())
 
-            if (person != null) {
-                val id = personRepository.save(person, JwtUtil.email(decodedJWT))
+            if (personRegistration != null) {
+                val id = personRepository.save(personRegistration, JwtUtil.email(decodedJWT))
 
                 response.status(201)
                 moshi.adapter(Int::class.java).toJson(id)
