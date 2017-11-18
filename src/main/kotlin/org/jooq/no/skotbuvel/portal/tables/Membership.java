@@ -4,8 +4,6 @@
 package org.jooq.no.skotbuvel.portal.tables;
 
 
-import java.sql.Date;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +38,7 @@ import org.jooq.no.skotbuvel.portal.tables.records.MembershipRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Membership extends TableImpl<MembershipRecord> {
 
-    private static final long serialVersionUID = -763423801;
+    private static final long serialVersionUID = 1299326685;
 
     /**
      * The reference instance of <code>membership</code>
@@ -68,22 +66,12 @@ public class Membership extends TableImpl<MembershipRecord> {
     /**
      * The column <code>membership.year</code>.
      */
-    public final TableField<MembershipRecord, Date> YEAR = createField("year", org.jooq.impl.SQLDataType.DATE.nullable(false), this, "");
+    public final TableField<MembershipRecord, Integer> YEAR = createField("year", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>membership.price</code>.
      */
     public final TableField<MembershipRecord, Integer> PRICE = createField("price", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
-    /**
-     * The column <code>membership.start_date</code>.
-     */
-    public final TableField<MembershipRecord, OffsetDateTime> START_DATE = createField("start_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
-
-    /**
-     * The column <code>membership.end_date</code>.
-     */
-    public final TableField<MembershipRecord, OffsetDateTime> END_DATE = createField("end_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
 
     /**
      * Create a <code>membership</code> table reference

@@ -10,12 +10,10 @@ CREATE TABLE person (
 );
 
 CREATE TABLE membership (
-  id         SERIAL PRIMARY KEY,
-  type       VARCHAR(25)              NOT NULL,
-  year       DATE                     NOT NULL,
-  price      INTEGER                  NOT NULL,
-  start_date TIMESTAMP WITH TIME ZONE NOT NULL,
-  end_date   TIMESTAMP WITH TIME ZONE NOT NULL
+  id    SERIAL PRIMARY KEY,
+  type  VARCHAR(25) NOT NULL,
+  year  INTEGER     NOT NULL,
+  price INTEGER     NOT NULL
 );
 
 CREATE TABLE member (
