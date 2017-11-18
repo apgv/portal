@@ -7,7 +7,7 @@ import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.Auth0Config
-import no.skotbuvel.portal.domain.Person
+import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRepository
 import org.flywaydb.core.Flyway
 import spark.Request

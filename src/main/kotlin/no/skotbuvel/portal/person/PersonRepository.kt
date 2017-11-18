@@ -1,7 +1,6 @@
 package no.skotbuvel.portal.person
 
 import no.skotbuvel.portal.DbUtil
-import no.skotbuvel.portal.domain.Person
 import org.jooq.SQLDialect
 import org.jooq.TransactionalCallable
 import org.jooq.impl.DSL

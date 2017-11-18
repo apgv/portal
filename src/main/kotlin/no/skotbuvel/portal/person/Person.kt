@@ -1,4 +1,4 @@
-package no.skotbuvel.portal.domain
+package no.skotbuvel.portal.person
 
 data class Person(
         val id: Int? = null,
