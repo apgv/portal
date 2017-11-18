@@ -31,10 +31,10 @@ class PersonRepository {
                 .toList()
     }
 
-    fun save(personRegistration: PersonRegistration, createdBy: String): Int {
+    fun save(personRegistration: PersonRegistration, createdBy: String): Person {
         val dslContext = dslContext()
 
-        val person = dslContext.transactionResult(TransactionalCallable {
+        return dslContext.transactionResult(TransactionalCallable {
             return@TransactionalCallable dslContext.insertInto(PERSON,
                     PERSON.ID,
                     PERSON.ORIGINAL_ID,
@@ -58,9 +58,6 @@ class PersonRepository {
                     .fetchOne()
                     .map { toPerson(it) }
         })
-        println("person got ID: ${person.id}")
-
-        return person.id
     }
 
     private fun dslContext(): DSLContext = DSL.using(DbUtil.datasource, SQLDialect.POSTGRES)

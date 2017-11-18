@@ -7,8 +7,10 @@ import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.Auth0Config
+import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
+import no.skotbuvel.portal.person.ZonedDateTimeAdapter
 import org.flywaydb.core.Flyway
 import spark.Request
 import spark.Spark.*
@@ -45,15 +47,17 @@ fun main(args: Array<String>) {
         post("/persons", { request, response ->
             val decodedJWT = verifyTokenAndCheckRole(request)
 
-            val moshi = Moshi.Builder().build()
+            val moshi = Moshi.Builder()
+                    .add(ZonedDateTimeAdapter())
+                    .build()
             val jsonAdapter = moshi.adapter(PersonRegistration::class.java)
             val personRegistration = jsonAdapter.fromJson(request.body())
 
             if (personRegistration != null) {
-                val id = personRepository.save(personRegistration, JwtUtil.email(decodedJWT))
+                val person = personRepository.save(personRegistration, JwtUtil.email(decodedJWT))
 
                 response.status(201)
-                moshi.adapter(Int::class.java).toJson(id)
+                moshi.adapter(Person::class.java).toJson(person)
             } else {
                 response.status(400)
             }
