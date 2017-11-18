@@ -24,9 +24,7 @@ object JwtUtil {
         return jwtVerifier.verify(jwt)
     }
 
-    fun email(decodedJWT: DecodedJWT): String {
-        return decodedJWT.getClaim("email").asString()
-    }
+    fun email(decodedJWT: DecodedJWT): String = decodedJWT.getClaim("email").asString()
 
     fun roles(decodedJWT: DecodedJWT): List<Role> {
         val roleClaims = decodedJWT.getClaim(AUTH0_ROLES)
