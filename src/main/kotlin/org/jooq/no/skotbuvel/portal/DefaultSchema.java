@@ -14,8 +14,8 @@ import org.jooq.Catalog;
 import org.jooq.Sequence;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
-import org.jooq.no.skotbuvel.portal.tables.Member;
 import org.jooq.no.skotbuvel.portal.tables.Membership;
+import org.jooq.no.skotbuvel.portal.tables.MembershipType;
 import org.jooq.no.skotbuvel.portal.tables.Person;
 
 
@@ -32,7 +32,7 @@ import org.jooq.no.skotbuvel.portal.tables.Person;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultSchema extends SchemaImpl {
 
-    private static final long serialVersionUID = -1514500567;
+    private static final long serialVersionUID = -88823014;
 
     /**
      * The reference instance of <code></code>
@@ -40,14 +40,14 @@ public class DefaultSchema extends SchemaImpl {
     public static final DefaultSchema DEFAULT_SCHEMA = new DefaultSchema();
 
     /**
-     * The table <code>member</code>.
-     */
-    public final Member MEMBER = org.jooq.no.skotbuvel.portal.tables.Member.MEMBER;
-
-    /**
      * The table <code>membership</code>.
      */
     public final Membership MEMBERSHIP = org.jooq.no.skotbuvel.portal.tables.Membership.MEMBERSHIP;
+
+    /**
+     * The table <code>membership_type</code>.
+     */
+    public final MembershipType MEMBERSHIP_TYPE = org.jooq.no.skotbuvel.portal.tables.MembershipType.MEMBERSHIP_TYPE;
 
     /**
      * The table <code>person</code>.
@@ -79,8 +79,8 @@ public class DefaultSchema extends SchemaImpl {
 
     private final List<Sequence<?>> getSequences0() {
         return Arrays.<Sequence<?>>asList(
-            Sequences.MEMBER_ID_SEQ,
             Sequences.MEMBERSHIP_ID_SEQ,
+            Sequences.MEMBERSHIP_TYPE_ID_SEQ,
             Sequences.PERSON_ID_SEQ);
     }
 
@@ -93,8 +93,8 @@ public class DefaultSchema extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-            Member.MEMBER,
             Membership.MEMBERSHIP,
+            MembershipType.MEMBERSHIP_TYPE,
             Person.PERSON);
     }
 }

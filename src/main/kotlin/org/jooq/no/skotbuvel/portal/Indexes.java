@@ -9,8 +9,8 @@ import javax.annotation.Generated;
 import org.jooq.Index;
 import org.jooq.OrderField;
 import org.jooq.impl.AbstractKeys;
-import org.jooq.no.skotbuvel.portal.tables.Member;
 import org.jooq.no.skotbuvel.portal.tables.Membership;
+import org.jooq.no.skotbuvel.portal.tables.MembershipType;
 import org.jooq.no.skotbuvel.portal.tables.Person;
 
 
@@ -31,8 +31,8 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index MEMBER_PKEY = Indexes0.MEMBER_PKEY;
     public static final Index MEMBERSHIP_PKEY = Indexes0.MEMBERSHIP_PKEY;
+    public static final Index MEMBERSHIP_TYPE_PKEY = Indexes0.MEMBERSHIP_TYPE_PKEY;
     public static final Index PERSON_PKEY = Indexes0.PERSON_PKEY;
 
     // -------------------------------------------------------------------------
@@ -40,8 +40,8 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     private static class Indexes0 extends AbstractKeys {
-        public static Index MEMBER_PKEY = createIndex("member_pkey", Member.MEMBER, new OrderField[] { Member.MEMBER.ID }, true);
         public static Index MEMBERSHIP_PKEY = createIndex("membership_pkey", Membership.MEMBERSHIP, new OrderField[] { Membership.MEMBERSHIP.ID }, true);
+        public static Index MEMBERSHIP_TYPE_PKEY = createIndex("membership_type_pkey", MembershipType.MEMBERSHIP_TYPE, new OrderField[] { MembershipType.MEMBERSHIP_TYPE.ID }, true);
         public static Index PERSON_PKEY = createIndex("person_pkey", Person.PERSON, new OrderField[] { Person.PERSON.ID }, true);
     }
 }

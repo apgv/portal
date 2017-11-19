@@ -10,11 +10,11 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
-import org.jooq.no.skotbuvel.portal.tables.Member;
 import org.jooq.no.skotbuvel.portal.tables.Membership;
+import org.jooq.no.skotbuvel.portal.tables.MembershipType;
 import org.jooq.no.skotbuvel.portal.tables.Person;
-import org.jooq.no.skotbuvel.portal.tables.records.MemberRecord;
 import org.jooq.no.skotbuvel.portal.tables.records.MembershipRecord;
+import org.jooq.no.skotbuvel.portal.tables.records.MembershipTypeRecord;
 import org.jooq.no.skotbuvel.portal.tables.records.PersonRecord;
 
 
@@ -36,41 +36,41 @@ public class Keys {
     // IDENTITY definitions
     // -------------------------------------------------------------------------
 
-    public static final Identity<MemberRecord, Integer> IDENTITY_MEMBER = Identities0.IDENTITY_MEMBER;
     public static final Identity<MembershipRecord, Integer> IDENTITY_MEMBERSHIP = Identities0.IDENTITY_MEMBERSHIP;
+    public static final Identity<MembershipTypeRecord, Integer> IDENTITY_MEMBERSHIP_TYPE = Identities0.IDENTITY_MEMBERSHIP_TYPE;
     public static final Identity<PersonRecord, Integer> IDENTITY_PERSON = Identities0.IDENTITY_PERSON;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<MemberRecord> MEMBER_PKEY = UniqueKeys0.MEMBER_PKEY;
     public static final UniqueKey<MembershipRecord> MEMBERSHIP_PKEY = UniqueKeys0.MEMBERSHIP_PKEY;
+    public static final UniqueKey<MembershipTypeRecord> MEMBERSHIP_TYPE_PKEY = UniqueKeys0.MEMBERSHIP_TYPE_PKEY;
     public static final UniqueKey<PersonRecord> PERSON_PKEY = UniqueKeys0.PERSON_PKEY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<MemberRecord, PersonRecord> MEMBER__MEMBER_PERSON_ID_FKEY = ForeignKeys0.MEMBER__MEMBER_PERSON_ID_FKEY;
+    public static final ForeignKey<MembershipRecord, PersonRecord> MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY = ForeignKeys0.MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
     // -------------------------------------------------------------------------
 
     private static class Identities0 extends AbstractKeys {
-        public static Identity<MemberRecord, Integer> IDENTITY_MEMBER = createIdentity(Member.MEMBER, Member.MEMBER.ID);
         public static Identity<MembershipRecord, Integer> IDENTITY_MEMBERSHIP = createIdentity(Membership.MEMBERSHIP, Membership.MEMBERSHIP.ID);
+        public static Identity<MembershipTypeRecord, Integer> IDENTITY_MEMBERSHIP_TYPE = createIdentity(MembershipType.MEMBERSHIP_TYPE, MembershipType.MEMBERSHIP_TYPE.ID);
         public static Identity<PersonRecord, Integer> IDENTITY_PERSON = createIdentity(Person.PERSON, Person.PERSON.ID);
     }
 
     private static class UniqueKeys0 extends AbstractKeys {
-        public static final UniqueKey<MemberRecord> MEMBER_PKEY = createUniqueKey(Member.MEMBER, "member_pkey", Member.MEMBER.ID);
         public static final UniqueKey<MembershipRecord> MEMBERSHIP_PKEY = createUniqueKey(Membership.MEMBERSHIP, "membership_pkey", Membership.MEMBERSHIP.ID);
+        public static final UniqueKey<MembershipTypeRecord> MEMBERSHIP_TYPE_PKEY = createUniqueKey(MembershipType.MEMBERSHIP_TYPE, "membership_type_pkey", MembershipType.MEMBERSHIP_TYPE.ID);
         public static final UniqueKey<PersonRecord> PERSON_PKEY = createUniqueKey(Person.PERSON, "person_pkey", Person.PERSON.ID);
     }
 
     private static class ForeignKeys0 extends AbstractKeys {
-        public static final ForeignKey<MemberRecord, PersonRecord> MEMBER__MEMBER_PERSON_ID_FKEY = createForeignKey(org.jooq.no.skotbuvel.portal.Keys.PERSON_PKEY, Member.MEMBER, "member__member_person_id_fkey", Member.MEMBER.PERSON_ID);
+        public static final ForeignKey<MembershipRecord, PersonRecord> MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY = createForeignKey(org.jooq.no.skotbuvel.portal.Keys.PERSON_PKEY, Membership.MEMBERSHIP, "membership__membership_person_id_fkey", Membership.MEMBERSHIP.PERSON_ID);
     }
 }

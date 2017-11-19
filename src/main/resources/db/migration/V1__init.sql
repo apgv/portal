@@ -9,14 +9,15 @@ CREATE TABLE person (
   created_date TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
-CREATE TABLE membership (
-  id    SERIAL PRIMARY KEY,
-  type  VARCHAR(25) NOT NULL,
-  year  INTEGER     NOT NULL,
-  price INTEGER     NOT NULL
+CREATE TABLE membership_type (
+  id     SERIAL PRIMARY KEY,
+  active BOOLEAN     NOT NULL,
+  type   VARCHAR(25) NOT NULL,
+  year   INTEGER     NOT NULL,
+  price  INTEGER     NOT NULL
 );
 
-CREATE TABLE member (
+CREATE TABLE membership (
   id            SERIAL PRIMARY KEY,
   original_id   INTEGER                  NOT NULL,
   active        BOOLEAN                  NOT NULL,

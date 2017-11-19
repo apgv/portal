@@ -4,12 +4,14 @@
 package org.jooq.no.skotbuvel.portal.tables;
 
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Generated;
 
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
@@ -38,7 +40,7 @@ import org.jooq.no.skotbuvel.portal.tables.records.MembershipRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Membership extends TableImpl<MembershipRecord> {
 
-    private static final long serialVersionUID = 1299326685;
+    private static final long serialVersionUID = -184273678;
 
     /**
      * The reference instance of <code>membership</code>
@@ -59,19 +61,39 @@ public class Membership extends TableImpl<MembershipRecord> {
     public final TableField<MembershipRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('membership_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>membership.type</code>.
+     * The column <code>membership.original_id</code>.
      */
-    public final TableField<MembershipRecord, String> TYPE = createField("type", org.jooq.impl.SQLDataType.VARCHAR(25).nullable(false), this, "");
+    public final TableField<MembershipRecord, Integer> ORIGINAL_ID = createField("original_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>membership.year</code>.
+     * The column <code>membership.active</code>.
      */
-    public final TableField<MembershipRecord, Integer> YEAR = createField("year", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MembershipRecord, Boolean> ACTIVE = createField("active", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
-     * The column <code>membership.price</code>.
+     * The column <code>membership.person_id</code>.
      */
-    public final TableField<MembershipRecord, Integer> PRICE = createField("price", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MembershipRecord, Integer> PERSON_ID = createField("person_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>membership.payment_date</code>.
+     */
+    public final TableField<MembershipRecord, OffsetDateTime> PAYMENT_DATE = createField("payment_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
+
+    /**
+     * The column <code>membership.membership_id</code>.
+     */
+    public final TableField<MembershipRecord, Integer> MEMBERSHIP_ID = createField("membership_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>membership.created_by</code>.
+     */
+    public final TableField<MembershipRecord, String> CREATED_BY = createField("created_by", org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
+
+    /**
+     * The column <code>membership.created_date</code>.
+     */
+    public final TableField<MembershipRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
 
     /**
      * Create a <code>membership</code> table reference
@@ -140,6 +162,14 @@ public class Membership extends TableImpl<MembershipRecord> {
     @Override
     public List<UniqueKey<MembershipRecord>> getKeys() {
         return Arrays.<UniqueKey<MembershipRecord>>asList(Keys.MEMBERSHIP_PKEY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ForeignKey<MembershipRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<MembershipRecord, ?>>asList(Keys.MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY);
     }
 
     /**

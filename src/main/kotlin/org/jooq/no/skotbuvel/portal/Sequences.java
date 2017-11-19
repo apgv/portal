@@ -24,14 +24,14 @@ import org.jooq.impl.SequenceImpl;
 public class Sequences {
 
     /**
-     * The sequence <code>member_id_seq</code>
-     */
-    public static final Sequence<Long> MEMBER_ID_SEQ = new SequenceImpl<Long>("member_id_seq", DefaultSchema.DEFAULT_SCHEMA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
-
-    /**
      * The sequence <code>membership_id_seq</code>
      */
     public static final Sequence<Long> MEMBERSHIP_ID_SEQ = new SequenceImpl<Long>("membership_id_seq", DefaultSchema.DEFAULT_SCHEMA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+    /**
+     * The sequence <code>membership_type_id_seq</code>
+     */
+    public static final Sequence<Long> MEMBERSHIP_TYPE_ID_SEQ = new SequenceImpl<Long>("membership_type_id_seq", DefaultSchema.DEFAULT_SCHEMA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
     /**
      * The sequence <code>person_id_seq</code>

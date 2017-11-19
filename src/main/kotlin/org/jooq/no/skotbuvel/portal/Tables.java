@@ -6,8 +6,8 @@ package org.jooq.no.skotbuvel.portal;
 
 import javax.annotation.Generated;
 
-import org.jooq.no.skotbuvel.portal.tables.Member;
 import org.jooq.no.skotbuvel.portal.tables.Membership;
+import org.jooq.no.skotbuvel.portal.tables.MembershipType;
 import org.jooq.no.skotbuvel.portal.tables.Person;
 
 
@@ -25,14 +25,14 @@ import org.jooq.no.skotbuvel.portal.tables.Person;
 public class Tables {
 
     /**
-     * The table <code>member</code>.
-     */
-    public static final Member MEMBER = org.jooq.no.skotbuvel.portal.tables.Member.MEMBER;
-
-    /**
      * The table <code>membership</code>.
      */
     public static final Membership MEMBERSHIP = org.jooq.no.skotbuvel.portal.tables.Membership.MEMBERSHIP;
+
+    /**
+     * The table <code>membership_type</code>.
+     */
+    public static final MembershipType MEMBERSHIP_TYPE = org.jooq.no.skotbuvel.portal.tables.MembershipType.MEMBERSHIP_TYPE;
 
     /**
      * The table <code>person</code>.
