@@ -3,6 +3,7 @@ package no.skotbuvel.portal
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.google.gson.Gson
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
@@ -40,7 +41,12 @@ fun main(args: Array<String>) {
 
             val persons = personRepository.findAll()
 
-            Gson().toJson(persons)
+            val moshi = Moshi.Builder()
+                    .add(ZonedDateTimeAdapter())
+                    .build()
+
+            val parameterizedType = Types.newParameterizedType(List::class.java, Person::class.java)
+            moshi.adapter<List<Person>>(parameterizedType).toJson(persons)
         })
 
         post("/persons", { request, response ->
