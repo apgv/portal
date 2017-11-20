@@ -35,12 +35,11 @@ fun main(args: Array<String>) {
     val personRepository = PersonRepository()
 
     path("api", {
-        get("/persons", { request, response ->
+        get("/persons", { request, _ ->
             verifyTokenAndCheckRole(request)
 
             val persons = personRepository.findAll()
 
-            response.type("application/json")
             Gson().toJson(persons)
         })
 
@@ -63,9 +62,12 @@ fun main(args: Array<String>) {
             }
         })
 
-        get("/auth0/config", { _, response ->
-            response.type("application/json")
+        get("/auth0/config", { _, _ ->
             Gson().toJson(auth0Config(properties))
+        })
+
+        after("/*", { _, response ->
+            response.type("application/json")
         })
     })
 
