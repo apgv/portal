@@ -7,7 +7,7 @@ import java.time.ZonedDateTime
 class ZonedDateTimeAdapter {
 
     @ToJson
-    fun toJson(zonedDateTime: ZonedDateTime) = zonedDateTime.toString()
+    fun toJson(zonedDateTime: ZonedDateTime) = zonedDateTime.toInstant().toEpochMilli()
 
     @FromJson
     fun fromJson(date: String) = ZonedDateTime.parse(date)
