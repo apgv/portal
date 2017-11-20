@@ -1,10 +1,7 @@
 package no.skotbuvel.portal.person
 
-import no.skotbuvel.portal.DbUtil
-import org.jooq.DSLContext
-import org.jooq.SQLDialect
+import no.skotbuvel.portal.DbUtil.dslContext
 import org.jooq.TransactionalCallable
-import org.jooq.impl.DSL
 import org.jooq.no.skotbuvel.portal.Sequences.PERSON_ID_SEQ
 import org.jooq.no.skotbuvel.portal.Tables.PERSON
 import java.time.ZoneId
@@ -59,7 +56,5 @@ class PersonRepository {
                     .map { toPerson(it) }
         })
     }
-
-    private fun dslContext(): DSLContext = DSL.using(DbUtil.datasource, SQLDialect.POSTGRES)
 
 }
