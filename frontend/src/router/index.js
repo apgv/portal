@@ -4,6 +4,7 @@ import nbNO from 'vee-validate/dist/locale/nb_NO'
 import VeeValidate, {Validator} from 'vee-validate'
 import Home from '@/components/Home'
 import Persons from '@/components/Persons'
+import AddPerson from '@/components/AddPerson'
 import Callback from '@/components/Callback'
 import moment from 'moment'
 
@@ -31,6 +32,11 @@ const router = new Router({
             path: '/persons',
             name: 'Persons',
             component: Persons
+        },
+        {
+            path: '/addperson',
+            name: 'AddPerson',
+            component: AddPerson
         },
         {
             path: '/callback',

@@ -3,10 +3,11 @@
         <div v-if="authenticated">
             <h1 class="title">Personregister</h1>
 
-            <button @click="toggleAddPersonModal()"
-                    class="button">
+            <router-link :to="'/addperson'"
+                         class="button">
                 Legg til person
-            </button>
+            </router-link>
+
             <table class="table is-striped is-hoverable">
                 <thead>
                 <tr>
@@ -32,11 +33,7 @@
                 </tbody>
             </table>
         </div>
-        <add-person :auth="auth"
-                    :authenticated="authenticated"
-                    :showModal="showAddPersonModal"
-                    v-on:close-modal-add-person="toggleAddPersonModal()">
-        </add-person>
+
         <not-authenticated :auth="auth"
                            :authenticated="authenticated">
         </not-authenticated>
@@ -57,8 +54,7 @@
         props: ['auth', 'authenticated'],
         data () {
             return {
-                persons: [],
-                showAddPersonModal: false
+                persons: []
             }
         },
         methods: {
@@ -72,9 +68,6 @@
                             console.log(error)
                         })
                 }
-            },
-            toggleAddPersonModal () {
-                this.showAddPersonModal = !this.showAddPersonModal
             }
         },
         created () {
