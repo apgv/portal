@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <div v-if="authenticated">
             <h1 class="title">Personregister</h1>
 
@@ -15,9 +15,10 @@
                     <td>Navn</td>
                     <td>E-post</td>
                     <td>Telefon</td>
-                    <td>Medlem</td>
                     <td>Registrert av</td>
                     <td>Registrert dato</td>
+                    <td>Medlem</td>
+                    <td>Administrer medlemskap</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,9 +27,14 @@
                     <td>{{person.fullName}}</td>
                     <td>{{person.email}}</td>
                     <td>{{person.phone}}</td>
-                    <td>{{person.member ? 'Ja' : 'Nei'}}</td>
                     <td>{{person.createdBy}}</td>
                     <td>{{person.createdDate | formatDate}}</td>
+                    <td>{{person.member ? 'Ja' : 'Nei'}}</td>
+                    <td>
+                        <router-link :to="`/membership/${person.id}`">
+                            Medlemskap
+                        </router-link>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -60,13 +66,13 @@
         methods: {
             fetchPersons () {
                 if (this.authenticated) {
-                    axios.get('api/persons', {headers: {'X-JWT': this.auth.jwt()}})
-                        .then(response => {
-                            this.persons = response.data
-                        })
-                        .catch(error => {
-                            console.log(error)
-                        })
+                    axios.get('/api/persons', {
+                        headers: {'X-JWT': this.auth.jwt()}
+                    }).then(response => {
+                        this.persons = response.data
+                    }).catch(error => {
+                        console.log(error)
+                    })
                 }
             }
         },
