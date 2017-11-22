@@ -8,9 +8,40 @@
             </router-link>
 
             <div class="columns">
-                <div class="column is-one-third">
+                <div class="column">
                     <label class="label">Personinfo</label>
-                    <div>Navn: {{person.fullName}}</div>
+                    <div class="box">
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Navn:</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    {{person.fullName}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">E-post:</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    {{person.email}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Telefon:</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    {{person.phone}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="column">
                     <div class="field">
