@@ -3,8 +3,7 @@
         <div v-if="authenticated">
             <h1 class="title">Personregister</h1>
 
-            <router-link :to="'/addperson'"
-                         class="button">
+            <router-link :to="'/addperson'">
                 Legg til person
             </router-link>
 
@@ -81,7 +80,3 @@
         }
     }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
