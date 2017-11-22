@@ -71,7 +71,7 @@
                     axios.get(`/api/persons/${this.personId}`, {
                         headers: {'X-JWT': this.auth.jwt()}
                     }).then(response => {
-                        this.person = response.data[0]
+                        this.person = response.data
                     }).catch(error => {
                         console.log(error)
                     })

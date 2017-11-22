@@ -28,6 +28,17 @@ class PersonRepository {
                 .toList()
     }
 
+    fun findById(id: Int): Person {
+        val dslContext = dslContext()
+
+        return dslContext
+                .select(selectParameters)
+                .from(PERSON)
+                .where(PERSON.ID.eq(id))
+                .fetchOne()
+                .map { toPerson(it) }
+    }
+
     fun save(personRegistration: PersonRegistration, createdBy: String): Person {
         val dslContext = dslContext()
 

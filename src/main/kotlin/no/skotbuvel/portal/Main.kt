@@ -56,14 +56,15 @@ fun main(args: Array<String>) {
         get("/persons/:id", { request, _ ->
             verifyTokenAndCheckRole(request)
 
-            val persons = personRepository.findAll()
+            val id = request.params(":id")
+
+            val person = personRepository.findById(id.toInt())
 
             val moshi = Moshi.Builder()
                     .add(ZonedDateTimeAdapter())
                     .build()
 
-            val parameterizedType = Types.newParameterizedType(List::class.java, Person::class.java)
-            moshi.adapter<List<Person>>(parameterizedType).toJson(persons)
+            moshi.adapter(Person::class.java).toJson(person)
         })
 
         post("/persons", { request, response ->
