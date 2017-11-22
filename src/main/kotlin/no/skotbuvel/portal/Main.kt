@@ -2,7 +2,6 @@ package no.skotbuvel.portal
 
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.google.gson.Gson
-import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
@@ -13,7 +12,6 @@ import no.skotbuvel.portal.membership.MembershipTypeRepository
 import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
-import no.skotbuvel.portal.person.ZonedDateTimeAdapter
 import no.skotbuvel.portal.util.JsonUtil
 import org.flywaydb.core.Flyway
 import spark.Request
@@ -45,12 +43,8 @@ fun main(args: Array<String>) {
 
             val persons = personRepository.findAll()
 
-            val moshi = Moshi.Builder()
-                    .add(ZonedDateTimeAdapter())
-                    .build()
-
             val parameterizedType = Types.newParameterizedType(List::class.java, Person::class.java)
-            moshi.adapter<List<Person>>(parameterizedType).toJson(persons)
+            JsonUtil.moshi.adapter<List<Person>>(parameterizedType).toJson(persons)
         })
 
         get("/persons/:id", { request, _ ->
@@ -60,27 +54,20 @@ fun main(args: Array<String>) {
 
             val person = personRepository.findById(id.toInt())
 
-            val moshi = Moshi.Builder()
-                    .add(ZonedDateTimeAdapter())
-                    .build()
-
-            moshi.adapter(Person::class.java).toJson(person)
+            JsonUtil.moshi.adapter(Person::class.java).toJson(person)
         })
 
         post("/persons", { request, response ->
             val decodedJWT = verifyTokenAndCheckRole(request)
 
-            val moshi = Moshi.Builder()
-                    .add(ZonedDateTimeAdapter())
-                    .build()
-            val jsonAdapter = moshi.adapter(PersonRegistration::class.java)
+            val jsonAdapter = JsonUtil.moshi.adapter(PersonRegistration::class.java)
             val personRegistration = jsonAdapter.fromJson(request.body())
 
             if (personRegistration != null) {
                 val person = personRepository.save(personRegistration, JwtUtil.email(decodedJWT))
 
                 response.status(201)
-                moshi.adapter(Person::class.java).toJson(person)
+                JsonUtil.moshi.adapter(Person::class.java).toJson(person)
             } else {
                 response.status(400)
             }
