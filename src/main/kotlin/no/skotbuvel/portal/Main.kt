@@ -8,10 +8,13 @@ import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.Auth0Config
+import no.skotbuvel.portal.membership.MembershipType
+import no.skotbuvel.portal.membership.MembershipTypeRepository
 import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
 import no.skotbuvel.portal.person.ZonedDateTimeAdapter
+import no.skotbuvel.portal.util.JsonUtil
 import org.flywaydb.core.Flyway
 import spark.Request
 import spark.Spark.*
@@ -34,6 +37,7 @@ fun main(args: Array<String>) {
     flyway.migrate()
 
     val personRepository = PersonRepository()
+    val membershipTypeRepository = MembershipTypeRepository()
 
     path("api", {
         get("/persons", { request, _ ->
@@ -79,6 +83,12 @@ fun main(args: Array<String>) {
             } else {
                 response.status(400)
             }
+        })
+
+        get("/membershiptypes", { _, _ ->
+            val membershiptTypes = membershipTypeRepository.findAllActive()
+            val parameterizedType = Types.newParameterizedType(List::class.java, MembershipType::class.java)
+            JsonUtil.moshi.adapter<List<MembershipType>>(parameterizedType).toJson(membershiptTypes)
         })
 
         get("/auth0/config", { _, _ ->

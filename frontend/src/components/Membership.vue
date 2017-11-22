@@ -14,57 +14,15 @@
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Medlemskapsinfo</label>
-                        <div class="control box">
+                        <label class="label">Velg medlemskap</label>
+                        <div v-for="membershipType in membershipTypes"
+                             class="control box">
                             <label class="radio">
                                 <input
                                         type="radio"
-                                        name="memberYear"
-                                        value="2017"
-                                        v-model="membership.year"/>
-                                {{new Date().getFullYear()}}
-                            </label>
-                            <label class="radio">
-                                <input
-                                        type="radio"
-                                        name="memberType"
-                                        value="regular"
-                                        v-model="membership.type"/>
-                                Ordinært (kr. 300)
-                            </label>
-                            <label class="radio">
-                                <input
-                                        type="radio"
-                                        name="memberType"
-                                        value="family"
-                                        v-model="membership.type"/>
-                                Familie (kr. 400)
-                            </label>
-                        </div>
-                        <div class="control box">
-                            <label class="radio">
-                                <input
-                                        type="radio"
-                                        name="memberYear"
-                                        value="2018"
-                                        v-model="membership.year"/>
-                                {{new Date().getFullYear() + 1}}
-                            </label>
-                            <label class="radio">
-                                <input
-                                        type="radio"
-                                        name="memberType"
-                                        value="regular"
-                                        v-model="membership.type"/>
-                                Ordinært (kr. 300)
-                            </label>
-                            <label class="radio">
-                                <input
-                                        type="radio"
-                                        name="memberType"
-                                        value="family"
-                                        v-model="membership.type"/>
-                                Familie (kr. 400)
+                                        :value="membershipType"
+                                        v-model="membership"/>
+                                {{membershipType.year}} {{membershipType.type}} (kr. {{membershipType.price}})
                             </label>
                         </div>
                     </div>
@@ -103,10 +61,8 @@
                     email: null,
                     phone: null
                 },
-                membership: {
-                    year: '',
-                    type: ''
-                }
+                membershipTypes: [],
+                membership: null
             }
         },
         methods: {
@@ -121,12 +77,24 @@
                     })
                 }
             },
+            fetchMembershipTypes () {
+                if (this.authenticated) {
+                    axios.get('/api/membershiptypes', {
+                        headers: {'X-JWT': this.auth.jwt()}
+                    }).then(response => {
+                        this.membershipTypes = response.data
+                    }).catch(error => {
+                        console.log(error)
+                    })
+                }
+            },
             save () {
                 alert('Not implemented yet')
             }
         },
         created () {
             this.fetchPerson()
+            this.fetchMembershipTypes()
         }
     }
 </script>
