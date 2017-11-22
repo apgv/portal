@@ -49,6 +49,19 @@ fun main(args: Array<String>) {
             moshi.adapter<List<Person>>(parameterizedType).toJson(persons)
         })
 
+        get("/persons/:id", { request, _ ->
+            verifyTokenAndCheckRole(request)
+
+            val persons = personRepository.findAll()
+
+            val moshi = Moshi.Builder()
+                    .add(ZonedDateTimeAdapter())
+                    .build()
+
+            val parameterizedType = Types.newParameterizedType(List::class.java, Person::class.java)
+            moshi.adapter<List<Person>>(parameterizedType).toJson(persons)
+        })
+
         post("/persons", { request, response ->
             val decodedJWT = verifyTokenAndCheckRole(request)
 

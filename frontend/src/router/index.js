@@ -5,6 +5,7 @@ import VeeValidate, {Validator} from 'vee-validate'
 import Home from '@/components/Home'
 import Persons from '@/components/Persons'
 import AddPerson from '@/components/AddPerson'
+import Membership from '@/components/Membership'
 import Callback from '@/components/Callback'
 import moment from 'moment'
 
@@ -37,6 +38,12 @@ const router = new Router({
             path: '/addperson',
             name: 'AddPerson',
             component: AddPerson
+        },
+        {
+            path: '/membership/:personId',
+            name: 'Membership',
+            component: Membership,
+            props: true
         },
         {
             path: '/callback',
