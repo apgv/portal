@@ -49,11 +49,20 @@
                         <div v-for="membershipType in membershipTypes"
                              class="control box">
                             <label class="radio">
-                                <input
-                                        type="radio"
-                                        :value="membershipType"
-                                        v-model="membership"/>
-                                {{membershipType.year}} {{membershipType.type}} (kr. {{membershipType.price}})
+                                <input type="radio"
+                                       :value="membershipType"
+                                       v-model="membership"/>
+                                {{membershipType.year}} {{membershipType.type}} (kr. {{membershipType.price}}).
+                            </label>
+                            <label>
+                                Innbetalingsdato
+                                <flat-pickr v-model="membershipType.paymentDate"
+                                            :config="flatPickrConfig"
+                                            placeholder="Velg dato">
+                                </flat-pickr>
+                                <span class="icon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
                             </label>
                         </div>
                     </div>
@@ -80,10 +89,13 @@
 <script>
     import NotAuthenticated from './NotAuthenticated.vue'
     import axios from 'axios'
+    import flatPickr from 'vue-flatpickr-component'
+    import {Norwegian} from 'flatpickr/dist/l10n/no'
+    import 'flatpickr/dist/flatpickr.css'
 
     export default {
         name: 'Membership',
-        components: {NotAuthenticated},
+        components: {NotAuthenticated, flatPickr},
         props: ['auth', 'authenticated', 'personId'],
         data () {
             return {
@@ -93,7 +105,10 @@
                     phone: null
                 },
                 membershipTypes: [],
-                membership: null
+                membership: null,
+                flatPickrConfig: {
+                    locale: Norwegian
+                }
             }
         },
         methods: {
