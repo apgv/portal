@@ -107,7 +107,8 @@
                 membershipTypes: [],
                 membership: null,
                 flatPickrConfig: {
-                    locale: Norwegian
+                    locale: Norwegian,
+                    dateFormat: 'd.m.Y'
                 }
             }
         },
