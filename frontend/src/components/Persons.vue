@@ -18,15 +18,15 @@
             <table class="table is-striped is-hoverable">
                 <thead>
                 <tr>
-                    <td>ID</td>
-                    <td>Navn</td>
-                    <td>E-post</td>
-                    <td>Telefon</td>
-                    <td>Adresse</td>
-                    <td>Registrert av</td>
-                    <td>Registrert dato</td>
-                    <td>Medlem</td>
-                    <td>Administrer medlemskap</td>
+                    <th>ID</th>
+                    <th>Navn</th>
+                    <th>E-post</th>
+                    <th>Telefon</th>
+                    <th>Adresse</th>
+                    <th>Registrert av</th>
+                    <th>Registrert dato</th>
+                    <th>Medlem</th>
+                    <th>Administrer medlemskap</th>
                 </tr>
                 </thead>
                 <tbody>
