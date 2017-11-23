@@ -39,7 +39,7 @@ import org.jooq.no.skotbuvel.portal.tables.records.PersonRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Person extends TableImpl<PersonRecord> {
 
-    private static final long serialVersionUID = -99170587;
+    private static final long serialVersionUID = 1742400603;
 
     /**
      * The reference instance of <code>person</code>
@@ -83,6 +83,11 @@ public class Person extends TableImpl<PersonRecord> {
      * The column <code>person.phone</code>.
      */
     public final TableField<PersonRecord, String> PHONE = createField("phone", org.jooq.impl.SQLDataType.VARCHAR(15), this, "");
+
+    /**
+     * The column <code>person.address</code>.
+     */
+    public final TableField<PersonRecord, String> ADDRESS = createField("address", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
      * The column <code>person.created_by</code>.

@@ -57,6 +57,24 @@
             </p>
         </div>
 
+        <div class="field">
+            <label class="label">Adresse</label>
+            <p class="control has-icons-left">
+                <input v-model="person.address"
+                       v-validate="'max:50'"
+                       name="address"
+                       class="input"
+                       placeholder="Adresse"/>
+                <span class="icon is-small is-left">
+                    <i class="fa fa-map-marker"></i>
+                </span>
+                <span v-show="errors.has('address')"
+                      class="help is-danger">
+                    {{errors.first('address')}}
+                </span>
+            </p>
+        </div>
+        
         <div>
             <button @click="save()"
                     class="button is-success">
@@ -83,7 +101,8 @@
                 person: {
                     fullName: null,
                     email: null,
-                    phone: null
+                    phone: null,
+                    address: null
                 }
             }
         },

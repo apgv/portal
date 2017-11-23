@@ -41,6 +41,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Adresse:</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    {{person.address}}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="column">

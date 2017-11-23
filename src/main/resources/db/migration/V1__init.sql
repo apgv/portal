@@ -5,6 +5,7 @@ CREATE TABLE person (
   full_name    VARCHAR(54)              NOT NULL,
   email        VARCHAR(40),
   phone        VARCHAR(15),
+  address      VARCHAR(50),
   created_by   VARCHAR(50)              NOT NULL,
   created_date TIMESTAMP WITH TIME ZONE NOT NULL
 );

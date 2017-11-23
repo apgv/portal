@@ -14,6 +14,7 @@
                     <td>Navn</td>
                     <td>E-post</td>
                     <td>Telefon</td>
+                    <td>Adresse</td>
                     <td>Registrert av</td>
                     <td>Registrert dato</td>
                     <td>Medlem</td>
@@ -26,6 +27,7 @@
                     <td>{{person.fullName}}</td>
                     <td>{{person.email}}</td>
                     <td>{{person.phone}}</td>
+                    <td>{{person.address}}</td>
                     <td>{{person.createdBy}}</td>
                     <td>{{person.createdDate | formatDate}}</td>
                     <td>{{person.member ? 'Ja' : 'Nei'}}</td>

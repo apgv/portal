@@ -13,6 +13,7 @@ class PersonRepository {
             PERSON.FULL_NAME,
             PERSON.EMAIL,
             PERSON.PHONE,
+            PERSON.ADDRESS,
             PERSON.CREATED_BY,
             PERSON.CREATED_DATE
     )
@@ -50,6 +51,7 @@ class PersonRepository {
                     PERSON.FULL_NAME,
                     PERSON.EMAIL,
                     PERSON.PHONE,
+                    PERSON.ADDRESS,
                     PERSON.CREATED_BY,
                     PERSON.CREATED_DATE
             ).values(
@@ -59,6 +61,7 @@ class PersonRepository {
                     personRegistration.fullName,
                     personRegistration.email,
                     personRegistration.phone,
+                    personRegistration.address,
                     createdBy,
                     ZonedDateTime.now(ZoneId.of("Europe/Oslo")).toOffsetDateTime()
             )
