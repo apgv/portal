@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1 class="title">Legg til person</h1>
+        <h4 class="title is-4">Legg til person</h4>
 
         <div class="field">
             <label class="label">Navn</label>

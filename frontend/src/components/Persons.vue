@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div v-if="authenticated">
-            <h1 class="title">Personregister</h1>
+            <h4 class="title is-4">Personregister</h4>
 
             <router-link :to="'/addperson'">
                 Legg til person
