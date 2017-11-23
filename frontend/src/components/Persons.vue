@@ -6,7 +6,15 @@
             <router-link :to="'/addperson'">
                 Legg til person
             </router-link>
-
+            <br>
+            <div class="control has-icons-left">
+                <input v-model="searhQuery"
+                       class="input"
+                       placeholder="Søk i tabellen"/>
+                <span class="icon is-left">
+                    <i class="fa fa-search"></i>
+                </span>
+            </div>
             <table class="table is-striped is-hoverable">
                 <thead>
                 <tr>
@@ -22,7 +30,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="person in persons">
+                <tr v-for="person in filteredPersons">
                     <td>{{person.id}}</td>
                     <td>{{person.fullName}}</td>
                     <td>{{person.email}}</td>
@@ -61,7 +69,8 @@
         props: ['auth', 'authenticated'],
         data () {
             return {
-                persons: []
+                persons: [],
+                searhQuery: ''
             }
         },
         methods: {
@@ -75,6 +84,15 @@
                         console.log(error)
                     })
                 }
+            }
+        },
+        computed: {
+            filteredPersons: function () {
+                return this.persons.filter(row => {
+                    return Object.keys(row).some(key => {
+                        return String(row[key]).toLowerCase().indexOf(this.searhQuery.toLowerCase()) > -1
+                    })
+                })
             }
         },
         created () {
