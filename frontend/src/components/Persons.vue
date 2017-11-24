@@ -3,17 +3,42 @@
         <div v-if="authenticated">
             <h4 class="title is-4">Personregister</h4>
 
+            <div class="columns">
+                <div class="column">
+                    <div class="control has-icons-left">
+                        <input v-model="filterKey"
+                               class="input"
+                               placeholder="Søk i tabellen"/>
+                        <span class="icon is-left">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-horizontal">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox"
+                                       value="test@example.com"
+                                       v-model="membershipYears">
+                                Medlemmer {{currentYear}}
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox"
+                                       value="test2@example.com"
+                                       v-model="membershipYears">
+                                Medlemmer {{nextYear}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>membershipYears={{membershipYears}}</div>
             <router-link :to="'/addperson'">
                 Legg til person
             </router-link>
-            <br>
-            <div class="control has-icons-left">
-                <input v-model="searhQuery"
-                       class="input"
-                       placeholder="Søk i tabellen"/>
-                <span class="icon is-left">
-                    <i class="fa fa-search"></i>
-                </span>
+            <div class="is-pulled-right">
+                Viser {{filteredPersons.length}} av {{persons.length}}
             </div>
             <table class="table is-striped is-hoverable">
                 <thead>
@@ -70,7 +95,10 @@
         data () {
             return {
                 persons: [],
-                searhQuery: ''
+                filterKey: '',
+                currentYear: new Date().getFullYear(),
+                nextYear: new Date().getFullYear() + 1,
+                membershipYears: []
             }
         },
         methods: {
@@ -88,11 +116,25 @@
         },
         computed: {
             filteredPersons: function () {
-                return this.persons.filter(row => {
-                    return Object.keys(row).some(key => {
-                        return String(row[key]).toLowerCase().indexOf(this.searhQuery.toLowerCase()) > -1
+                let data = this.persons
+                let filterKey = this.filterKey && this.filterKey.toLowerCase()
+
+                if (filterKey) {
+                    data = data.filter(row => {
+                        return Object.keys(row).some(key => {
+                            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                        })
                     })
-                })
+                }
+
+                if (this.membershipYears.length > 0) {
+                    data = data.filter(row => {
+                        // TODO: replace with membership property
+                        return row.hasOwnProperty('email') && this.membershipYears.includes(row['email'])
+                    })
+                }
+
+                return data
             }
         },
         created () {
