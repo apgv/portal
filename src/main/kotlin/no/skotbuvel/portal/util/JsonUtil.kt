@@ -7,5 +7,6 @@ object JsonUtil {
 
     val moshi: Moshi = Moshi.Builder()
             .add(ZonedDateTimeAdapter())
+            .add(LocalDateAdapter())
             .build()
 }
