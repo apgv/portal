@@ -2,7 +2,7 @@ package no.skotbuvel.portal.membership
 
 import no.skotbuvel.portal.DbUtil
 import org.jooq.TransactionalRunnable
-import org.jooq.no.skotbuvel.portal.Sequences
+import org.jooq.no.skotbuvel.portal.Sequences.MEMBERSHIP_ID_SEQ
 import org.jooq.no.skotbuvel.portal.tables.Membership.MEMBERSHIP
 import java.sql.Date
 import java.time.ZoneId
@@ -24,8 +24,8 @@ class MembershipRepository {
                     MEMBERSHIP.CREATED_BY,
                     MEMBERSHIP.CREATED_DATE
             ).values(
-                    dslContext.nextval(Sequences.MEMBERSHIP_ID_SEQ).toInt(),
-                    dslContext.currval(Sequences.MEMBERSHIP_ID_SEQ).toInt(),
+                    dslContext.nextval(MEMBERSHIP_ID_SEQ).toInt(),
+                    dslContext.currval(MEMBERSHIP_ID_SEQ).toInt(),
                     true,
                     membershipRegistration.personId,
                     membershipRegistration.membershipTypeId,
