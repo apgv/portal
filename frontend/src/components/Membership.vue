@@ -98,6 +98,7 @@
     import flatPickr from 'vue-flatpickr-component'
     import {Norwegian} from 'flatpickr/dist/l10n/no'
     import 'flatpickr/dist/flatpickr.css'
+    import moment from 'moment'
 
     export default {
         name: 'Membership',
@@ -142,7 +143,21 @@
                 }
             },
             save () {
-                alert('Not implemented yet')
+                let norwegianDate = moment(this.membership.paymentDate, 'DD.MM.YYYY')
+
+                let membership = {
+                    personId: this.person.id,
+                    membershipTypeId: this.membership.id,
+                    paymentDate: norwegianDate.format('YYYY-MM-DD')
+                }
+
+                axios.post('/api/memberships', membership, {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(response => {
+                    console.log('response.status=' + response.status)
+                }).then(error => {
+                    console.log(error)
+                })
             }
         },
         created () {
