@@ -19,12 +19,12 @@ CREATE TABLE membership_type (
 );
 
 CREATE TABLE membership (
-  id            SERIAL PRIMARY KEY,
-  original_id   INTEGER                  NOT NULL,
-  active        BOOLEAN                  NOT NULL,
-  person_id     INTEGER REFERENCES person (id),
-  payment_date  TIMESTAMP WITH TIME ZONE NOT NULL,
-  membership_id INTEGER                  NOT NULL,
-  created_by    VARCHAR(50)              NOT NULL,
-  created_date  TIMESTAMP WITH TIME ZONE NOT NULL
+  id                 SERIAL PRIMARY KEY,
+  original_id        INTEGER                  NOT NULL,
+  active             BOOLEAN                  NOT NULL,
+  person_id          INTEGER REFERENCES person (id),
+  membership_type_id INTEGER REFERENCES membership_type (id),
+  payment_date       DATE                     NOT NULL,
+  created_by         VARCHAR(50)              NOT NULL,
+  created_date       TIMESTAMP WITH TIME ZONE NOT NULL
 );

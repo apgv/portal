@@ -4,6 +4,7 @@
 package org.jooq.no.skotbuvel.portal.tables;
 
 
+import java.sql.Date;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +41,7 @@ import org.jooq.no.skotbuvel.portal.tables.records.MembershipRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Membership extends TableImpl<MembershipRecord> {
 
-    private static final long serialVersionUID = -184273678;
+    private static final long serialVersionUID = -909932405;
 
     /**
      * The reference instance of <code>membership</code>
@@ -76,14 +77,14 @@ public class Membership extends TableImpl<MembershipRecord> {
     public final TableField<MembershipRecord, Integer> PERSON_ID = createField("person_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>membership.payment_date</code>.
+     * The column <code>membership.membership_type_id</code>.
      */
-    public final TableField<MembershipRecord, OffsetDateTime> PAYMENT_DATE = createField("payment_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
+    public final TableField<MembershipRecord, Integer> MEMBERSHIP_TYPE_ID = createField("membership_type_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>membership.membership_id</code>.
+     * The column <code>membership.payment_date</code>.
      */
-    public final TableField<MembershipRecord, Integer> MEMBERSHIP_ID = createField("membership_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MembershipRecord, Date> PAYMENT_DATE = createField("payment_date", org.jooq.impl.SQLDataType.DATE.nullable(false), this, "");
 
     /**
      * The column <code>membership.created_by</code>.
@@ -169,7 +170,7 @@ public class Membership extends TableImpl<MembershipRecord> {
      */
     @Override
     public List<ForeignKey<MembershipRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<MembershipRecord, ?>>asList(Keys.MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY);
+        return Arrays.<ForeignKey<MembershipRecord, ?>>asList(Keys.MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY, Keys.MEMBERSHIP__MEMBERSHIP_MEMBERSHIP_TYPE_ID_FKEY);
     }
 
     /**

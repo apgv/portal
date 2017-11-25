@@ -53,6 +53,7 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<MembershipRecord, PersonRecord> MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY = ForeignKeys0.MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY;
+    public static final ForeignKey<MembershipRecord, MembershipTypeRecord> MEMBERSHIP__MEMBERSHIP_MEMBERSHIP_TYPE_ID_FKEY = ForeignKeys0.MEMBERSHIP__MEMBERSHIP_MEMBERSHIP_TYPE_ID_FKEY;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
@@ -72,5 +73,6 @@ public class Keys {
 
     private static class ForeignKeys0 extends AbstractKeys {
         public static final ForeignKey<MembershipRecord, PersonRecord> MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY = createForeignKey(org.jooq.no.skotbuvel.portal.Keys.PERSON_PKEY, Membership.MEMBERSHIP, "membership__membership_person_id_fkey", Membership.MEMBERSHIP.PERSON_ID);
+        public static final ForeignKey<MembershipRecord, MembershipTypeRecord> MEMBERSHIP__MEMBERSHIP_MEMBERSHIP_TYPE_ID_FKEY = createForeignKey(org.jooq.no.skotbuvel.portal.Keys.MEMBERSHIP_TYPE_PKEY, Membership.MEMBERSHIP, "membership__membership_membership_type_id_fkey", Membership.MEMBERSHIP.MEMBERSHIP_TYPE_ID);
     }
 }
