@@ -1,4 +1,4 @@
-package no.skotbuvel.portal.membership
+package no.skotbuvel.portal.membershiptype
 
 import org.jooq.Record
 import org.jooq.no.skotbuvel.portal.tables.MembershipType.MEMBERSHIP_TYPE

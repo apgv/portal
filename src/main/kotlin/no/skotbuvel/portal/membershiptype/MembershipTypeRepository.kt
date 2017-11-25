@@ -1,4 +1,4 @@
-package no.skotbuvel.portal.membership
+package no.skotbuvel.portal.membershiptype
 
 import no.skotbuvel.portal.DbUtil.dslContext
 import org.jooq.no.skotbuvel.portal.tables.MembershipType.MEMBERSHIP_TYPE

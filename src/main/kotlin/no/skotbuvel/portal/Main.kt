@@ -7,8 +7,8 @@ import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.Auth0Config
-import no.skotbuvel.portal.membership.MembershipType
-import no.skotbuvel.portal.membership.MembershipTypeRepository
+import no.skotbuvel.portal.membershiptype.MembershipType
+import no.skotbuvel.portal.membershiptype.MembershipTypeRepository
 import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
