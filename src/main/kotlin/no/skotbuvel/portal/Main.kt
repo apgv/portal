@@ -7,6 +7,8 @@ import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.Auth0Config
+import no.skotbuvel.portal.membership.MembershipRegistration
+import no.skotbuvel.portal.membership.MembershipRepository
 import no.skotbuvel.portal.membershiptype.MembershipType
 import no.skotbuvel.portal.membershiptype.MembershipTypeRepository
 import no.skotbuvel.portal.person.Person
@@ -36,6 +38,7 @@ fun main(args: Array<String>) {
 
     val personRepository = PersonRepository()
     val membershipTypeRepository = MembershipTypeRepository()
+    val membershipRepository = MembershipRepository()
 
     path("api", {
         get("/persons", { request, _ ->
@@ -71,6 +74,19 @@ fun main(args: Array<String>) {
             } else {
                 response.status(400)
             }
+        })
+
+        post("/memberships", { request, response ->
+            val decodedJWT = verifyTokenAndCheckRole(request)
+
+            val jsonAdapter = JsonUtil.moshi.adapter(MembershipRegistration::class.java)
+            val membershipRegistration = jsonAdapter.fromJson(request.body())
+
+            if (membershipRegistration != null) {
+                membershipRepository.save(membershipRegistration, JwtUtil.email(decodedJWT))
+            }
+
+            response.status(201)
         })
 
         get("/membershiptypes", { _, _ ->
