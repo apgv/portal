@@ -8,7 +8,7 @@
                     <div class="control has-icons-left">
                         <input v-model="filterKey"
                                class="input"
-                               placeholder="Søk i tabellen"/>
+                               placeholder="Søk"/>
                         <span class="icon is-left">
                             <i class="fa fa-search"></i>
                         </span>
@@ -21,13 +21,13 @@
                                 <input type="checkbox"
                                        value="test@example.com"
                                        v-model="membershipYears">
-                                Medlemmer {{currentYear}}
+                                Medlem {{currentYear}}
                             </label>
                             <label class="checkbox">
                                 <input type="checkbox"
                                        value="test2@example.com"
                                        v-model="membershipYears">
-                                Medlemmer {{nextYear}}
+                                Medlem {{nextYear}}
                             </label>
                         </div>
                     </div>
