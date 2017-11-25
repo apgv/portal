@@ -92,7 +92,7 @@ repositories {
 }
 
 dependencies {
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.60")
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.61")
     compile("com.sparkjava:spark-core:2.6.0")
     compile("org.slf4j:slf4j-simple:1.7.25")
     compile("com.squareup.moshi:moshi:1.5.0")
