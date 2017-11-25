@@ -3,10 +3,6 @@
         <div v-if="authenticated">
             <h4 class="title is-4">Medlemskap</h4>
 
-            <router-link :to="'/persons'">
-                Til personregister
-            </router-link>
-
             <div class="columns">
                 <div class="column">
                     <label class="label">Personinfo</label>
