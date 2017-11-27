@@ -19,13 +19,13 @@
                         <div class="control">
                             <label class="checkbox">
                                 <input type="checkbox"
-                                       value="test@example.com"
+                                       :value="currentYear"
                                        v-model="membershipYears">
                                 Medlem {{currentYear}}
                             </label>
                             <label class="checkbox">
                                 <input type="checkbox"
-                                       value="test2@example.com"
+                                       :value="nextYear"
                                        v-model="membershipYears">
                                 Medlem {{nextYear}}
                             </label>
@@ -63,7 +63,7 @@
                     <td>{{person.address}}</td>
                     <td>{{person.createdBy}}</td>
                     <td>{{person.createdDate | formatDate}}</td>
-                    <td>{{person.member ? 'Ja' : 'Nei'}}</td>
+                    <td>{{hasMembership(person.memberships) ? 'Ja' : 'Nei'}}</td>
                     <td>
                         <router-link :to="`/membership/${person.id}`">
                             Medlemskap
@@ -112,6 +112,13 @@
                         console.log(error)
                     })
                 }
+            },
+            hasMembership (memberships) {
+                let years = memberships.map(membership => {
+                    return membership.year
+                })
+
+                return years.some(year => [this.currentYear, this.nextYear].includes(year))
             }
         },
         computed: {
@@ -129,8 +136,11 @@
 
                 if (this.membershipYears.length > 0) {
                     data = data.filter(row => {
-                        // TODO: replace with membership property
-                        return row.hasOwnProperty('email') && this.membershipYears.includes(row['email'])
+                        let years = row['memberships'].map(membership => {
+                            return membership.year
+                        })
+
+                        return years.some(year => this.membershipYears.includes(year))
                     })
                 }
 
