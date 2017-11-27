@@ -1,9 +1,12 @@
 package no.skotbuvel.portal.person
 
 import no.skotbuvel.portal.DbUtil.dslContext
-import org.jooq.TransactionalCallable
+import no.skotbuvel.portal.membership.MembershipInfo
+import org.jooq.Record
+import org.jooq.Result
+import org.jooq.TransactionalRunnable
 import org.jooq.no.skotbuvel.portal.Sequences.PERSON_ID_SEQ
-import org.jooq.no.skotbuvel.portal.Tables.PERSON
+import org.jooq.no.skotbuvel.portal.Tables.*
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -15,7 +18,11 @@ class PersonRepository {
             PERSON.PHONE,
             PERSON.ADDRESS,
             PERSON.CREATED_BY,
-            PERSON.CREATED_DATE
+            PERSON.CREATED_DATE,
+            MEMBERSHIP.ID,
+            MEMBERSHIP.PAYMENT_DATE,
+            MEMBERSHIP_TYPE.YEAR,
+            MEMBERSHIP_TYPE.TYPE
     )
 
     fun findAll(): List<Person> {
@@ -24,9 +31,41 @@ class PersonRepository {
         return dslContext
                 .select(selectParameters)
                 .from(PERSON)
-                .fetch()
-                .map { toPerson(it) }
-                .toList()
+                .leftJoin(MEMBERSHIP)
+                .on(PERSON.ID.eq(MEMBERSHIP.PERSON_ID))
+                .leftJoin(MEMBERSHIP_TYPE)
+                .on(MEMBERSHIP.MEMBERSHIP_TYPE_ID.eq(MEMBERSHIP_TYPE.ID))
+                .fetchGroups(PERSON.ID)
+                .values
+                .map { mapPersonWithMembership(it) }
+    }
+
+    private fun mapPersonWithMembership(result: Result<Record>): Person {
+        val memberships = mapMemberships(result)
+
+        val record = result.first()
+
+        return Person(
+                id = record[PERSON.ID],
+                fullName = record[PERSON.FULL_NAME],
+                email = record[PERSON.EMAIL],
+                phone = record[PERSON.PHONE],
+                address = record[PERSON.ADDRESS],
+                memberships = memberships,
+                createdBy = record[PERSON.CREATED_BY],
+                createdDate = record[PERSON.CREATED_DATE].toZonedDateTime()
+        )
+    }
+
+    private fun mapMemberships(it: Result<Record>): List<MembershipInfo> {
+        return it
+                .filter { it[MEMBERSHIP.ID] != null }
+                .map {
+                    MembershipInfo(
+                            year = it[MEMBERSHIP_TYPE.YEAR],
+                            type = it[MEMBERSHIP_TYPE.TYPE]
+                    )
+                }
     }
 
     fun findById(id: Int): Person {
@@ -35,16 +74,22 @@ class PersonRepository {
         return dslContext
                 .select(selectParameters)
                 .from(PERSON)
+                .leftJoin(MEMBERSHIP)
+                .on(PERSON.ID.eq(MEMBERSHIP.PERSON_ID))
+                .leftJoin(MEMBERSHIP_TYPE)
+                .on(MEMBERSHIP.MEMBERSHIP_TYPE_ID.eq(MEMBERSHIP_TYPE.ID))
                 .where(PERSON.ID.eq(id))
-                .fetchOne()
-                .map { toPerson(it) }
+                .fetchGroups(PERSON.ID)
+                .values
+                .map { mapPersonWithMembership(it) }
+                .first()
     }
 
-    fun save(personRegistration: PersonRegistration, createdBy: String): Person {
+    fun save(personRegistration: PersonRegistration, createdBy: String) {
         val dslContext = dslContext()
 
-        return dslContext.transactionResult(TransactionalCallable {
-            return@TransactionalCallable dslContext.insertInto(PERSON,
+        dslContext.transaction(TransactionalRunnable {
+            dslContext.insertInto(PERSON,
                     PERSON.ID,
                     PERSON.ORIGINAL_ID,
                     PERSON.ACTIVE,
@@ -65,9 +110,7 @@ class PersonRepository {
                     createdBy,
                     ZonedDateTime.now(ZoneId.of("Europe/Oslo")).toOffsetDateTime()
             )
-                    .returning(selectParameters)
-                    .fetchOne()
-                    .map { toPerson(it) }
+                    .execute()
         })
     }
 

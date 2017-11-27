@@ -67,10 +67,9 @@ fun main(args: Array<String>) {
             val personRegistration = jsonAdapter.fromJson(request.body())
 
             if (personRegistration != null) {
-                val person = personRepository.save(personRegistration, JwtUtil.email(decodedJWT))
+                personRepository.save(personRegistration, JwtUtil.email(decodedJWT))
 
                 response.status(201)
-                JsonUtil.moshi.adapter(Person::class.java).toJson(person)
             } else {
                 response.status(400)
             }
