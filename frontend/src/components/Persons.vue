@@ -20,27 +20,31 @@
                             <label class="checkbox">
                                 <input type="checkbox"
                                        :value="currentYear"
-                                       v-model="membershipYears">
+                                       v-model="membershipYearsFilter">
                                 Medlem {{currentYear}}
                             </label>
                             <label class="checkbox">
                                 <input type="checkbox"
                                        :value="nextYear"
-                                       v-model="membershipYears">
+                                       v-model="membershipYearsFilter">
                                 Medlem {{nextYear}}
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox"
+                                       v-model="noMembershipFilter">
+                                Uten medlemskap
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
-            <div>membershipYears={{membershipYears}}</div>
             <router-link :to="'/addperson'">
                 Legg til person
             </router-link>
             <div class="is-pulled-right">
                 Viser {{filteredPersons.length}} av {{persons.length}}
             </div>
-            <table class="table is-striped is-hoverable">
+            <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -98,7 +102,8 @@
                 filterKey: '',
                 currentYear: new Date().getFullYear(),
                 nextYear: new Date().getFullYear() + 1,
-                membershipYears: []
+                membershipYearsFilter: [],
+                noMembershipFilter: false
             }
         },
         methods: {
@@ -134,13 +139,19 @@
                     })
                 }
 
-                if (this.membershipYears.length > 0) {
+                if (this.membershipYearsFilter.length > 0) {
                     data = data.filter(row => {
                         let years = row['memberships'].map(membership => {
                             return membership.year
                         })
 
-                        return years.some(year => this.membershipYears.includes(year))
+                        return years.some(year => this.membershipYearsFilter.includes(year))
+                    })
+                }
+
+                if (this.noMembershipFilter) {
+                    data = data.filter(row => {
+                        return row['memberships'].length === 0
                     })
                 }
 
