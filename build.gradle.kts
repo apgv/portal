@@ -1,12 +1,13 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.flywaydb.gradle.FlywayExtension
+import org.gradle.kotlin.dsl.version
 import org.jooq.util.GenerationTool
 import org.jooq.util.KeepNamesGeneratorStrategy
 import org.jooq.util.jaxb.*
 import org.jooq.util.jaxb.Target
 
 plugins {
-    kotlin("jvm")
+    id("org.jetbrains.kotlin.jvm") version ("1.2.0")
     id("com.github.johnrengelman.shadow") version ("2.0.1")
     id("org.flywaydb.flyway") version ("4.2.0")
 }
@@ -92,7 +93,7 @@ repositories {
 }
 
 dependencies {
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.61")
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("com.sparkjava:spark-core:2.6.0")
     compile("org.slf4j:slf4j-simple:1.7.25")
     compile("com.squareup.moshi:moshi:1.5.0")
