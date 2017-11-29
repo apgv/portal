@@ -7,6 +7,7 @@ import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.Auth0Config
+import no.skotbuvel.portal.config.DbConfig
 import no.skotbuvel.portal.config.HerokuPostgresConfig
 import no.skotbuvel.portal.membership.MembershipRegistration
 import no.skotbuvel.portal.membership.MembershipRepository

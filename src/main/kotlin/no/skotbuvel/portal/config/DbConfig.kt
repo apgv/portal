@@ -1,7 +1,6 @@
-package no.skotbuvel.portal
+package no.skotbuvel.portal.config
 
 import com.zaxxer.hikari.HikariDataSource
-import no.skotbuvel.portal.config.HerokuPostgresConfig
 import org.jooq.DSLContext
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
