@@ -1,21 +1,22 @@
 package no.skotbuvel.portal
 
 import com.zaxxer.hikari.HikariDataSource
+import no.skotbuvel.portal.config.PGDatabaseConfig
 import org.jooq.DSLContext
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import javax.sql.DataSource
 
-object DbUtil {
-    val datasource: DataSource = HikariDataSource().apply {
+class DbUtil(databaseConfig: PGDatabaseConfig) {
+    val dataSource: DataSource = HikariDataSource().apply {
         dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
-        username = "postgres"
-        password = "mysecretpassword"
+        username = databaseConfig.username()
+        password = databaseConfig.password()
         schema = "public"
-        addDataSourceProperty("databaseName", "postgres")
-        addDataSourceProperty("portNumber", "5432")
-        addDataSourceProperty("serverName", "172.17.0.2")
+        addDataSourceProperty("serverName", databaseConfig.host())
+        addDataSourceProperty("portNumber", databaseConfig.port())
+        addDataSourceProperty("databaseName", databaseConfig.database())
     }
 
-    fun dslContext(): DSLContext = DSL.using(DbUtil.datasource, SQLDialect.POSTGRES)
+    fun dslContext(): DSLContext = DSL.using(dataSource, SQLDialect.POSTGRES)
 }

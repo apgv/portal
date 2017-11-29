@@ -1,6 +1,6 @@
 package no.skotbuvel.portal.membership
 
-import no.skotbuvel.portal.DbUtil
+import org.jooq.DSLContext
 import org.jooq.TransactionalRunnable
 import org.jooq.no.skotbuvel.portal.Sequences.MEMBERSHIP_ID_SEQ
 import org.jooq.no.skotbuvel.portal.tables.Membership.MEMBERSHIP
@@ -8,11 +8,9 @@ import java.sql.Date
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-class MembershipRepository {
+class MembershipRepository(private val dslContext: DSLContext) {
 
     fun save(membershipRegistration: MembershipRegistration, createdBy: String) {
-        val dslContext = DbUtil.dslContext()
-
         dslContext.transaction(TransactionalRunnable {
             dslContext.insertInto(MEMBERSHIP,
                     MEMBERSHIP.ID,
@@ -35,6 +33,5 @@ class MembershipRepository {
             )
                     .execute()
         })
-
     }
 }

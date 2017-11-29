@@ -7,6 +7,7 @@ import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.Auth0Config
+import no.skotbuvel.portal.config.PGDatabaseConfig
 import no.skotbuvel.portal.membership.MembershipRegistration
 import no.skotbuvel.portal.membership.MembershipRepository
 import no.skotbuvel.portal.membershiptype.MembershipType
@@ -18,11 +19,13 @@ import no.skotbuvel.portal.util.JsonUtil
 import org.flywaydb.core.Flyway
 import spark.Request
 import spark.Spark.*
+import java.net.URI
 import java.util.*
 
 object Application {
     const val SERVER_PORT = "server.port"
     const val PROFILE = "profile"
+    const val HEROKU_DATABASE_URL = "heroku.db.url"
 }
 
 fun main(args: Array<String>) {
@@ -32,13 +35,15 @@ fun main(args: Array<String>) {
     port(argsMap[Application.SERVER_PORT]!!.toInt())
     staticFiles.location("/frontend")
 
+    val dbUtil = dbUtil(argsMap)
+
     val flyway = Flyway()
-    flyway.dataSource = DbUtil.datasource
+    flyway.dataSource = dbUtil.dataSource
     flyway.migrate()
 
-    val personRepository = PersonRepository()
-    val membershipTypeRepository = MembershipTypeRepository()
-    val membershipRepository = MembershipRepository()
+    val personRepository = PersonRepository(dbUtil.dslContext())
+    val membershipTypeRepository = MembershipTypeRepository(dbUtil.dslContext())
+    val membershipRepository = MembershipRepository(dbUtil.dslContext())
 
     path("api", {
         get("/persons", { request, _ ->
@@ -128,7 +133,7 @@ private fun mapAndCheckArguments(args: Array<String>): Map<String, String> {
         Pair(split[0], split[1])
     }
 
-    listOf(Application.SERVER_PORT, Application.PROFILE).forEach { arg ->
+    listOf(Application.SERVER_PORT, Application.PROFILE, Application.HEROKU_DATABASE_URL).forEach { arg ->
         if (!argsMap.containsKey(arg)) {
             throw IllegalArgumentException("Missing required argument '$arg'")
         }
@@ -142,6 +147,11 @@ private fun properties(profile: String) = Properties().apply {
     Application.javaClass.classLoader.getResource(fileName).openStream().use { fis ->
         load(fis)
     }
+}
+
+private fun dbUtil(argsMap: Map<String, String>): DbUtil {
+    val databaseConfig = PGDatabaseConfig(URI(argsMap[Application.HEROKU_DATABASE_URL]))
+    return DbUtil(databaseConfig)
 }
 
 private fun auth0Config(props: Properties) =
