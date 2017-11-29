@@ -114,6 +114,7 @@
                     }).then(response => {
                         this.persons = response.data
                     }).catch(error => {
+                        this.$snotify.error('Feil ved henting av personer')
                         console.log(error)
                     })
                 }

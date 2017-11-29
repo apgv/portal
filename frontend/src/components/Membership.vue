@@ -127,6 +127,7 @@
                     }).then(response => {
                         this.person = response.data
                     }).catch(error => {
+                        this.$snotify.error('Feil ved henting av person')
                         console.log(error)
                     })
                 }
@@ -138,6 +139,7 @@
                     }).then(response => {
                         this.membershipTypes = response.data
                     }).catch(error => {
+                        this.$snotify.error('Feil ved henting av medlemskapstyper')
                         console.log(error)
                     })
                 }
@@ -154,8 +156,10 @@
                 axios.post('/api/memberships', membership, {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {
+                    this.$snotify.success('Medlemskap ble lagret')
                     console.log('response.status=' + response.status)
-                }).then(error => {
+                }).catch(error => {
+                    this.$snotify.error('Feil ved lagring av medlemskap')
                     console.log(error)
                 })
             }

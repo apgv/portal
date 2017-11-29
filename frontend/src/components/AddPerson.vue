@@ -129,8 +129,10 @@
                                     }
 
                                     this.$validator.reset()
+                                    this.$snotify.success('Person ble lagret')
                                 })
                                 .catch(error => {
+                                    this.$snotify.error('Feil ved lagring av person')
                                     console.log(error)
                                 })
                         }
