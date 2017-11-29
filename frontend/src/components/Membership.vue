@@ -76,6 +76,7 @@
             </div>
             <div>
                 <button @click="save()"
+                        :disabled="!formIsValid"
                         class="button is-success">
                     Lagre
                 </button>
@@ -156,12 +157,19 @@
                 axios.post('/api/memberships', membership, {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {
+                    this.membership.paymentDate = null
+                    this.membership = null
                     this.$snotify.success('Medlemskap ble lagret')
                     console.log('response.status=' + response.status)
                 }).catch(error => {
                     this.$snotify.error('Feil ved lagring av medlemskap')
                     console.log(error)
                 })
+            }
+        },
+        computed: {
+            formIsValid: function () {
+                return this.membership && this.membership.paymentDate
             }
         },
         created () {
