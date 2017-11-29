@@ -22,6 +22,7 @@ import spark.Request
 import spark.Spark.*
 import java.net.URI
 import java.util.*
+import javax.sql.DataSource
 
 object Application {
     const val SERVER_PORT = "server.port"
@@ -36,15 +37,13 @@ fun main(args: Array<String>) {
     port(argsMap[Application.SERVER_PORT]!!.toInt())
     staticFiles.location("/frontend")
 
-    val dbUtil = dbUtil(argsMap)
+    val dbConfig = dbConfig(argsMap)
 
-    val flyway = Flyway()
-    flyway.dataSource = dbUtil.dataSource
-    flyway.migrate()
+    migrateDatabase(dbConfig.dataSource)
 
-    val personRepository = PersonRepository(dbUtil.dslContext())
-    val membershipTypeRepository = MembershipTypeRepository(dbUtil.dslContext())
-    val membershipRepository = MembershipRepository(dbUtil.dslContext())
+    val personRepository = PersonRepository(dbConfig.dslContext())
+    val membershipTypeRepository = MembershipTypeRepository(dbConfig.dslContext())
+    val membershipRepository = MembershipRepository(dbConfig.dslContext())
 
     path("api", {
         get("/persons", { request, _ ->
@@ -111,23 +110,6 @@ fun main(args: Array<String>) {
 
 }
 
-private fun verifyTokenAndCheckRole(request: Request): DecodedJWT {
-    val decodedJWT = JwtUtil.verifyAndDecode(request)
-    val user = userFromJWT(decodedJWT)
-    if (!user.hasRole(Role.BOARD_MEMBER)) {
-        val exceptionMessage = String.format(
-                "User %s (%s) is missing role %s, has roles %s",
-                user.email,
-                user.subject,
-                Role.BOARD_MEMBER,
-                user.roles
-        )
-        throw IllegalAccessException(exceptionMessage)
-    }
-
-    return decodedJWT
-}
-
 private fun mapAndCheckArguments(args: Array<String>): Map<String, String> {
     val argsMap = args.associate { s ->
         val split = s.split("=")
@@ -150,9 +132,32 @@ private fun properties(profile: String) = Properties().apply {
     }
 }
 
-private fun dbUtil(argsMap: Map<String, String>): DbConfig {
+private fun dbConfig(argsMap: Map<String, String>): DbConfig {
     val databaseConfig = HerokuPostgresConfig(URI(argsMap[Application.HEROKU_DATABASE_URL]))
     return DbConfig(databaseConfig)
+}
+
+private fun migrateDatabase(dataSource: DataSource) {
+    val flyway = Flyway()
+    flyway.dataSource = dataSource
+    flyway.migrate()
+}
+
+private fun verifyTokenAndCheckRole(request: Request): DecodedJWT {
+    val decodedJWT = JwtUtil.verifyAndDecode(request)
+    val user = userFromJWT(decodedJWT)
+    if (!user.hasRole(Role.BOARD_MEMBER)) {
+        val exceptionMessage = String.format(
+                "User %s (%s) is missing role %s, has roles %s",
+                user.email,
+                user.subject,
+                Role.BOARD_MEMBER,
+                user.roles
+        )
+        throw IllegalAccessException(exceptionMessage)
+    }
+
+    return decodedJWT
 }
 
 private fun auth0Config(props: Properties) =
