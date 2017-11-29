@@ -120,6 +120,15 @@
                     this.$validator.validateAll().then((result) => {
                         if (result) {
                             personService.save(this.person, this.auth.jwt())
+
+                            this.person = {
+                                fullName: null,
+                                email: null,
+                                phone: null,
+                                address: null
+                            }
+
+                            this.$validator.reset()
                         }
                     })
                 }
