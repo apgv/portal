@@ -11,7 +11,6 @@ class DbConfig(databaseConfig: HerokuPostgresConfig) {
         dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
         username = databaseConfig.username()
         password = databaseConfig.password()
-        schema = "public"
         addDataSourceProperty("serverName", databaseConfig.host())
         addDataSourceProperty("portNumber", databaseConfig.port())
         addDataSourceProperty("databaseName", databaseConfig.database())

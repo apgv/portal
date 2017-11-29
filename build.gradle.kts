@@ -29,7 +29,6 @@ configure<FlywayExtension> {
     url = "jdbc:postgresql://172.17.0.2:5432/postgres"
     user = "postgres"
     password = "mysecretpassword"
-    schemas = arrayOf("public")
 }
 
 group = "no.skotbuvel"
