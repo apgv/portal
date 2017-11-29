@@ -33,6 +33,8 @@
             </div>
         </nav>
 
+        <vue-snotify></vue-snotify>
+
         <router-view
                 :auth="auth"
                 :authenticated="authenticated">
