@@ -6,12 +6,6 @@ export default class PersonService {
     }
 
     save (person, jwt) {
-        axios.post('api/persons', person, {headers: {'X-JWT': jwt}})
-            .then(response => {
-                console.log(response)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        return axios.post('api/persons', person, {headers: {'X-JWT': jwt}})
     }
 }
