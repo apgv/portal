@@ -149,9 +149,9 @@ private fun properties(profile: String) = Properties().apply {
     }
 }
 
-private fun dbUtil(argsMap: Map<String, String>): DbUtil {
+private fun dbUtil(argsMap: Map<String, String>): DbConfig {
     val databaseConfig = HerokuPostgresConfig(URI(argsMap[Application.HEROKU_DATABASE_URL]))
-    return DbUtil(databaseConfig)
+    return DbConfig(databaseConfig)
 }
 
 private fun auth0Config(props: Properties) =

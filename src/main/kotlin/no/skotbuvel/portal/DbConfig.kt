@@ -7,7 +7,7 @@ import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import javax.sql.DataSource
 
-class DbUtil(databaseConfig: HerokuPostgresConfig) {
+class DbConfig(databaseConfig: HerokuPostgresConfig) {
     val dataSource: DataSource = HikariDataSource().apply {
         dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
         username = databaseConfig.username()
