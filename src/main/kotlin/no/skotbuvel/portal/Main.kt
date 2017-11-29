@@ -7,7 +7,7 @@ import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.Auth0Config
-import no.skotbuvel.portal.config.PGDatabaseConfig
+import no.skotbuvel.portal.config.HerokuPostgresConfig
 import no.skotbuvel.portal.membership.MembershipRegistration
 import no.skotbuvel.portal.membership.MembershipRepository
 import no.skotbuvel.portal.membershiptype.MembershipType
@@ -150,7 +150,7 @@ private fun properties(profile: String) = Properties().apply {
 }
 
 private fun dbUtil(argsMap: Map<String, String>): DbUtil {
-    val databaseConfig = PGDatabaseConfig(URI(argsMap[Application.HEROKU_DATABASE_URL]))
+    val databaseConfig = HerokuPostgresConfig(URI(argsMap[Application.HEROKU_DATABASE_URL]))
     return DbUtil(databaseConfig)
 }
 

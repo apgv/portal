@@ -4,9 +4,9 @@ import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.net.URI
 
-internal class PGDatabaseConfigTest {
+internal class HerokuPostgresConfigTest {
 
-    private val pgDatabaseConfig = PGDatabaseConfig(uri = URI("postgres://user:password@localhost:5432/database"))
+    private val pgDatabaseConfig = HerokuPostgresConfig(uri = URI("postgres://user:password@localhost:5432/database"))
 
     @Test
     internal fun name() {

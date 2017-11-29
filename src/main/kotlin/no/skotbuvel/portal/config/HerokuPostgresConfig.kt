@@ -2,7 +2,7 @@ package no.skotbuvel.portal.config
 
 import java.net.URI
 
-class PGDatabaseConfig(val uri: URI) {
+class HerokuPostgresConfig(val uri: URI) {
 
     fun username() = uri.userInfo.split(":")[0]
     fun password() = uri.userInfo.split(":")[1]
