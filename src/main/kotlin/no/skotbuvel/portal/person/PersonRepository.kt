@@ -102,6 +102,7 @@ class PersonRepository(private val dslContext: DSLContext) {
                 .filter { it[MEMBERSHIP.ID] != null }
                 .map {
                     MembershipInfo(
+                            id = it[MEMBERSHIP.ID],
                             year = it[MEMBERSHIP_TYPE.YEAR],
                             type = it[MEMBERSHIP_TYPE.TYPE]
                     )

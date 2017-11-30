@@ -48,6 +48,20 @@
                             </div>
                         </div>
                     </div>
+
+                    <label class="label">Eksisterende medlemskap</label>
+                    <div v-for="membership in person.memberships"
+                         class="columns">
+                        <div class="column">
+                            {{membership.year}} {{membership.type}}
+                        </div>
+                        <div class="column">
+                            <a @click="deleteMembership(membership)" class="button icon">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                        <div class="column"></div>
+                    </div>
                 </div>
                 <div class="column">
                     <div class="field">
@@ -165,6 +179,9 @@
                     this.$snotify.error('Feil ved lagring av medlemskap')
                     console.log(error)
                 })
+            },
+            deleteMembership (membership) {
+                alert('Not implemented yet. Delete membership with id: ' + membership.id)
             }
         },
         computed: {
