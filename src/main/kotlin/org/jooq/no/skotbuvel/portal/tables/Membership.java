@@ -41,7 +41,7 @@ import org.jooq.no.skotbuvel.portal.tables.records.MembershipRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Membership extends TableImpl<MembershipRecord> {
 
-    private static final long serialVersionUID = -909932405;
+    private static final long serialVersionUID = 938010711;
 
     /**
      * The reference instance of <code>membership</code>
@@ -95,6 +95,16 @@ public class Membership extends TableImpl<MembershipRecord> {
      * The column <code>membership.created_date</code>.
      */
     public final TableField<MembershipRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
+
+    /**
+     * The column <code>membership.deleted_by</code>.
+     */
+    public final TableField<MembershipRecord, String> DELETED_BY = createField("deleted_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
+
+    /**
+     * The column <code>membership.deleted_date</code>.
+     */
+    public final TableField<MembershipRecord, OffsetDateTime> DELETED_DATE = createField("deleted_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
 
     /**
      * Create a <code>membership</code> table reference

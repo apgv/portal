@@ -4,6 +4,7 @@
 package org.jooq.no.skotbuvel.portal.tables;
 
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +39,7 @@ import org.jooq.no.skotbuvel.portal.tables.records.MembershipTypeRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MembershipType extends TableImpl<MembershipTypeRecord> {
 
-    private static final long serialVersionUID = 169279698;
+    private static final long serialVersionUID = 1528808865;
 
     /**
      * The reference instance of <code>membership_type</code>
@@ -77,6 +78,26 @@ public class MembershipType extends TableImpl<MembershipTypeRecord> {
      * The column <code>membership_type.price</code>.
      */
     public final TableField<MembershipTypeRecord, Integer> PRICE = createField("price", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>membership_type.created_by</code>.
+     */
+    public final TableField<MembershipTypeRecord, String> CREATED_BY = createField("created_by", org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
+
+    /**
+     * The column <code>membership_type.created_date</code>.
+     */
+    public final TableField<MembershipTypeRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
+
+    /**
+     * The column <code>membership_type.deleted_by</code>.
+     */
+    public final TableField<MembershipTypeRecord, String> DELETED_BY = createField("deleted_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
+
+    /**
+     * The column <code>membership_type.deleted_date</code>.
+     */
+    public final TableField<MembershipTypeRecord, OffsetDateTime> DELETED_DATE = createField("deleted_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
 
     /**
      * Create a <code>membership_type</code> table reference

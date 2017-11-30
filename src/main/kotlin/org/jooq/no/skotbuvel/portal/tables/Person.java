@@ -39,7 +39,7 @@ import org.jooq.no.skotbuvel.portal.tables.records.PersonRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Person extends TableImpl<PersonRecord> {
 
-    private static final long serialVersionUID = 1742400603;
+    private static final long serialVersionUID = -1661095341;
 
     /**
      * The reference instance of <code>person</code>
@@ -98,6 +98,16 @@ public class Person extends TableImpl<PersonRecord> {
      * The column <code>person.created_date</code>.
      */
     public final TableField<PersonRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
+
+    /**
+     * The column <code>person.deleted_by</code>.
+     */
+    public final TableField<PersonRecord, String> DELETED_BY = createField("deleted_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
+
+    /**
+     * The column <code>person.deleted_date</code>.
+     */
+    public final TableField<PersonRecord, OffsetDateTime> DELETED_DATE = createField("deleted_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
 
     /**
      * Create a <code>person</code> table reference
