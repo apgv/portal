@@ -181,7 +181,21 @@
                 })
             },
             deleteMembership (membership) {
-                alert('Not implemented yet. Delete membership with id: ' + membership.id)
+                axios.delete(`/api/memberships/${membership.id}`, {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(response => {
+                    let index = this.person.memberships.indexOf(membership)
+
+                    if (index > -1) {
+                        this.person.memberships.splice(index, 1)
+                    }
+
+                    this.$snotify.success('Medlemskap ble slettet')
+                    console.log('response.status=' + response.status)
+                }).catch(error => {
+                    this.$snotify.error('Feil ved sletting av medlemskap')
+                    console.log(error)
+                })
             }
         },
         computed: {

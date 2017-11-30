@@ -34,4 +34,15 @@ class MembershipRepository(private val dslContext: DSLContext) {
                     .execute()
         })
     }
+
+    fun delete(id: Int, deletedBy: String) {
+        dslContext.transaction(TransactionalRunnable {
+            dslContext.update(MEMBERSHIP)
+                    .set(MEMBERSHIP.ACTIVE, false)
+                    .set(MEMBERSHIP.DELETED_BY, deletedBy)
+                    .set(MEMBERSHIP.DELETED_DATE, ZonedDateTime.now(ZoneId.of("Europe/Oslo")).toOffsetDateTime())
+                    .where(MEMBERSHIP.ID.eq(id))
+                    .execute()
+        })
+    }
 }

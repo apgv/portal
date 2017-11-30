@@ -93,6 +93,13 @@ fun main(args: Array<String>) {
             response.status(201)
         })
 
+        delete("/memberships/:id", { request, _ ->
+            val decodedJWT = verifyTokenAndCheckRole(request)
+
+            val id = request.params(":id")
+            membershipRepository.delete(id.toInt(), JwtUtil.email(decodedJWT))
+        })
+
         get("/membershiptypes", { _, _ ->
             val membershiptTypes = membershipTypeRepository.findAllActive()
             val parameterizedType = Types.newParameterizedType(List::class.java, MembershipType::class.java)
