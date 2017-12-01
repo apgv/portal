@@ -1,12 +1,11 @@
 package no.skotbuvel.portal.membership
 
+import no.skotbuvel.portal.util.JavaTimeUtil
 import org.jooq.DSLContext
 import org.jooq.TransactionalRunnable
 import org.jooq.no.skotbuvel.portal.Sequences.MEMBERSHIP_ID_SEQ
 import org.jooq.no.skotbuvel.portal.tables.Membership.MEMBERSHIP
 import java.sql.Date
-import java.time.ZoneId
-import java.time.ZonedDateTime
 
 class MembershipRepository(private val dslContext: DSLContext) {
 
@@ -29,7 +28,7 @@ class MembershipRepository(private val dslContext: DSLContext) {
                     membershipRegistration.membershipTypeId,
                     Date.valueOf(membershipRegistration.paymentDate),
                     createdBy,
-                    ZonedDateTime.now(ZoneId.of("Europe/Oslo")).toOffsetDateTime()
+                    JavaTimeUtil.nowEuropeOslo()
             )
                     .execute()
         })
@@ -40,7 +39,7 @@ class MembershipRepository(private val dslContext: DSLContext) {
             dslContext.update(MEMBERSHIP)
                     .set(MEMBERSHIP.ACTIVE, false)
                     .set(MEMBERSHIP.DELETED_BY, deletedBy)
-                    .set(MEMBERSHIP.DELETED_DATE, ZonedDateTime.now(ZoneId.of("Europe/Oslo")).toOffsetDateTime())
+                    .set(MEMBERSHIP.DELETED_DATE, JavaTimeUtil.nowEuropeOslo())
                     .where(MEMBERSHIP.ID.eq(id))
                     .execute()
         })

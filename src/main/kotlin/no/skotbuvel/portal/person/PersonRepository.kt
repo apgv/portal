@@ -1,14 +1,13 @@
 package no.skotbuvel.portal.person
 
 import no.skotbuvel.portal.membership.MembershipInfo
+import no.skotbuvel.portal.util.JavaTimeUtil
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.Result
 import org.jooq.TransactionalRunnable
 import org.jooq.no.skotbuvel.portal.Sequences.PERSON_ID_SEQ
 import org.jooq.no.skotbuvel.portal.Tables.*
-import java.time.ZoneId
-import java.time.ZonedDateTime
 
 class PersonRepository(private val dslContext: DSLContext) {
     private val selectParameters = listOf(
@@ -76,7 +75,7 @@ class PersonRepository(private val dslContext: DSLContext) {
                     personRegistration.phone,
                     personRegistration.address,
                     createdBy,
-                    ZonedDateTime.now(ZoneId.of("Europe/Oslo")).toOffsetDateTime()
+                    JavaTimeUtil.nowEuropeOslo()
             )
                     .execute()
         })
