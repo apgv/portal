@@ -1,17 +1,17 @@
 package no.skotbuvel.portal.person
 
+import no.skotbuvel.portal.config.DbConfig
 import no.skotbuvel.portal.jooq.Sequences.PERSON_ID_SEQ
 import no.skotbuvel.portal.jooq.tables.Membership.MEMBERSHIP
 import no.skotbuvel.portal.jooq.tables.MembershipType.MEMBERSHIP_TYPE
 import no.skotbuvel.portal.jooq.tables.Person.PERSON
 import no.skotbuvel.portal.membership.MembershipInfo
 import no.skotbuvel.portal.util.JavaTimeUtil
-import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.Result
 import org.jooq.TransactionalRunnable
 
-class PersonRepository(private val dslContext: DSLContext) {
+class PersonRepository {
     private val selectParameters = listOf(
             PERSON.ID,
             PERSON.FULL_NAME,
@@ -27,7 +27,7 @@ class PersonRepository(private val dslContext: DSLContext) {
     )
 
     fun findAll(): List<Person> {
-        return dslContext
+        return DbConfig.dslContext()
                 .select(selectParameters)
                 .from(PERSON)
                 .leftJoin(MEMBERSHIP)
@@ -41,7 +41,7 @@ class PersonRepository(private val dslContext: DSLContext) {
     }
 
     fun findById(id: Int): Person {
-        return dslContext
+        return DbConfig.dslContext()
                 .select(selectParameters)
                 .from(PERSON)
                 .leftJoin(MEMBERSHIP)
@@ -57,6 +57,8 @@ class PersonRepository(private val dslContext: DSLContext) {
     }
 
     fun save(personRegistration: PersonRegistration, createdBy: String) {
+        val dslContext = DbConfig.dslContext()
+
         dslContext.transaction(TransactionalRunnable {
             dslContext.insertInto(PERSON,
                     PERSON.ID,

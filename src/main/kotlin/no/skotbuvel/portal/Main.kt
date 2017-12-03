@@ -24,9 +24,9 @@ fun main(args: Array<String>) {
 
     migrateDatabase()
 
-    val personRepository = PersonRepository(DbConfig.dslContext())
-    val membershipTypeRepository = MembershipTypeRepository(DbConfig.dslContext())
-    val membershipRepository = MembershipRepository(DbConfig.dslContext())
+    val personRepository = PersonRepository()
+    val membershipTypeRepository = MembershipTypeRepository()
+    val membershipRepository = MembershipRepository()
 
     path("api", {
         get("/persons", { request, _ ->

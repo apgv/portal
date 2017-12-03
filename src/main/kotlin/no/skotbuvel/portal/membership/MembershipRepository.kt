@@ -1,15 +1,17 @@
 package no.skotbuvel.portal.membership
 
+import no.skotbuvel.portal.config.DbConfig
 import no.skotbuvel.portal.jooq.Sequences.MEMBERSHIP_ID_SEQ
 import no.skotbuvel.portal.jooq.tables.Membership.MEMBERSHIP
 import no.skotbuvel.portal.util.JavaTimeUtil
-import org.jooq.DSLContext
 import org.jooq.TransactionalRunnable
 import java.sql.Date
 
-class MembershipRepository(private val dslContext: DSLContext) {
+class MembershipRepository {
 
     fun save(membershipRegistration: MembershipRegistration, createdBy: String) {
+        val dslContext = DbConfig.dslContext()
+        
         dslContext.transaction(TransactionalRunnable {
             dslContext.insertInto(MEMBERSHIP,
                     MEMBERSHIP.ID,
@@ -35,6 +37,8 @@ class MembershipRepository(private val dslContext: DSLContext) {
     }
 
     fun delete(id: Int, deletedBy: String) {
+        val dslContext = DbConfig.dslContext()
+        
         dslContext.transaction(TransactionalRunnable {
             dslContext.update(MEMBERSHIP)
                     .set(MEMBERSHIP.ACTIVE, false)
