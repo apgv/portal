@@ -43,7 +43,7 @@ tasks {
     val copyFrontEnd by creating(Copy::class) {
         dependsOn(buildFrontEnd)
 
-        from("frontend/build")
+        from("frontend/dist")
         into("build/resources/main/frontend")
     }
 
