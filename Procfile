@@ -1,0 +1,1 @@
+web: java cp skotbuvel-portal-1.0-all.jar no.skotbuvel.portal.MainKt server.port=$PORT profile=dev heroku.db.url=$DATABASE_URL
