@@ -32,7 +32,7 @@ configure<FlywayExtension> {
 }
 
 group = "no.skotbuvel"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 tasks {
     val buildFrontEnd by creating(Exec::class) {
