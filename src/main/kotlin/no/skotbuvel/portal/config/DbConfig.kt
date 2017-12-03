@@ -6,14 +6,14 @@ import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import javax.sql.DataSource
 
-class DbConfig(databaseConfig: HerokuPostgresConfig) {
+object DbConfig {
     val dataSource: DataSource = HikariDataSource().apply {
         dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
-        username = databaseConfig.username()
-        password = databaseConfig.password()
-        addDataSourceProperty("serverName", databaseConfig.host())
-        addDataSourceProperty("portNumber", databaseConfig.port())
-        addDataSourceProperty("databaseName", databaseConfig.database())
+        username = HerokuPostgresConfig.username()
+        password = HerokuPostgresConfig.password()
+        addDataSourceProperty("serverName", HerokuPostgresConfig.host())
+        addDataSourceProperty("portNumber", HerokuPostgresConfig.port())
+        addDataSourceProperty("databaseName", HerokuPostgresConfig.database())
     }
 
     fun dslContext(): DSLContext = DSL.using(dataSource, SQLDialect.POSTGRES)
