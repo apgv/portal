@@ -1,12 +1,10 @@
 package no.skotbuvel.portal
 
 import com.auth0.jwt.interfaces.DecodedJWT
-import com.google.gson.Gson
 import com.squareup.moshi.Types
 import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
-import no.skotbuvel.portal.config.Auth0Config
 import no.skotbuvel.portal.config.DbConfig
 import no.skotbuvel.portal.config.HerokuPostgresConfig
 import no.skotbuvel.portal.membership.MembershipRegistration
@@ -21,23 +19,13 @@ import org.flywaydb.core.Flyway
 import spark.Request
 import spark.Spark.*
 import java.net.URI
-import java.util.*
 import javax.sql.DataSource
 
-object Application {
-    const val SERVER_PORT = "server.port"
-    const val PROFILE = "profile"
-    const val HEROKU_DATABASE_URL = "heroku.db.url"
-}
-
 fun main(args: Array<String>) {
-    val argsMap = mapAndCheckArguments(args)
-    val properties = properties(argsMap[Application.PROFILE] as String)
-
-    port(argsMap[Application.SERVER_PORT]!!.toInt())
+    port(System.getenv("PORT").toInt())
     staticFiles.location("/frontend")
 
-    val dbConfig = dbConfig(argsMap)
+    val dbConfig = dbConfig()
 
     migrateDatabase(dbConfig.dataSource)
 
@@ -106,10 +94,6 @@ fun main(args: Array<String>) {
             JsonUtil.moshi.adapter<List<MembershipType>>(parameterizedType).toJson(membershiptTypes)
         })
 
-        get("/auth0/config", { _, _ ->
-            Gson().toJson(auth0Config(properties))
-        })
-
         after("/*", { _, response ->
             response.type("application/json")
         })
@@ -117,30 +101,8 @@ fun main(args: Array<String>) {
 
 }
 
-private fun mapAndCheckArguments(args: Array<String>): Map<String, String> {
-    val argsMap = args.associate { s ->
-        val split = s.split("=")
-        Pair(split[0], split[1])
-    }
-
-    listOf(Application.SERVER_PORT, Application.PROFILE, Application.HEROKU_DATABASE_URL).forEach { arg ->
-        if (!argsMap.containsKey(arg)) {
-            throw IllegalArgumentException("Missing required argument '$arg'")
-        }
-    }
-
-    return argsMap
-}
-
-private fun properties(profile: String) = Properties().apply {
-    val fileName = "application-$profile.properties"
-    Application.javaClass.classLoader.getResource(fileName).openStream().use { fis ->
-        load(fis)
-    }
-}
-
-private fun dbConfig(argsMap: Map<String, String>): DbConfig {
-    val databaseConfig = HerokuPostgresConfig(URI(argsMap[Application.HEROKU_DATABASE_URL]))
+private fun dbConfig(): DbConfig {
+    val databaseConfig = HerokuPostgresConfig(URI(System.getenv("DATABASE_URL")))
     return DbConfig(databaseConfig)
 }
 
@@ -166,13 +128,3 @@ private fun verifyTokenAndCheckRole(request: Request): DecodedJWT {
 
     return decodedJWT
 }
-
-private fun auth0Config(props: Properties) =
-        Auth0Config(
-                domain = props.getProperty(Auth0Config.DOMAIN),
-                clientID = props.getProperty(Auth0Config.CLIENT_ID),
-                redirectUri = props.getProperty(Auth0Config.REDIRECT_URI),
-                audience = props.getProperty(Auth0Config.AUDIENCE),
-                responseType = props.getProperty(Auth0Config.RESPONSE_TYPE),
-                scope = props.getProperty(Auth0Config.SCOPE)
-        )
