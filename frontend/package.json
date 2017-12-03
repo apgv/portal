@@ -13,7 +13,6 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
-    "EventEmitter": "^1.0.0",
     "auth0-js": "^8.10.1",
     "axios": "^0.17.1",
     "bulma": "^0.6.1",

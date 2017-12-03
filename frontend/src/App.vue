@@ -44,14 +44,15 @@
 
 <script>
     import AuthService from './auth/AuthService'
+    import {eventBus} from './main'
 
     const auth = new AuthService()
-    const {login, logout, authenticated, authNotifier} = auth
+    const {login, logout, authenticated} = auth
 
     export default {
         name: 'app',
         data () {
-            authNotifier.on('authChange', authState => {
+            eventBus.$on('authChange', authState => {
                 this.authenticated = authState.authenticated
             })
             return {
