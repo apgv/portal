@@ -66,8 +66,8 @@ tasks {
                     isOutputSchemaToDefault = true
                 }
                 target = Target().apply {
-                    packageName = "org.jooq.no.skotbuvel.portal"
-                    directory = "src/main/kotlin"
+                    packageName = "no.skotbuvel.portal.jooq"
+                    directory = "src/main/java"
                 }
             }
         }

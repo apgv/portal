@@ -1,10 +1,10 @@
 package no.skotbuvel.portal.membership
 
+import no.skotbuvel.portal.jooq.Sequences.MEMBERSHIP_ID_SEQ
+import no.skotbuvel.portal.jooq.tables.Membership.MEMBERSHIP
 import no.skotbuvel.portal.util.JavaTimeUtil
 import org.jooq.DSLContext
 import org.jooq.TransactionalRunnable
-import org.jooq.no.skotbuvel.portal.Sequences.MEMBERSHIP_ID_SEQ
-import org.jooq.no.skotbuvel.portal.tables.Membership.MEMBERSHIP
 import java.sql.Date
 
 class MembershipRepository(private val dslContext: DSLContext) {

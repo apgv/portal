@@ -1,7 +1,7 @@
 package no.skotbuvel.portal.membershiptype
 
+import no.skotbuvel.portal.jooq.tables.MembershipType.MEMBERSHIP_TYPE
 import org.jooq.DSLContext
-import org.jooq.no.skotbuvel.portal.tables.MembershipType.MEMBERSHIP_TYPE
 
 class MembershipTypeRepository(private val dslContext: DSLContext) {
 

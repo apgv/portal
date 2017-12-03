@@ -1,7 +1,7 @@
 package no.skotbuvel.portal.membershiptype
 
+import no.skotbuvel.portal.jooq.tables.MembershipType.MEMBERSHIP_TYPE
 import org.jooq.Record
-import org.jooq.no.skotbuvel.portal.tables.MembershipType.MEMBERSHIP_TYPE
 
 data class MembershipType(
         val id: Int,

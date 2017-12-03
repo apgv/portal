@@ -1,13 +1,15 @@
 package no.skotbuvel.portal.person
 
+import no.skotbuvel.portal.jooq.Sequences.PERSON_ID_SEQ
+import no.skotbuvel.portal.jooq.tables.Membership.MEMBERSHIP
+import no.skotbuvel.portal.jooq.tables.MembershipType.MEMBERSHIP_TYPE
+import no.skotbuvel.portal.jooq.tables.Person.PERSON
 import no.skotbuvel.portal.membership.MembershipInfo
 import no.skotbuvel.portal.util.JavaTimeUtil
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.Result
 import org.jooq.TransactionalRunnable
-import org.jooq.no.skotbuvel.portal.Sequences.PERSON_ID_SEQ
-import org.jooq.no.skotbuvel.portal.Tables.*
 
 class PersonRepository(private val dslContext: DSLContext) {
     private val selectParameters = listOf(
