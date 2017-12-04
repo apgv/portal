@@ -1,12 +1,13 @@
-package no.skotbuvel.portal.config
+package no.skotbuvel.portal.helper
 
 import com.zaxxer.hikari.HikariDataSource
+import no.skotbuvel.portal.config.HerokuPostgresConfig
 import org.jooq.DSLContext
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import javax.sql.DataSource
 
-class DbConfig(private val herokuPostgresConfig: HerokuPostgresConfig) {
+class DbHelper(private val herokuPostgresConfig: HerokuPostgresConfig) {
     val dataSource: DataSource = HikariDataSource().apply {
         dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
         username = herokuPostgresConfig.username()

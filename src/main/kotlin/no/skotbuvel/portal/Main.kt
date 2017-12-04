@@ -5,7 +5,7 @@ import com.squareup.moshi.Types
 import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
-import no.skotbuvel.portal.config.DbConfig
+import no.skotbuvel.portal.helper.DbHelper
 import no.skotbuvel.portal.config.HerokuPostgresConfig
 import no.skotbuvel.portal.membership.MembershipRegistration
 import no.skotbuvel.portal.membership.MembershipRepository
@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
     port(System.getenv("PORT").toInt())
     staticFiles.location("/frontend")
 
-    val dbConfig = DbConfig(HerokuPostgresConfig(URI(System.getenv("DATABASE_URL"))))
+    val dbConfig = DbHelper(HerokuPostgresConfig(URI(System.getenv("DATABASE_URL"))))
 
     migrateDatabase(dbConfig.dataSource)
 

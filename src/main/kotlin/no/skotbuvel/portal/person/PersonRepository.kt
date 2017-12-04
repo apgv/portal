@@ -1,6 +1,6 @@
 package no.skotbuvel.portal.person
 
-import no.skotbuvel.portal.config.DbConfig
+import no.skotbuvel.portal.helper.DbHelper
 import no.skotbuvel.portal.jooq.Sequences.PERSON_ID_SEQ
 import no.skotbuvel.portal.jooq.tables.Membership.MEMBERSHIP
 import no.skotbuvel.portal.jooq.tables.MembershipType.MEMBERSHIP_TYPE
@@ -11,7 +11,7 @@ import org.jooq.Record
 import org.jooq.Result
 import org.jooq.TransactionalRunnable
 
-class PersonRepository(private val dbConfig: DbConfig) {
+class PersonRepository(private val dbHelper: DbHelper) {
     private val selectParameters = listOf(
             PERSON.ID,
             PERSON.FULL_NAME,
@@ -27,7 +27,7 @@ class PersonRepository(private val dbConfig: DbConfig) {
     )
 
     fun findAll(): List<Person> {
-        return dbConfig.dslContext()
+        return dbHelper.dslContext()
                 .select(selectParameters)
                 .from(PERSON)
                 .leftJoin(MEMBERSHIP)
@@ -41,7 +41,7 @@ class PersonRepository(private val dbConfig: DbConfig) {
     }
 
     fun findById(id: Int): Person {
-        return dbConfig.dslContext()
+        return dbHelper.dslContext()
                 .select(selectParameters)
                 .from(PERSON)
                 .leftJoin(MEMBERSHIP)
@@ -57,7 +57,7 @@ class PersonRepository(private val dbConfig: DbConfig) {
     }
 
     fun save(personRegistration: PersonRegistration, createdBy: String) {
-        val dslContext = dbConfig.dslContext()
+        val dslContext = dbHelper.dslContext()
 
         dslContext.transaction(TransactionalRunnable {
             dslContext.insertInto(PERSON,
