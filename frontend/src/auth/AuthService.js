@@ -28,21 +28,25 @@ export default class AuthService {
     }
 
     handleAuthentication () {
-        this.auth0.parseHash((err, authResult) => {
-            if (authResult && authResult.accessToken && authResult.idToken) {
-                this.setSession(authResult)
-                let currentPath = localStorage.getItem('current_path')
+        if (router.currentRoute.hash) {
+            this.auth0.parseHash((err, authResult) => {
+                if (authResult && authResult.accessToken && authResult.idToken) {
+                    this.setSession(authResult)
+                    let currentPath = localStorage.getItem('current_path')
 
-                if (currentPath) {
-                    router.replace(currentPath)
-                } else {
+                    if (currentPath) {
+                        router.replace(currentPath)
+                    } else {
+                        router.replace('home')
+                    }
+                } else if (err) {
                     router.replace('home')
+                    console.log(err)
                 }
-            } else if (err) {
-                router.replace('home')
-                console.log(err)
-            }
-        })
+            })
+        } else {
+            router.replace('/home')
+        }
     }
 
     setSession (authResult) {
