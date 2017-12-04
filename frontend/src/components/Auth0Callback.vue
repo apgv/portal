@@ -1,6 +1,7 @@
 <template>
-    <div>
+    <div class="container has-text-centered">
         <img src="../assets/loading.svg"/>
+        <div>Logger inn...</div>
     </div>
 </template>
 
