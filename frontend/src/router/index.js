@@ -57,8 +57,12 @@ const router = new Router({
             component: Auth0Callback
         },
         {
-            path: '*',
+            path: '/',
             redirect: '/auth0callback'
+        },
+        {
+            path: '*',
+            redirect: '/home'
         }
     ]
 })
