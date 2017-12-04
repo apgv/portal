@@ -6,7 +6,7 @@
                     <div class="navbar-start">
                         <router-link :to="'/home'"
                                      class="navbar-item">
-                            Home
+                            Forside
                         </router-link>
                         <router-link :to="'/persons'"
                                      class="navbar-item">
