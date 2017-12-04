@@ -11,7 +11,7 @@ import org.jooq.Record
 import org.jooq.Result
 import org.jooq.TransactionalRunnable
 
-class PersonRepository {
+class PersonRepository(private val dbConfig: DbConfig) {
     private val selectParameters = listOf(
             PERSON.ID,
             PERSON.FULL_NAME,
@@ -27,7 +27,7 @@ class PersonRepository {
     )
 
     fun findAll(): List<Person> {
-        return DbConfig.dslContext()
+        return dbConfig.dslContext()
                 .select(selectParameters)
                 .from(PERSON)
                 .leftJoin(MEMBERSHIP)
@@ -41,7 +41,7 @@ class PersonRepository {
     }
 
     fun findById(id: Int): Person {
-        return DbConfig.dslContext()
+        return dbConfig.dslContext()
                 .select(selectParameters)
                 .from(PERSON)
                 .leftJoin(MEMBERSHIP)
@@ -57,7 +57,7 @@ class PersonRepository {
     }
 
     fun save(personRegistration: PersonRegistration, createdBy: String) {
-        val dslContext = DbConfig.dslContext()
+        val dslContext = dbConfig.dslContext()
 
         dslContext.transaction(TransactionalRunnable {
             dslContext.insertInto(PERSON,

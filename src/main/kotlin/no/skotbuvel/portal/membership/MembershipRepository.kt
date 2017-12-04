@@ -7,11 +7,11 @@ import no.skotbuvel.portal.util.JavaTimeUtil
 import org.jooq.TransactionalRunnable
 import java.sql.Date
 
-class MembershipRepository {
+class MembershipRepository(private val dbConfig: DbConfig) {
 
     fun save(membershipRegistration: MembershipRegistration, createdBy: String) {
-        val dslContext = DbConfig.dslContext()
-        
+        val dslContext = dbConfig.dslContext()
+
         dslContext.transaction(TransactionalRunnable {
             dslContext.insertInto(MEMBERSHIP,
                     MEMBERSHIP.ID,
@@ -37,8 +37,8 @@ class MembershipRepository {
     }
 
     fun delete(id: Int, deletedBy: String) {
-        val dslContext = DbConfig.dslContext()
-        
+        val dslContext = dbConfig.dslContext()
+
         dslContext.transaction(TransactionalRunnable {
             dslContext.update(MEMBERSHIP)
                     .set(MEMBERSHIP.ACTIVE, false)

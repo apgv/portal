@@ -3,10 +3,10 @@ package no.skotbuvel.portal.membershiptype
 import no.skotbuvel.portal.config.DbConfig
 import no.skotbuvel.portal.jooq.tables.MembershipType.MEMBERSHIP_TYPE
 
-class MembershipTypeRepository {
+class MembershipTypeRepository(private val dbConfig: DbConfig) {
 
     fun findAllActive(): List<MembershipType> {
-        return DbConfig.dslContext()
+        return dbConfig.dslContext()
                 .select(
                         MEMBERSHIP_TYPE.ID,
                         MEMBERSHIP_TYPE.ACTIVE,

@@ -6,6 +6,7 @@ import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.DbConfig
+import no.skotbuvel.portal.config.HerokuPostgresConfig
 import no.skotbuvel.portal.membership.MembershipRegistration
 import no.skotbuvel.portal.membership.MembershipRepository
 import no.skotbuvel.portal.membershiptype.MembershipType
@@ -17,16 +18,20 @@ import no.skotbuvel.portal.util.JsonUtil
 import org.flywaydb.core.Flyway
 import spark.Request
 import spark.Spark.*
+import java.net.URI
+import javax.sql.DataSource
 
 fun main(args: Array<String>) {
     port(System.getenv("PORT").toInt())
     staticFiles.location("/frontend")
 
-    migrateDatabase()
+    val dbConfig = DbConfig(HerokuPostgresConfig(URI(System.getenv("DATABASE_URL"))))
 
-    val personRepository = PersonRepository()
-    val membershipTypeRepository = MembershipTypeRepository()
-    val membershipRepository = MembershipRepository()
+    migrateDatabase(dbConfig.dataSource)
+
+    val personRepository = PersonRepository(dbConfig)
+    val membershipTypeRepository = MembershipTypeRepository(dbConfig)
+    val membershipRepository = MembershipRepository(dbConfig)
 
     get("/auth0callback", { _, response ->
         response.redirect("/")
@@ -100,9 +105,9 @@ fun main(args: Array<String>) {
 
 }
 
-private fun migrateDatabase() {
+private fun migrateDatabase(dataSource: DataSource) {
     val flyway = Flyway()
-    flyway.dataSource = DbConfig.dataSource
+    flyway.dataSource = dataSource
     flyway.migrate()
 }
 
