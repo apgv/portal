@@ -4,7 +4,7 @@
             <div class="container">
                 <div class="navbar-menu">
                     <div class="navbar-start">
-                        <router-link :to="'/'"
+                        <router-link :to="'/home'"
                                      class="navbar-item">
                             Home
                         </router-link>

@@ -28,6 +28,10 @@ fun main(args: Array<String>) {
     val membershipTypeRepository = MembershipTypeRepository()
     val membershipRepository = MembershipRepository()
 
+    get("/auth0callback", { _, response ->
+        response.redirect("/")
+    })
+
     path("api", {
         get("/persons", { request, _ ->
             verifyTokenAndCheckRole(request)

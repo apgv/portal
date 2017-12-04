@@ -6,7 +6,7 @@
 
 <script>
     export default {
-        name: 'callback',
+        name: 'Auth0Callback',
         props: ['auth'],
         data () {
             this.auth.handleAuthentication()

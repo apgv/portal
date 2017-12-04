@@ -7,7 +7,7 @@ import Home from '@/components/Home'
 import Persons from '@/components/Persons'
 import AddPerson from '@/components/AddPerson'
 import Membership from '@/components/Membership'
-import Callback from '@/components/Callback'
+import Auth0Callback from '@/components/Auth0Callback'
 import moment from 'moment'
 
 Vue.use(Router)
@@ -52,13 +52,13 @@ const router = new Router({
             props: true
         },
         {
-            path: '/callback',
-            name: 'Callback',
-            component: Callback
+            path: '/auth0callback',
+            name: 'Auth0Callback',
+            component: Auth0Callback
         },
         {
             path: '*',
-            redirect: '/home'
+            redirect: '/auth0callback'
         }
     ]
 })
