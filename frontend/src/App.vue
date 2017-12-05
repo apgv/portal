@@ -12,6 +12,10 @@
                                      class="navbar-item">
                             Personregister
                         </router-link>
+                        <router-link :to="'/membershiptypes'"
+                                     class="navbar-item">
+                            Medlemskapstyper
+                        </router-link>
                     </div>
                     <div class="navbar-end">
                         <div class="navbar-item">
