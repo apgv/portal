@@ -28,14 +28,14 @@ fun main(args: Array<String>) {
     port(System.getenv("PORT").toInt())
     staticFiles.location("/frontend")
 
-    val dbConfig = DbHelper(HerokuPostgresConfig(URI(System.getenv("DATABASE_URL"))))
+    val dbHelper = DbHelper(HerokuPostgresConfig(URI(System.getenv("DATABASE_URL"))))
 
-    migrateDatabase(dbConfig.dataSource)
+    migrateDatabase(dbHelper.dataSource)
 
-    val personRepository = PersonRepository(dbConfig)
-    val membershipTypeRepository = MembershipTypeRepository(dbConfig)
-    val membershipRepository = MembershipRepository(dbConfig)
-    val userRepository = UserRepository(dbConfig)
+    val personRepository = PersonRepository(dbHelper)
+    val membershipTypeRepository = MembershipTypeRepository(dbHelper)
+    val membershipRepository = MembershipRepository(dbHelper)
+    val userRepository = UserRepository(dbHelper)
 
     get("/auth0callback", { _, response ->
         response.redirect("/")
