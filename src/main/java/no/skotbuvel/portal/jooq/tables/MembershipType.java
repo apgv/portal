@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MembershipType extends TableImpl<MembershipTypeRecord> {
 
-    private static final long serialVersionUID = 113125889;
+    private static final long serialVersionUID = -282966116;
 
     /**
      * The reference instance of <code>membership_type</code>
@@ -99,6 +99,11 @@ public class MembershipType extends TableImpl<MembershipTypeRecord> {
      * The column <code>membership_type.deleted_date</code>.
      */
     public final TableField<MembershipTypeRecord, OffsetDateTime> DELETED_DATE = createField("deleted_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
+
+    /**
+     * The column <code>membership_type.original_id</code>.
+     */
+    public final TableField<MembershipTypeRecord, Integer> ORIGINAL_ID = createField("original_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * Create a <code>membership_type</code> table reference

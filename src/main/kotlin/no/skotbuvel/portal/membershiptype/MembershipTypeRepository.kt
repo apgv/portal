@@ -35,6 +35,7 @@ class MembershipTypeRepository(private val dbHelper: DbHelper) {
         dslContext.transaction(TransactionalRunnable {
             dslContext.insertInto(MEMBERSHIP_TYPE,
                     MEMBERSHIP_TYPE.ID,
+                    MEMBERSHIP_TYPE.ORIGINAL_ID,
                     MEMBERSHIP_TYPE.ACTIVE,
                     MEMBERSHIP_TYPE.TYPE,
                     MEMBERSHIP_TYPE.YEAR,
@@ -43,6 +44,7 @@ class MembershipTypeRepository(private val dbHelper: DbHelper) {
                     MEMBERSHIP_TYPE.CREATED_DATE
             ).values(
                     dslContext.nextval(MEMBERSHIP_TYPE_ID_SEQ).toInt(),
+                    dslContext.currval(MEMBERSHIP_TYPE_ID_SEQ).toInt(),
                     true,
                     membershipTypeRegistration.type,
                     membershipTypeRegistration.year,
