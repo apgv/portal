@@ -95,7 +95,9 @@ fun main(args: Array<String>) {
 
         get("/membershiptypes", { request, _ ->
             verifyTokenAndCheckRole(request)
-            val membershiptTypes = membershipTypeRepository.findAllActive()
+            val queryParamActive = request.queryParams("active")
+            val activeOnly = queryParamActive?.toBoolean() ?: false
+            val membershiptTypes = membershipTypeRepository.findAll(activeOnly)
             val parameterizedType = Types.newParameterizedType(List::class.java, MembershipType::class.java)
             JsonUtil.moshi.adapter<List<MembershipType>>(parameterizedType).toJson(membershiptTypes)
         })

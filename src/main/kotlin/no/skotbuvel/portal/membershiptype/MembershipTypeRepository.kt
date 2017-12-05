@@ -8,7 +8,13 @@ import org.jooq.TransactionalRunnable
 
 class MembershipTypeRepository(private val dbHelper: DbHelper) {
 
-    fun findAllActive(): List<MembershipType> {
+    fun findAll(activeOnly: Boolean) = if (activeOnly) findAllActive() else findAll()
+
+    private fun findAllActive(): List<MembershipType> {
+        return findAll().filter { membershipType -> membershipType.active }
+    }
+
+    private fun findAll(): List<MembershipType> {
         return dbHelper.dslContext()
                 .select(
                         MEMBERSHIP_TYPE.ID,
@@ -18,7 +24,6 @@ class MembershipTypeRepository(private val dbHelper: DbHelper) {
                         MEMBERSHIP_TYPE.PRICE
                 )
                 .from(MEMBERSHIP_TYPE)
-                .where(MEMBERSHIP_TYPE.ACTIVE.eq(true))
                 .fetch()
                 .map { toMembershipType(it) }
                 .toList()

@@ -150,7 +150,8 @@
             fetchMembershipTypes () {
                 if (this.authenticated) {
                     axios.get('/api/membershiptypes', {
-                        headers: {'X-JWT': this.auth.jwt()}
+                        headers: {'X-JWT': this.auth.jwt()},
+                        params: {'active': true}
                     }).then(response => {
                         this.membershipTypes = response.data
                     }).catch(error => {
