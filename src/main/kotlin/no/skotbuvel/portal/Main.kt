@@ -5,11 +5,12 @@ import com.squareup.moshi.Types
 import no.skotbuvel.portal.auth.JwtUtil
 import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
-import no.skotbuvel.portal.helper.DbHelper
 import no.skotbuvel.portal.config.HerokuPostgresConfig
+import no.skotbuvel.portal.helper.DbHelper
 import no.skotbuvel.portal.membership.MembershipRegistration
 import no.skotbuvel.portal.membership.MembershipRepository
 import no.skotbuvel.portal.membershiptype.MembershipType
+import no.skotbuvel.portal.membershiptype.MembershipTypeRegistration
 import no.skotbuvel.portal.membershiptype.MembershipTypeRepository
 import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRegistration
@@ -97,6 +98,19 @@ fun main(args: Array<String>) {
             val membershiptTypes = membershipTypeRepository.findAllActive()
             val parameterizedType = Types.newParameterizedType(List::class.java, MembershipType::class.java)
             JsonUtil.moshi.adapter<List<MembershipType>>(parameterizedType).toJson(membershiptTypes)
+        })
+
+        post("/membershiptypes", { request, response ->
+            val decodedJWT = verifyTokenAndCheckRole(request)
+            val jsonAdapter = JsonUtil.moshi.adapter(MembershipTypeRegistration::class.java)
+            val membershipTypeRegistration = jsonAdapter.fromJson(request.body())
+
+            if (membershipTypeRegistration != null) {
+                membershipTypeRepository.save(membershipTypeRegistration, JwtUtil.email(decodedJWT))
+                response.status(201)
+            } else {
+                response.status(400)
+            }
         })
 
         after("/*", { _, response ->

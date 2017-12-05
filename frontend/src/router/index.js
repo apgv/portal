@@ -8,6 +8,7 @@ import Persons from '@/components/Persons'
 import AddPerson from '@/components/AddPerson'
 import Membership from '@/components/Membership'
 import MembershipTypes from '@/components/MembershipTypes'
+import AddMembershipType from '@/components/AddMembershipType'
 import Auth0Callback from '@/components/Auth0Callback'
 import moment from 'moment'
 
@@ -56,6 +57,11 @@ const router = new Router({
             path: '/membershiptypes',
             name: 'MembershipTypes',
             component: MembershipTypes
+        },
+        {
+            path: '/addmembershiptype',
+            name: 'AddMembershipType',
+            component: AddMembershipType
         },
         {
             path: '/auth0callback',

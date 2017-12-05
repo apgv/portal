@@ -3,6 +3,9 @@
         <div v-if="authenticated">
             <h4 class="title is-4">Medlemskapstyper</h4>
 
+            <router-link :to="'/addmembershiptype'">
+                Legg til medlemskapstype
+            </router-link>
             <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
                 <tr>
