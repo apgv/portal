@@ -65,7 +65,6 @@ fun main(args: Array<String>) {
 
             if (personRegistration != null) {
                 personRepository.save(personRegistration, JwtUtil.email(decodedJWT))
-
                 response.status(201)
             } else {
                 response.status(400)
@@ -80,9 +79,10 @@ fun main(args: Array<String>) {
 
             if (membershipRegistration != null) {
                 membershipRepository.save(membershipRegistration, JwtUtil.email(decodedJWT))
+                response.status(201)
+            } else {
+                response.status(400)
             }
-
-            response.status(201)
         })
 
         delete("/memberships/:id", { request, _ ->
@@ -92,7 +92,8 @@ fun main(args: Array<String>) {
             membershipRepository.delete(id.toInt(), JwtUtil.email(decodedJWT))
         })
 
-        get("/membershiptypes", { _, _ ->
+        get("/membershiptypes", { request, _ ->
+            verifyTokenAndCheckRole(request)
             val membershiptTypes = membershipTypeRepository.findAllActive()
             val parameterizedType = Types.newParameterizedType(List::class.java, MembershipType::class.java)
             JsonUtil.moshi.adapter<List<MembershipType>>(parameterizedType).toJson(membershiptTypes)
