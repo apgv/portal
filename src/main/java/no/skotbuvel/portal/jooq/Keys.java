@@ -9,9 +9,15 @@ import javax.annotation.Generated;
 import no.skotbuvel.portal.jooq.tables.Membership;
 import no.skotbuvel.portal.jooq.tables.MembershipType;
 import no.skotbuvel.portal.jooq.tables.Person;
+import no.skotbuvel.portal.jooq.tables.Role;
+import no.skotbuvel.portal.jooq.tables.User;
+import no.skotbuvel.portal.jooq.tables.UserRole;
 import no.skotbuvel.portal.jooq.tables.records.MembershipRecord;
 import no.skotbuvel.portal.jooq.tables.records.MembershipTypeRecord;
 import no.skotbuvel.portal.jooq.tables.records.PersonRecord;
+import no.skotbuvel.portal.jooq.tables.records.RoleRecord;
+import no.skotbuvel.portal.jooq.tables.records.UserRecord;
+import no.skotbuvel.portal.jooq.tables.records.UserRoleRecord;
 
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
@@ -40,6 +46,8 @@ public class Keys {
     public static final Identity<MembershipRecord, Integer> IDENTITY_MEMBERSHIP = Identities0.IDENTITY_MEMBERSHIP;
     public static final Identity<MembershipTypeRecord, Integer> IDENTITY_MEMBERSHIP_TYPE = Identities0.IDENTITY_MEMBERSHIP_TYPE;
     public static final Identity<PersonRecord, Integer> IDENTITY_PERSON = Identities0.IDENTITY_PERSON;
+    public static final Identity<RoleRecord, Integer> IDENTITY_ROLE = Identities0.IDENTITY_ROLE;
+    public static final Identity<UserRecord, Integer> IDENTITY_USER = Identities0.IDENTITY_USER;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
@@ -48,6 +56,9 @@ public class Keys {
     public static final UniqueKey<MembershipRecord> MEMBERSHIP_PKEY = UniqueKeys0.MEMBERSHIP_PKEY;
     public static final UniqueKey<MembershipTypeRecord> MEMBERSHIP_TYPE_PKEY = UniqueKeys0.MEMBERSHIP_TYPE_PKEY;
     public static final UniqueKey<PersonRecord> PERSON_PKEY = UniqueKeys0.PERSON_PKEY;
+    public static final UniqueKey<RoleRecord> ROLE_PKEY = UniqueKeys0.ROLE_PKEY;
+    public static final UniqueKey<UserRecord> USER_PKEY = UniqueKeys0.USER_PKEY;
+    public static final UniqueKey<UserRoleRecord> USER_ROLE_PKEY = UniqueKeys0.USER_ROLE_PKEY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -55,6 +66,8 @@ public class Keys {
 
     public static final ForeignKey<MembershipRecord, PersonRecord> MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY = ForeignKeys0.MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY;
     public static final ForeignKey<MembershipRecord, MembershipTypeRecord> MEMBERSHIP__MEMBERSHIP_MEMBERSHIP_TYPE_ID_FKEY = ForeignKeys0.MEMBERSHIP__MEMBERSHIP_MEMBERSHIP_TYPE_ID_FKEY;
+    public static final ForeignKey<UserRoleRecord, UserRecord> USER_ROLE__USER_ROLE_USER_ID_FKEY = ForeignKeys0.USER_ROLE__USER_ROLE_USER_ID_FKEY;
+    public static final ForeignKey<UserRoleRecord, RoleRecord> USER_ROLE__USER_ROLE_ROLE_ID_FKEY = ForeignKeys0.USER_ROLE__USER_ROLE_ROLE_ID_FKEY;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
@@ -64,16 +77,23 @@ public class Keys {
         public static Identity<MembershipRecord, Integer> IDENTITY_MEMBERSHIP = createIdentity(Membership.MEMBERSHIP, Membership.MEMBERSHIP.ID);
         public static Identity<MembershipTypeRecord, Integer> IDENTITY_MEMBERSHIP_TYPE = createIdentity(MembershipType.MEMBERSHIP_TYPE, MembershipType.MEMBERSHIP_TYPE.ID);
         public static Identity<PersonRecord, Integer> IDENTITY_PERSON = createIdentity(Person.PERSON, Person.PERSON.ID);
+        public static Identity<RoleRecord, Integer> IDENTITY_ROLE = createIdentity(Role.ROLE, Role.ROLE.ID);
+        public static Identity<UserRecord, Integer> IDENTITY_USER = createIdentity(User.USER, User.USER.ID);
     }
 
     private static class UniqueKeys0 extends AbstractKeys {
         public static final UniqueKey<MembershipRecord> MEMBERSHIP_PKEY = createUniqueKey(Membership.MEMBERSHIP, "membership_pkey", Membership.MEMBERSHIP.ID);
         public static final UniqueKey<MembershipTypeRecord> MEMBERSHIP_TYPE_PKEY = createUniqueKey(MembershipType.MEMBERSHIP_TYPE, "membership_type_pkey", MembershipType.MEMBERSHIP_TYPE.ID);
         public static final UniqueKey<PersonRecord> PERSON_PKEY = createUniqueKey(Person.PERSON, "person_pkey", Person.PERSON.ID);
+        public static final UniqueKey<RoleRecord> ROLE_PKEY = createUniqueKey(Role.ROLE, "role_pkey", Role.ROLE.ID);
+        public static final UniqueKey<UserRecord> USER_PKEY = createUniqueKey(User.USER, "user_pkey", User.USER.ID);
+        public static final UniqueKey<UserRoleRecord> USER_ROLE_PKEY = createUniqueKey(UserRole.USER_ROLE, "user_role_pkey", UserRole.USER_ROLE.USER_ID, UserRole.USER_ROLE.ROLE_ID);
     }
 
     private static class ForeignKeys0 extends AbstractKeys {
         public static final ForeignKey<MembershipRecord, PersonRecord> MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY = createForeignKey(no.skotbuvel.portal.jooq.Keys.PERSON_PKEY, Membership.MEMBERSHIP, "membership__membership_person_id_fkey", Membership.MEMBERSHIP.PERSON_ID);
         public static final ForeignKey<MembershipRecord, MembershipTypeRecord> MEMBERSHIP__MEMBERSHIP_MEMBERSHIP_TYPE_ID_FKEY = createForeignKey(no.skotbuvel.portal.jooq.Keys.MEMBERSHIP_TYPE_PKEY, Membership.MEMBERSHIP, "membership__membership_membership_type_id_fkey", Membership.MEMBERSHIP.MEMBERSHIP_TYPE_ID);
+        public static final ForeignKey<UserRoleRecord, UserRecord> USER_ROLE__USER_ROLE_USER_ID_FKEY = createForeignKey(no.skotbuvel.portal.jooq.Keys.USER_PKEY, UserRole.USER_ROLE, "user_role__user_role_user_id_fkey", UserRole.USER_ROLE.USER_ID);
+        public static final ForeignKey<UserRoleRecord, RoleRecord> USER_ROLE__USER_ROLE_ROLE_ID_FKEY = createForeignKey(no.skotbuvel.portal.jooq.Keys.ROLE_PKEY, UserRole.USER_ROLE, "user_role__user_role_role_id_fkey", UserRole.USER_ROLE.ROLE_ID);
     }
 }

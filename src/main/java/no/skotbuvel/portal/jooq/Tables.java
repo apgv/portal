@@ -9,6 +9,9 @@ import javax.annotation.Generated;
 import no.skotbuvel.portal.jooq.tables.Membership;
 import no.skotbuvel.portal.jooq.tables.MembershipType;
 import no.skotbuvel.portal.jooq.tables.Person;
+import no.skotbuvel.portal.jooq.tables.Role;
+import no.skotbuvel.portal.jooq.tables.User;
+import no.skotbuvel.portal.jooq.tables.UserRole;
 
 
 /**
@@ -38,4 +41,19 @@ public class Tables {
      * The table <code>person</code>.
      */
     public static final Person PERSON = no.skotbuvel.portal.jooq.tables.Person.PERSON;
+
+    /**
+     * The table <code>role</code>.
+     */
+    public static final Role ROLE = no.skotbuvel.portal.jooq.tables.Role.ROLE;
+
+    /**
+     * The table <code>user</code>.
+     */
+    public static final User USER = no.skotbuvel.portal.jooq.tables.User.USER;
+
+    /**
+     * The table <code>user_role</code>.
+     */
+    public static final UserRole USER_ROLE = no.skotbuvel.portal.jooq.tables.UserRole.USER_ROLE;
 }
