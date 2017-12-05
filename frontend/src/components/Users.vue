@@ -1,0 +1,78 @@
+<template>
+    <div class="container">
+        <div v-if="authenticated">
+            <h4 class="title is-4">Brukere</h4>
+
+            <table class="table is-fullwidth is-striped is-hoverable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fornavn</th>
+                    <th>Etternavn</th>
+                    <th>E-post</th>
+                    <th>Telefon</th>
+                    <th>Roller</th>
+                    <th>Registrert av</th>
+                    <th>Registrert dato</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="user in users">
+                    <td>{{user.id}}</td>
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.lastName}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.phone}}</td>
+                    <td>{{user.roles}}</td>
+                    <td>{{user.createdBy}}</td>
+                    <td>{{user.createdDate | formatDate}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <not-authenticated :auth="auth"
+                           :authenticated="authenticated">
+        </not-authenticated>
+    </div>
+</template>
+
+<script>
+    import NotAuthenticated from './NotAuthenticated'
+    import axios from 'axios'
+
+    export default {
+        components: {NotAuthenticated},
+        name: 'users',
+        props: ['auth', 'authenticated'],
+        data () {
+            return {
+                users: []
+            }
+        },
+        methods: {
+            fetchUsers () {
+                if (this.authenticated) {
+                    axios.get('api/users', {
+                        headers: {'X-JWT': this.auth.jwt()}
+                    }).then(response => {
+                        let users = response.data
+                        users.forEach(user => {
+                            user.roles = user.roles
+                                .map(role => {
+                                    return role.name
+                                })
+                                .join(', ')
+                        })
+                        this.users = users
+                    }).catch(error => {
+                        this.$snotify.error('Feil ved henting av brukere')
+                        console.log(error)
+                    })
+                }
+            }
+        },
+        created () {
+            this.fetchUsers()
+        }
+    }
+</script>

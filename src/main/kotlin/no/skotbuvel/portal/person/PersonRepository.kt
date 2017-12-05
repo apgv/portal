@@ -12,6 +12,7 @@ import org.jooq.Result
 import org.jooq.TransactionalRunnable
 
 class PersonRepository(private val dbHelper: DbHelper) {
+
     private val selectParameters = listOf(
             PERSON.ID,
             PERSON.FULL_NAME,
