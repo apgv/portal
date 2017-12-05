@@ -102,8 +102,8 @@ class PersonRepository(private val dbHelper: DbHelper) {
         )
     }
 
-    private fun mapMemberships(it: Result<Record>): List<MembershipInfo> {
-        return it
+    private fun mapMemberships(result: Result<Record>): List<MembershipInfo> {
+        return result
                 .filter { it[MEMBERSHIP.ID] != null }
                 .map {
                     MembershipInfo(
