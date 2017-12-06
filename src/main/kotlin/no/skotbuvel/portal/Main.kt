@@ -15,8 +15,8 @@ import no.skotbuvel.portal.membershiptype.MembershipTypeRepository
 import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
-import no.skotbuvel.portal.user.User
-import no.skotbuvel.portal.user.UserRepository
+import no.skotbuvel.portal.user.Subject
+import no.skotbuvel.portal.user.SubjectRepository
 import no.skotbuvel.portal.util.JsonUtil
 import org.flywaydb.core.Flyway
 import spark.Request
@@ -35,7 +35,7 @@ fun main(args: Array<String>) {
     val personRepository = PersonRepository(dbHelper)
     val membershipTypeRepository = MembershipTypeRepository(dbHelper)
     val membershipRepository = MembershipRepository(dbHelper)
-    val userRepository = UserRepository(dbHelper)
+    val subjectRepository = SubjectRepository(dbHelper)
 
     get("/auth0callback", { _, response ->
         response.redirect("/")
@@ -120,9 +120,9 @@ fun main(args: Array<String>) {
 
         get("/users", { request, _ ->
             verifyTokenAndCheckRole(request)
-            val users = userRepository.findAll()
-            val parameterizedType = Types.newParameterizedType(List::class.java, User::class.java)
-            JsonUtil.moshi.adapter<List<User>>(parameterizedType).toJson(users)
+            val subjects = subjectRepository.findAll()
+            val parameterizedType = Types.newParameterizedType(List::class.java, Subject::class.java)
+            JsonUtil.moshi.adapter<List<Subject>>(parameterizedType).toJson(subjects)
         })
 
         after("/*", { _, response ->

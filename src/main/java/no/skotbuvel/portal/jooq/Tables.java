@@ -10,8 +10,8 @@ import no.skotbuvel.portal.jooq.tables.Membership;
 import no.skotbuvel.portal.jooq.tables.MembershipType;
 import no.skotbuvel.portal.jooq.tables.Person;
 import no.skotbuvel.portal.jooq.tables.Role;
-import no.skotbuvel.portal.jooq.tables.User;
-import no.skotbuvel.portal.jooq.tables.UserRole;
+import no.skotbuvel.portal.jooq.tables.Subject;
+import no.skotbuvel.portal.jooq.tables.SubjectRole;
 
 
 /**
@@ -48,12 +48,12 @@ public class Tables {
     public static final Role ROLE = no.skotbuvel.portal.jooq.tables.Role.ROLE;
 
     /**
-     * The table <code>user</code>.
+     * The table <code>subject</code>.
      */
-    public static final User USER = no.skotbuvel.portal.jooq.tables.User.USER;
+    public static final Subject SUBJECT = no.skotbuvel.portal.jooq.tables.Subject.SUBJECT;
 
     /**
-     * The table <code>user_role</code>.
+     * The table <code>subject_role</code>.
      */
-    public static final UserRole USER_ROLE = no.skotbuvel.portal.jooq.tables.UserRole.USER_ROLE;
+    public static final SubjectRole SUBJECT_ROLE = no.skotbuvel.portal.jooq.tables.SubjectRole.SUBJECT_ROLE;
 }

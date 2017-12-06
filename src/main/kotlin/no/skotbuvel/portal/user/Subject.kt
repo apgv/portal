@@ -2,7 +2,7 @@ package no.skotbuvel.portal.user
 
 import java.time.ZonedDateTime
 
-class User(
+data class Subject(
         val id: Int,
         val firstName: String,
         val lastName: String,

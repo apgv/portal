@@ -1,4 +1,4 @@
-CREATE TABLE "user" (
+CREATE TABLE subject (
   id           SERIAL PRIMARY KEY,
   original_id  INTEGER                  NOT NULL,
   active       BOOLEAN                  NOT NULL,
@@ -23,8 +23,8 @@ CREATE TABLE role (
   deleted_date TIMESTAMP WITH TIME ZONE
 );
 
-CREATE TABLE user_role (
-  user_id INTEGER REFERENCES "user" (id),
+CREATE TABLE subject_role (
+  user_id INTEGER REFERENCES subject (id),
   role_id INTEGER REFERENCES role (id),
   PRIMARY KEY (user_id, role_id)
 );
