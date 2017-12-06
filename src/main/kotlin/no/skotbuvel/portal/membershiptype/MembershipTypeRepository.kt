@@ -4,6 +4,7 @@ import no.skotbuvel.portal.helper.DbHelper
 import no.skotbuvel.portal.jooq.Sequences.MEMBERSHIP_TYPE_ID_SEQ
 import no.skotbuvel.portal.jooq.tables.MembershipType.MEMBERSHIP_TYPE
 import no.skotbuvel.portal.util.JavaTimeUtil
+import org.jooq.Record
 import org.jooq.TransactionalRunnable
 
 class MembershipTypeRepository(private val dbHelper: DbHelper) {
@@ -21,7 +22,9 @@ class MembershipTypeRepository(private val dbHelper: DbHelper) {
                         MEMBERSHIP_TYPE.ACTIVE,
                         MEMBERSHIP_TYPE.TYPE,
                         MEMBERSHIP_TYPE.YEAR,
-                        MEMBERSHIP_TYPE.PRICE
+                        MEMBERSHIP_TYPE.PRICE,
+                        MEMBERSHIP_TYPE.CREATED_BY,
+                        MEMBERSHIP_TYPE.CREATED_DATE
                 )
                 .from(MEMBERSHIP_TYPE)
                 .fetch()
@@ -55,4 +58,15 @@ class MembershipTypeRepository(private val dbHelper: DbHelper) {
                     .execute()
         })
     }
+
+    private fun toMembershipType(record: Record) =
+            MembershipType(
+                    id = record[MEMBERSHIP_TYPE.ID],
+                    active = record[MEMBERSHIP_TYPE.ACTIVE],
+                    type = record[MEMBERSHIP_TYPE.TYPE],
+                    year = record[MEMBERSHIP_TYPE.YEAR],
+                    price = record[MEMBERSHIP_TYPE.PRICE],
+                    createdBy = record[MEMBERSHIP_TYPE.CREATED_BY],
+                    createdDate = record[MEMBERSHIP_TYPE.CREATED_DATE].toZonedDateTime()
+            )
 }

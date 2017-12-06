@@ -14,6 +14,8 @@
                     <th>Type</th>
                     <th>Pris</th>
                     <th>Aktiv medlemskapstype</th>
+                    <th>Registrert av</th>
+                    <th>Registrert dato</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -23,6 +25,8 @@
                     <td>{{membershipType.type}}</td>
                     <td>{{membershipType.price}}</td>
                     <td>{{membershipType.active? 'Ja': 'Nei'}}</td>
+                    <td>{{membershipType.createdBy}}</td>
+                    <td>{{membershipType.createdDate|formatDate}}</td>
                 </tr>
                 </tbody>
             </table>
