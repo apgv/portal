@@ -52,6 +52,6 @@ public class Indexes {
         public static Index PERSON_PKEY = createIndex("person_pkey", Person.PERSON, new OrderField[] { Person.PERSON.ID }, true);
         public static Index ROLE_PKEY = createIndex("role_pkey", Role.ROLE, new OrderField[] { Role.ROLE.ID }, true);
         public static Index SUBJECT_PKEY = createIndex("subject_pkey", Subject.SUBJECT, new OrderField[] { Subject.SUBJECT.ID }, true);
-        public static Index SUBJECT_ROLE_PKEY = createIndex("subject_role_pkey", SubjectRole.SUBJECT_ROLE, new OrderField[] { SubjectRole.SUBJECT_ROLE.USER_ID, SubjectRole.SUBJECT_ROLE.ROLE_ID }, true);
+        public static Index SUBJECT_ROLE_PKEY = createIndex("subject_role_pkey", SubjectRole.SUBJECT_ROLE, new OrderField[] { SubjectRole.SUBJECT_ROLE.SUBJECT_ID, SubjectRole.SUBJECT_ROLE.ROLE_ID }, true);
     }
 }

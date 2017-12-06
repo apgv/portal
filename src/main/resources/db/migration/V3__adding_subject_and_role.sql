@@ -24,7 +24,7 @@ CREATE TABLE role (
 );
 
 CREATE TABLE subject_role (
-  user_id INTEGER REFERENCES subject (id),
+  subject_id INTEGER REFERENCES subject (id),
   role_id INTEGER REFERENCES role (id),
-  PRIMARY KEY (user_id, role_id)
+  PRIMARY KEY (subject_id, role_id)
 );

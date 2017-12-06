@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SubjectRole extends TableImpl<SubjectRoleRecord> {
 
-    private static final long serialVersionUID = -342539419;
+    private static final long serialVersionUID = 802924109;
 
     /**
      * The reference instance of <code>subject_role</code>
@@ -55,9 +55,9 @@ public class SubjectRole extends TableImpl<SubjectRoleRecord> {
     }
 
     /**
-     * The column <code>subject_role.user_id</code>.
+     * The column <code>subject_role.subject_id</code>.
      */
-    public final TableField<SubjectRoleRecord, Integer> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<SubjectRoleRecord, Integer> SUBJECT_ID = createField("subject_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>subject_role.role_id</code>.
@@ -130,7 +130,7 @@ public class SubjectRole extends TableImpl<SubjectRoleRecord> {
      */
     @Override
     public List<ForeignKey<SubjectRoleRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<SubjectRoleRecord, ?>>asList(Keys.SUBJECT_ROLE__SUBJECT_ROLE_USER_ID_FKEY, Keys.SUBJECT_ROLE__SUBJECT_ROLE_ROLE_ID_FKEY);
+        return Arrays.<ForeignKey<SubjectRoleRecord, ?>>asList(Keys.SUBJECT_ROLE__SUBJECT_ROLE_SUBJECT_ID_FKEY, Keys.SUBJECT_ROLE__SUBJECT_ROLE_ROLE_ID_FKEY);
     }
 
     /**

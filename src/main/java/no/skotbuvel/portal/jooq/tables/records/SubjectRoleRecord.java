@@ -27,19 +27,19 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SubjectRoleRecord extends UpdatableRecordImpl<SubjectRoleRecord> implements Record2<Integer, Integer> {
 
-    private static final long serialVersionUID = 1419141521;
+    private static final long serialVersionUID = -1813800035;
 
     /**
-     * Setter for <code>subject_role.user_id</code>.
+     * Setter for <code>subject_role.subject_id</code>.
      */
-    public void setUserId(Integer value) {
+    public void setSubjectId(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>subject_role.user_id</code>.
+     * Getter for <code>subject_role.subject_id</code>.
      */
-    public Integer getUserId() {
+    public Integer getSubjectId() {
         return (Integer) get(0);
     }
 
@@ -94,7 +94,7 @@ public class SubjectRoleRecord extends UpdatableRecordImpl<SubjectRoleRecord> im
      */
     @Override
     public Field<Integer> field1() {
-        return SubjectRole.SUBJECT_ROLE.USER_ID;
+        return SubjectRole.SUBJECT_ROLE.SUBJECT_ID;
     }
 
     /**
@@ -110,7 +110,7 @@ public class SubjectRoleRecord extends UpdatableRecordImpl<SubjectRoleRecord> im
      */
     @Override
     public Integer component1() {
-        return getUserId();
+        return getSubjectId();
     }
 
     /**
@@ -126,7 +126,7 @@ public class SubjectRoleRecord extends UpdatableRecordImpl<SubjectRoleRecord> im
      */
     @Override
     public Integer value1() {
-        return getUserId();
+        return getSubjectId();
     }
 
     /**
@@ -142,7 +142,7 @@ public class SubjectRoleRecord extends UpdatableRecordImpl<SubjectRoleRecord> im
      */
     @Override
     public SubjectRoleRecord value1(Integer value) {
-        setUserId(value);
+        setSubjectId(value);
         return this;
     }
 
@@ -179,10 +179,10 @@ public class SubjectRoleRecord extends UpdatableRecordImpl<SubjectRoleRecord> im
     /**
      * Create a detached, initialised SubjectRoleRecord
      */
-    public SubjectRoleRecord(Integer userId, Integer roleId) {
+    public SubjectRoleRecord(Integer subjectId, Integer roleId) {
         super(SubjectRole.SUBJECT_ROLE);
 
-        set(0, userId);
+        set(0, subjectId);
         set(1, roleId);
     }
 }

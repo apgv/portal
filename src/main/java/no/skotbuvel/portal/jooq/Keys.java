@@ -66,7 +66,7 @@ public class Keys {
 
     public static final ForeignKey<MembershipRecord, PersonRecord> MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY = ForeignKeys0.MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY;
     public static final ForeignKey<MembershipRecord, MembershipTypeRecord> MEMBERSHIP__MEMBERSHIP_MEMBERSHIP_TYPE_ID_FKEY = ForeignKeys0.MEMBERSHIP__MEMBERSHIP_MEMBERSHIP_TYPE_ID_FKEY;
-    public static final ForeignKey<SubjectRoleRecord, SubjectRecord> SUBJECT_ROLE__SUBJECT_ROLE_USER_ID_FKEY = ForeignKeys0.SUBJECT_ROLE__SUBJECT_ROLE_USER_ID_FKEY;
+    public static final ForeignKey<SubjectRoleRecord, SubjectRecord> SUBJECT_ROLE__SUBJECT_ROLE_SUBJECT_ID_FKEY = ForeignKeys0.SUBJECT_ROLE__SUBJECT_ROLE_SUBJECT_ID_FKEY;
     public static final ForeignKey<SubjectRoleRecord, RoleRecord> SUBJECT_ROLE__SUBJECT_ROLE_ROLE_ID_FKEY = ForeignKeys0.SUBJECT_ROLE__SUBJECT_ROLE_ROLE_ID_FKEY;
 
     // -------------------------------------------------------------------------
@@ -87,13 +87,13 @@ public class Keys {
         public static final UniqueKey<PersonRecord> PERSON_PKEY = createUniqueKey(Person.PERSON, "person_pkey", Person.PERSON.ID);
         public static final UniqueKey<RoleRecord> ROLE_PKEY = createUniqueKey(Role.ROLE, "role_pkey", Role.ROLE.ID);
         public static final UniqueKey<SubjectRecord> SUBJECT_PKEY = createUniqueKey(Subject.SUBJECT, "subject_pkey", Subject.SUBJECT.ID);
-        public static final UniqueKey<SubjectRoleRecord> SUBJECT_ROLE_PKEY = createUniqueKey(SubjectRole.SUBJECT_ROLE, "subject_role_pkey", SubjectRole.SUBJECT_ROLE.USER_ID, SubjectRole.SUBJECT_ROLE.ROLE_ID);
+        public static final UniqueKey<SubjectRoleRecord> SUBJECT_ROLE_PKEY = createUniqueKey(SubjectRole.SUBJECT_ROLE, "subject_role_pkey", SubjectRole.SUBJECT_ROLE.SUBJECT_ID, SubjectRole.SUBJECT_ROLE.ROLE_ID);
     }
 
     private static class ForeignKeys0 extends AbstractKeys {
         public static final ForeignKey<MembershipRecord, PersonRecord> MEMBERSHIP__MEMBERSHIP_PERSON_ID_FKEY = createForeignKey(no.skotbuvel.portal.jooq.Keys.PERSON_PKEY, Membership.MEMBERSHIP, "membership__membership_person_id_fkey", Membership.MEMBERSHIP.PERSON_ID);
         public static final ForeignKey<MembershipRecord, MembershipTypeRecord> MEMBERSHIP__MEMBERSHIP_MEMBERSHIP_TYPE_ID_FKEY = createForeignKey(no.skotbuvel.portal.jooq.Keys.MEMBERSHIP_TYPE_PKEY, Membership.MEMBERSHIP, "membership__membership_membership_type_id_fkey", Membership.MEMBERSHIP.MEMBERSHIP_TYPE_ID);
-        public static final ForeignKey<SubjectRoleRecord, SubjectRecord> SUBJECT_ROLE__SUBJECT_ROLE_USER_ID_FKEY = createForeignKey(no.skotbuvel.portal.jooq.Keys.SUBJECT_PKEY, SubjectRole.SUBJECT_ROLE, "subject_role__subject_role_user_id_fkey", SubjectRole.SUBJECT_ROLE.USER_ID);
+        public static final ForeignKey<SubjectRoleRecord, SubjectRecord> SUBJECT_ROLE__SUBJECT_ROLE_SUBJECT_ID_FKEY = createForeignKey(no.skotbuvel.portal.jooq.Keys.SUBJECT_PKEY, SubjectRole.SUBJECT_ROLE, "subject_role__subject_role_subject_id_fkey", SubjectRole.SUBJECT_ROLE.SUBJECT_ID);
         public static final ForeignKey<SubjectRoleRecord, RoleRecord> SUBJECT_ROLE__SUBJECT_ROLE_ROLE_ID_FKEY = createForeignKey(no.skotbuvel.portal.jooq.Keys.ROLE_PKEY, SubjectRole.SUBJECT_ROLE, "subject_role__subject_role_role_id_fkey", SubjectRole.SUBJECT_ROLE.ROLE_ID);
     }
 }

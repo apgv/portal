@@ -29,7 +29,7 @@ class SubjectRepository(private val dbHelper: DbHelper) {
                 .select(selectParameters)
                 .from(SUBJECT)
                 .leftJoin(SUBJECT_ROLE)
-                .on(SUBJECT.ID.eq(SUBJECT_ROLE.USER_ID))
+                .on(SUBJECT.ID.eq(SUBJECT_ROLE.SUBJECT_ID))
                 .leftJoin(ROLE)
                 .on(ROLE.ID.eq(SUBJECT_ROLE.ROLE_ID))
                 .fetchGroups(SUBJECT.ID)
