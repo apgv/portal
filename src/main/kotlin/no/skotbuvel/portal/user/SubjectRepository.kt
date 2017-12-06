@@ -1,11 +1,14 @@
 package no.skotbuvel.portal.user
 
 import no.skotbuvel.portal.helper.DbHelper
+import no.skotbuvel.portal.jooq.Sequences.SUBJECT_ID_SEQ
 import no.skotbuvel.portal.jooq.tables.Role.ROLE
 import no.skotbuvel.portal.jooq.tables.Subject.SUBJECT
 import no.skotbuvel.portal.jooq.tables.SubjectRole.SUBJECT_ROLE
+import no.skotbuvel.portal.util.JavaTimeUtil
 import org.jooq.Record
 import org.jooq.Result
+import org.jooq.TransactionalRunnable
 
 class SubjectRepository(private val dbHelper: DbHelper) {
 
@@ -62,5 +65,34 @@ class SubjectRepository(private val dbHelper: DbHelper) {
                             createdDate = it[ROLE.CREATED_DATE].toZonedDateTime()
                     )
                 }
+    }
+
+    fun save(subjectRegistration: SubjectRegistration, createdBy: String) {
+        val dslContext = dbHelper.dslContext()
+
+        dslContext.transaction(TransactionalRunnable {
+            dslContext.insertInto(SUBJECT,
+                    SUBJECT.ID,
+                    SUBJECT.ORIGINAL_ID,
+                    SUBJECT.ACTIVE,
+                    SUBJECT.FIRST_NAME,
+                    SUBJECT.LAST_NAME,
+                    SUBJECT.EMAIL,
+                    SUBJECT.PHONE,
+                    SUBJECT.CREATED_BY,
+                    SUBJECT.CREATED_DATE
+            ).values(
+                    dslContext.nextval(SUBJECT_ID_SEQ).toInt(),
+                    dslContext.currval(SUBJECT_ID_SEQ).toInt(),
+                    true,
+                    subjectRegistration.firstName,
+                    subjectRegistration.lastName,
+                    subjectRegistration.email,
+                    subjectRegistration.phone,
+                    createdBy,
+                    JavaTimeUtil.nowEuropeOslo()
+            )
+                    .execute()
+        })
     }
 }

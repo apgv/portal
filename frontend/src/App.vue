@@ -16,7 +16,7 @@
                                      class="navbar-item">
                             Medlemskapstyper
                         </router-link>
-                        <router-link :to="'/users'"
+                        <router-link :to="'/subjects'"
                                      class="navbar-item">
                             Brukere
                         </router-link>

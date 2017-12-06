@@ -4,7 +4,7 @@ CREATE TABLE subject (
   active       BOOLEAN                  NOT NULL,
   first_name   VARCHAR(20)              NOT NULL,
   last_name    VARCHAR(20)              NOT NULL,
-  email        VARCHAR(40),
+  email        VARCHAR(40)              NOT NULL,
   phone        VARCHAR(15),
   created_by   VARCHAR(50)              NOT NULL,
   created_date TIMESTAMP WITH TIME ZONE NOT NULL,

@@ -16,6 +16,7 @@ import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
 import no.skotbuvel.portal.user.Subject
+import no.skotbuvel.portal.user.SubjectRegistration
 import no.skotbuvel.portal.user.SubjectRepository
 import no.skotbuvel.portal.util.JsonUtil
 import org.flywaydb.core.Flyway
@@ -118,11 +119,24 @@ fun main(args: Array<String>) {
             }
         })
 
-        get("/users", { request, _ ->
+        get("/subjects", { request, _ ->
             verifyTokenAndCheckRole(request)
             val subjects = subjectRepository.findAll()
             val parameterizedType = Types.newParameterizedType(List::class.java, Subject::class.java)
             JsonUtil.moshi.adapter<List<Subject>>(parameterizedType).toJson(subjects)
+        })
+
+        post("/subjects", { request, response ->
+            val decodedJWT = verifyTokenAndCheckRole(request)
+            val jsonAdapter = JsonUtil.moshi.adapter(SubjectRegistration::class.java)
+            val subjectRegistration = jsonAdapter.fromJson(request.body())
+
+            if (subjectRegistration != null) {
+                subjectRepository.save(subjectRegistration, JwtUtil.email(decodedJWT))
+                response.status(201)
+            } else {
+                response.status(400)
+            }
         })
 
         after("/*", { _, response ->

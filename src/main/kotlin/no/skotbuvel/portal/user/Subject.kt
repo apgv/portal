@@ -7,7 +7,7 @@ data class Subject(
         val firstName: String,
         val lastName: String,
         val email: String,
-        val phone: String,
+        val phone: String?,
         val roles: List<Role>,
         val createdBy: String,
         val createdDate: ZonedDateTime

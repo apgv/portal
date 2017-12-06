@@ -2,7 +2,9 @@
     <div class="container">
         <div v-if="authenticated">
             <h4 class="title is-4">Brukere</h4>
-
+            <router-link :to="'/subjectadd'">
+                Legg til bruker
+            </router-link>
             <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
                 <tr>
@@ -42,7 +44,7 @@
 
     export default {
         components: {NotAuthenticated},
-        name: 'users',
+        name: 'subjects',
         props: ['auth', 'authenticated'],
         data () {
             return {
@@ -52,7 +54,7 @@
         methods: {
             fetchUsers () {
                 if (this.authenticated) {
-                    axios.get('api/users', {
+                    axios.get('api/subjects', {
                         headers: {'X-JWT': this.auth.jwt()}
                     }).then(response => {
                         let users = response.data
