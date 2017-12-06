@@ -36,7 +36,6 @@ export default class AuthService {
             this.auth0.parseHash((err, authResult) => {
                 if (authResult && authResult.accessToken && authResult.idToken) {
                     this.setSession(authResult)
-                    this.setSubject(authResult)
                     let currentPath = localStorage.getItem('current_path')
 
                     if (currentPath) {
@@ -55,16 +54,14 @@ export default class AuthService {
     }
 
     setSubject (authResult) {
-        if (authResult && authResult.accessToken && authResult.idToken) {
-            axios.get(`api/subjects/${authResult.idTokenPayload.email}`, {
-                headers: {'X-JWT': this.jwt()}
-            }).then(response => {
-                localStorage.setItem('subject', JSON.stringify(response.data))
-            }).catch(error => {
-                this.logout()
-                console.log(error)
-            })
-        }
+        axios.get(`api/subjects/${authResult.idTokenPayload.email}`, {
+            headers: {'X-JWT': this.jwt()}
+        }).then(response => {
+            localStorage.setItem('subject', JSON.stringify(response.data))
+        }).catch(error => {
+            this.logout()
+            console.log(error)
+        })
     }
 
     getSubject () {
@@ -76,6 +73,7 @@ export default class AuthService {
         localStorage.setItem('access_token', authResult.accessToken)
         localStorage.setItem('id_token', authResult.idToken)
         localStorage.setItem('expires_at', expiresAt)
+        this.setSubject(authResult)
         eventBus.$emit('authChange', {authenticated: true})
     }
 
