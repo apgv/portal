@@ -1,4 +1,4 @@
-package no.skotbuvel.portal.user
+package no.skotbuvel.portal.subject
 
 import no.skotbuvel.portal.helper.DbHelper
 import no.skotbuvel.portal.jooq.Sequences.SUBJECT_ID_SEQ

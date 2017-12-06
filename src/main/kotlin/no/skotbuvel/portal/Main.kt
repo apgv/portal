@@ -15,9 +15,9 @@ import no.skotbuvel.portal.membershiptype.MembershipTypeRepository
 import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
-import no.skotbuvel.portal.user.Subject
-import no.skotbuvel.portal.user.SubjectRegistration
-import no.skotbuvel.portal.user.SubjectRepository
+import no.skotbuvel.portal.subject.Subject
+import no.skotbuvel.portal.subject.SubjectRegistration
+import no.skotbuvel.portal.subject.SubjectRepository
 import no.skotbuvel.portal.util.JsonUtil
 import org.flywaydb.core.Flyway
 import spark.Request

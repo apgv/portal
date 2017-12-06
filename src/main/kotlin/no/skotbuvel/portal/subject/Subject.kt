@@ -1,4 +1,4 @@
-package no.skotbuvel.portal.user
+package no.skotbuvel.portal.subject
 
 import java.time.ZonedDateTime
 
