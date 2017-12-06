@@ -1,9 +1,12 @@
 package no.skotbuvel.portal.role
 
 import no.skotbuvel.portal.helper.DbHelper
+import no.skotbuvel.portal.jooq.Sequences.ROLE_ID_SEQ
 import no.skotbuvel.portal.jooq.tables.Role.ROLE
 import no.skotbuvel.portal.subject.Role
+import no.skotbuvel.portal.util.JavaTimeUtil
 import org.jooq.Record
+import org.jooq.TransactionalRunnable
 
 class RoleRepository(private val dbHelper: DbHelper) {
 
@@ -29,4 +32,27 @@ class RoleRepository(private val dbHelper: DbHelper) {
                     createdBy = record[ROLE.CREATED_BY],
                     createdDate = record[ROLE.CREATED_DATE].toZonedDateTime()
             )
+
+    fun save(roleRegistration: RoleRegistration, createdBy: String) {
+        val dslContext = dbHelper.dslContext()
+
+        dslContext.transaction(TransactionalRunnable {
+            dslContext.insertInto(ROLE,
+                    ROLE.ID,
+                    ROLE.ORIGINAL_ID,
+                    ROLE.ACTIVE,
+                    ROLE.NAME,
+                    ROLE.CREATED_BY,
+                    ROLE.CREATED_DATE
+            ).values(
+                    dslContext.nextval(ROLE_ID_SEQ).toInt(),
+                    dslContext.currval(ROLE_ID_SEQ).toInt(),
+                    true,
+                    roleRegistration.name,
+                    createdBy,
+                    JavaTimeUtil.nowEuropeOslo()
+            )
+                    .execute()
+        })
+    }
 }

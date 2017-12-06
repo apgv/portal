@@ -3,6 +3,10 @@
         <div v-if="authenticated">
             <h4 class="title is-4">Roller</h4>
 
+            <router-link :to="'/roleadd'">
+                Legg til rolle
+            </router-link>
+
             <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
                 <tr>
