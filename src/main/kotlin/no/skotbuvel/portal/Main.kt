@@ -15,6 +15,7 @@ import no.skotbuvel.portal.membershiptype.MembershipTypeRepository
 import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
+import no.skotbuvel.portal.role.RoleRepository
 import no.skotbuvel.portal.subject.Subject
 import no.skotbuvel.portal.subject.SubjectRegistration
 import no.skotbuvel.portal.subject.SubjectRepository
@@ -37,6 +38,7 @@ fun main(args: Array<String>) {
     val membershipTypeRepository = MembershipTypeRepository(dbHelper)
     val membershipRepository = MembershipRepository(dbHelper)
     val subjectRepository = SubjectRepository(dbHelper)
+    val roleRepository = RoleRepository(dbHelper)
 
     get("/auth0callback", { _, response ->
         response.redirect("/")
@@ -144,6 +146,13 @@ fun main(args: Array<String>) {
             } else {
                 response.status(400)
             }
+        })
+
+        get("/roles", { request, _ ->
+            verifyTokenAndCheckRole(request)
+            val roles = roleRepository.findAll()
+            val parameterizedType = Types.newParameterizedType(List::class.java, no.skotbuvel.portal.subject.Role::class.java)
+            JsonUtil.moshi.adapter<List<no.skotbuvel.portal.subject.Role>>(parameterizedType).toJson(roles)
         })
 
         after("/*", { _, response ->

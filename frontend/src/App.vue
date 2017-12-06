@@ -20,6 +20,10 @@
                                      class="navbar-item">
                             Brukere
                         </router-link>
+                        <router-link :to="'/roles'"
+                                     class="navbar-item">
+                            Roller
+                        </router-link>
                     </div>
                     <div class="navbar-end">
                         <div v-if="authenticated" class="navbar-item">

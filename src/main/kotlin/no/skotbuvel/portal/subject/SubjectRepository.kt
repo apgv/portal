@@ -76,6 +76,7 @@ class SubjectRepository(private val dbHelper: DbHelper) {
                     Role(
                             id = it[ROLE.ID],
                             name = it[ROLE.NAME],
+                            active = it[ROLE.ACTIVE],
                             createdBy = it[ROLE.CREATED_BY],
                             createdDate = it[ROLE.CREATED_DATE].toZonedDateTime()
                     )
