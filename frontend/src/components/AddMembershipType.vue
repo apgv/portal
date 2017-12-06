@@ -69,8 +69,8 @@
                 </router-link>
             </div>
         </div>
-        <not-authenticated auth="auth"
-                           authenticated="authenticated">
+        <not-authenticated :auth="auth"
+                           :authenticated="authenticated">
         </not-authenticated>
     </div>
 </template>
