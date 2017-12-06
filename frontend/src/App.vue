@@ -22,6 +22,9 @@
                         </router-link>
                     </div>
                     <div class="navbar-end">
+                        <div v-if="authenticated" class="navbar-item">
+                            {{auth.subject.firstName}} ({{auth.subject.email}})
+                        </div>
                         <div class="navbar-item">
                             <button
                                     v-if="!authenticated"

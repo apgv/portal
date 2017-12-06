@@ -126,6 +126,13 @@ fun main(args: Array<String>) {
             JsonUtil.moshi.adapter<List<Subject>>(parameterizedType).toJson(subjects)
         })
 
+        get("/subjects/:email", { request, _ ->
+            verifyTokenAndCheckRole(request)
+            val email = request.params(":email")
+            val subject = subjectRepository.findByEmail(email)
+            JsonUtil.moshi.adapter(Subject::class.java).toJson(subject)
+        })
+
         post("/subjects", { request, response ->
             val decodedJWT = verifyTokenAndCheckRole(request)
             val jsonAdapter = JsonUtil.moshi.adapter(SubjectRegistration::class.java)

@@ -37,6 +37,21 @@ class SubjectRepository(private val dbHelper: DbHelper) {
                 .map { mapSubjectWithRoles(it) }
     }
 
+    fun findByEmail(email: String): Subject {
+        return dbHelper.dslContext()
+                .select(selectParameters)
+                .from(SUBJECT)
+                .leftJoin(SUBJECT_ROLE)
+                .on(SUBJECT.ID.eq(SUBJECT_ROLE.SUBJECT_ID))
+                .leftJoin(ROLE)
+                .on(ROLE.ID.eq(SUBJECT_ROLE.ROLE_ID))
+                .where(SUBJECT.EMAIL.eq(email))
+                .fetchGroups(SUBJECT.ID)
+                .values
+                .map { mapSubjectWithRoles(it) }
+                .first()
+    }
+
     private fun mapSubjectWithRoles(result: Result<Record>): Subject {
         val roles = mapRoles(result)
 
