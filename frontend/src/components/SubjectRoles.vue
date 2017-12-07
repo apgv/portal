@@ -57,7 +57,7 @@
                             <label class="checkbox">
                                 <input type="checkbox"
                                        v-model="role.hasRole"/>
-                                {{role.name}}, beskrivelse: {{role.description}}
+                                <span class="has-text-weight-bold">{{role.name}}</span>, {{role.description}}
                             </label>
                         </div>
                     </div>
