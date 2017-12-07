@@ -4,6 +4,7 @@
 package no.skotbuvel.portal.jooq.tables;
 
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SubjectRole extends TableImpl<SubjectRoleRecord> {
 
-    private static final long serialVersionUID = 802924109;
+    private static final long serialVersionUID = -1586783316;
 
     /**
      * The reference instance of <code>subject_role</code>
@@ -63,6 +64,31 @@ public class SubjectRole extends TableImpl<SubjectRoleRecord> {
      * The column <code>subject_role.role_id</code>.
      */
     public final TableField<SubjectRoleRecord, Integer> ROLE_ID = createField("role_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>subject_role.active</code>.
+     */
+    public final TableField<SubjectRoleRecord, Boolean> ACTIVE = createField("active", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
+
+    /**
+     * The column <code>subject_role.created_by</code>.
+     */
+    public final TableField<SubjectRoleRecord, String> CREATED_BY = createField("created_by", org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
+
+    /**
+     * The column <code>subject_role.created_date</code>.
+     */
+    public final TableField<SubjectRoleRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
+
+    /**
+     * The column <code>subject_role.deleted_by</code>.
+     */
+    public final TableField<SubjectRoleRecord, String> DELETED_BY = createField("deleted_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
+
+    /**
+     * The column <code>subject_role.deleted_date</code>.
+     */
+    public final TableField<SubjectRoleRecord, OffsetDateTime> DELETED_DATE = createField("deleted_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
 
     /**
      * Create a <code>subject_role</code> table reference
