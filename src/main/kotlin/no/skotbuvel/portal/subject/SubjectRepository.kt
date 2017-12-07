@@ -21,7 +21,11 @@ class SubjectRepository(private val dbHelper: DbHelper) {
             SUBJECT.CREATED_BY,
             SUBJECT.CREATED_DATE,
             ROLE.ID,
-            ROLE.NAME
+            ROLE.NAME,
+            ROLE.DESCRIPTION,
+            ROLE.ACTIVE,
+            ROLE.CREATED_BY,
+            ROLE.CREATED_DATE
     )
 
     fun findAll(): List<Subject> {
@@ -52,6 +56,21 @@ class SubjectRepository(private val dbHelper: DbHelper) {
                 .first()
     }
 
+    fun findById(id: Int): Subject {
+        return dbHelper.dslContext()
+                .select(selectParameters)
+                .from(SUBJECT)
+                .leftJoin(SUBJECT_ROLE)
+                .on(SUBJECT.ID.eq(SUBJECT_ROLE.SUBJECT_ID))
+                .leftJoin(ROLE)
+                .on(ROLE.ID.eq(SUBJECT_ROLE.ROLE_ID))
+                .where(SUBJECT.ID.eq(id))
+                .fetchGroups(SUBJECT.ID)
+                .values
+                .map { mapSubjectWithRoles(it) }
+                .first()
+    }
+
     private fun mapSubjectWithRoles(result: Result<Record>): Subject {
         val roles = mapRoles(result)
 
@@ -76,6 +95,7 @@ class SubjectRepository(private val dbHelper: DbHelper) {
                     Role(
                             id = it[ROLE.ID],
                             name = it[ROLE.NAME],
+                            description = it[ROLE.DESCRIPTION],
                             active = it[ROLE.ACTIVE],
                             createdBy = it[ROLE.CREATED_BY],
                             createdDate = it[ROLE.CREATED_DATE].toZonedDateTime()

@@ -16,18 +16,24 @@
                     <th>Roller</th>
                     <th>Registrert av</th>
                     <th>Registrert dato</th>
+                    <th>Administrer roller</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="user in users">
-                    <td>{{user.id}}</td>
-                    <td>{{user.firstName}}</td>
-                    <td>{{user.lastName}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.phone}}</td>
-                    <td>{{user.roles}}</td>
-                    <td>{{user.createdBy}}</td>
-                    <td>{{user.createdDate | formatDate}}</td>
+                <tr v-for="subject in subjects">
+                    <td>{{subject.id}}</td>
+                    <td>{{subject.firstName}}</td>
+                    <td>{{subject.lastName}}</td>
+                    <td>{{subject.email}}</td>
+                    <td>{{subject.phone}}</td>
+                    <td>{{subject.roles}}</td>
+                    <td>{{subject.createdBy}}</td>
+                    <td>{{subject.createdDate | formatDate}}</td>
+                    <td>
+                        <router-link :to="`subjectadminroles/${subject.id}`">
+                            Administrer roller
+                        </router-link>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -48,7 +54,7 @@
         props: ['auth', 'authenticated'],
         data () {
             return {
-                users: []
+                subjects: []
             }
         },
         methods: {
@@ -57,15 +63,15 @@
                     axios.get('api/subjects', {
                         headers: {'X-JWT': this.auth.jwt()}
                     }).then(response => {
-                        let users = response.data
-                        users.forEach(user => {
-                            user.roles = user.roles
+                        let subjects = response.data
+                        subjects.forEach(subject => {
+                            subject.roles = subject.roles
                                 .map(role => {
                                     return role.name
                                 })
                                 .join(', ')
                         })
-                        this.users = users
+                        this.subjects = subjects
                     }).catch(error => {
                         this.$snotify.error('Feil ved henting av brukere')
                         console.log(error)

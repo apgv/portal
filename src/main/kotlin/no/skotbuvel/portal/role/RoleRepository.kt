@@ -10,11 +10,18 @@ import org.jooq.TransactionalRunnable
 
 class RoleRepository(private val dbHelper: DbHelper) {
 
-    fun findAll(): List<Role> {
+    fun findAll(activeOnly: Boolean) = if (activeOnly) findAllActive() else findAll()
+
+    private fun findAllActive(): List<Role> {
+        return findAll().filter { role -> role.active }
+    }
+
+    private fun findAll(): List<Role> {
         return dbHelper.dslContext()
                 .select(
                         ROLE.ID,
                         ROLE.NAME,
+                        ROLE.DESCRIPTION,
                         ROLE.ACTIVE,
                         ROLE.CREATED_BY,
                         ROLE.CREATED_DATE
@@ -28,6 +35,7 @@ class RoleRepository(private val dbHelper: DbHelper) {
             Role(
                     id = record[ROLE.ID],
                     name = record[ROLE.NAME],
+                    description = record[ROLE.DESCRIPTION],
                     active = record[ROLE.ACTIVE],
                     createdBy = record[ROLE.CREATED_BY],
                     createdDate = record[ROLE.CREATED_DATE].toZonedDateTime()
@@ -42,6 +50,7 @@ class RoleRepository(private val dbHelper: DbHelper) {
                     ROLE.ORIGINAL_ID,
                     ROLE.ACTIVE,
                     ROLE.NAME,
+                    ROLE.DESCRIPTION,
                     ROLE.CREATED_BY,
                     ROLE.CREATED_DATE
             ).values(
@@ -49,6 +58,7 @@ class RoleRepository(private val dbHelper: DbHelper) {
                     dslContext.currval(ROLE_ID_SEQ).toInt(),
                     true,
                     roleRegistration.name,
+                    roleRegistration.description,
                     createdBy,
                     JavaTimeUtil.nowEuropeOslo()
             )

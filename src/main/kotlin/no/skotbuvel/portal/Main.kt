@@ -129,11 +129,17 @@ fun main(args: Array<String>) {
             JsonUtil.moshi.adapter<List<Subject>>(parameterizedType).toJson(subjects)
         })
 
-        get("/subjects/:email", { request, _ ->
+        get("/subjects/search", { request, response ->
             verifyTokenAndCheckRole(request)
-            val email = request.params(":email")
-            val subject = subjectRepository.findByEmail(email)
-            JsonUtil.moshi.adapter(Subject::class.java).toJson(subject)
+            val id = request.queryParams("id")
+            val email = request.queryParams("email")
+            val jsonAdapter = JsonUtil.moshi.adapter(Subject::class.java)
+
+            when {
+                !id.isNullOrBlank() -> jsonAdapter.toJson(subjectRepository.findById(id.toInt()))
+                !email.isNullOrBlank() -> jsonAdapter.toJson(subjectRepository.findByEmail(email))
+                else -> response.status(400)
+            }
         })
 
         post("/subjects", { request, response ->
@@ -151,7 +157,9 @@ fun main(args: Array<String>) {
 
         get("/roles", { request, _ ->
             verifyTokenAndCheckRole(request)
-            val roles = roleRepository.findAll()
+            val queryParamActive = request.queryParams("active")
+            val activeOnly = queryParamActive?.toBoolean() ?: false
+            val roles = roleRepository.findAll(activeOnly)
             val parameterizedType = Types.newParameterizedType(List::class.java, no.skotbuvel.portal.subject.Role::class.java)
             JsonUtil.moshi.adapter<List<no.skotbuvel.portal.subject.Role>>(parameterizedType).toJson(roles)
         })

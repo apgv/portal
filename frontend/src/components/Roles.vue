@@ -11,7 +11,8 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Rollenavn</th>
+                    <th>Navn</th>
+                    <th>Beskrivelse</th>
                     <th>Rollen er aktiv</th>
                     <th>Registrert av</th>
                     <th>Registrert dato</th>
@@ -21,6 +22,7 @@
                 <tr v-for="role in roles">
                     <td>{{role.id}}</td>
                     <td>{{role.name}}</td>
+                    <td>{{role.description}}</td>
                     <td>{{role.active? 'Ja':'Nei'}}</td>
                     <td>{{role.createdBy}}</td>
                     <td>{{role.createdDate | formatDate}}</td>

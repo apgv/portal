@@ -21,6 +21,22 @@
                 </p>
             </div>
 
+            <div class="field">
+                <label class="label">Beskrivelse</label>
+                <p class="control">
+                    <textarea v-model="role.description"
+                              v-validate="'required|max:500'"
+                              name="description"
+                              class="textarea"
+                              placeholder="Beskrivelse">
+                    </textarea>
+                    <span v-show="errors.has('description')"
+                          class="help is-danger">
+                        {{errors.first('description')}}
+                    </span>
+                </p>
+            </div>
+
             <div>
                 <button @click="save()"
                         class="button is-success">
@@ -50,7 +66,8 @@
         data () {
             return {
                 role: {
-                    name: null
+                    name: null,
+                    description: null
                 }
             }
         },
@@ -61,7 +78,8 @@
                         headers: {'X-JWT': this.auth.jwt()}
                     }).then(() => {
                         this.role = {
-                            name: null
+                            name: null,
+                            description: null
                         }
                         this.$validator.reset()
                         this.$snotify.success('Rollen ble lagret')
