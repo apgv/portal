@@ -17,6 +17,7 @@ CREATE TABLE role (
   original_id  INTEGER                  NOT NULL,
   active       BOOLEAN                  NOT NULL,
   name         VARCHAR(20)              NOT NULL,
+  description  VARCHAR(500)             NOT NULL,
   created_by   VARCHAR(50)              NOT NULL,
   created_date TIMESTAMP WITH TIME ZONE NOT NULL,
   deleted_by   VARCHAR(50),
@@ -25,6 +26,6 @@ CREATE TABLE role (
 
 CREATE TABLE subject_role (
   subject_id INTEGER REFERENCES subject (id),
-  role_id INTEGER REFERENCES role (id),
+  role_id    INTEGER REFERENCES role (id),
   PRIMARY KEY (subject_id, role_id)
 );

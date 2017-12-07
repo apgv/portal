@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Role extends TableImpl<RoleRecord> {
 
-    private static final long serialVersionUID = 1624870015;
+    private static final long serialVersionUID = 637610164;
 
     /**
      * The reference instance of <code>role</code>
@@ -74,6 +74,11 @@ public class Role extends TableImpl<RoleRecord> {
      * The column <code>role.name</code>.
      */
     public final TableField<RoleRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(20).nullable(false), this, "");
+
+    /**
+     * The column <code>role.description</code>.
+     */
+    public final TableField<RoleRecord, String> DESCRIPTION = createField("description", org.jooq.impl.SQLDataType.VARCHAR(500).nullable(false), this, "");
 
     /**
      * The column <code>role.created_by</code>.
