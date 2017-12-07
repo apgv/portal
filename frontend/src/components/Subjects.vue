@@ -30,7 +30,7 @@
                     <td>{{subject.createdBy}}</td>
                     <td>{{subject.createdDate | formatDate}}</td>
                     <td>
-                        <router-link :to="`subjectadminroles/${subject.id}`">
+                        <router-link :to="`subjectroles/${subject.id}`">
                             Administrer roller
                         </router-link>
                     </td>

@@ -11,7 +11,7 @@ import MembershipTypes from '@/components/MembershipTypes'
 import AddMembershipType from '@/components/AddMembershipType'
 import Subjects from '@/components/Subjects'
 import SubjectAdd from '@/components/SubjectAdd'
-import SubjectAdminRoles from '@/components/SubjectAdminRoles'
+import SubjectRoles from '@/components/SubjectRoles'
 import Roles from '@/components/Roles'
 import RoleAdd from '@/components/RoleAdd'
 import Auth0Callback from '@/components/Auth0Callback'
@@ -79,9 +79,9 @@ const router = new Router({
             component: SubjectAdd
         },
         {
-            path: '/subjectadminroles/:subjectId',
-            name: 'SubjectAdminRoles',
-            component: SubjectAdminRoles,
+            path: '/subjectroles/:subjectId',
+            name: 'SubjectRoles',
+            component: SubjectRoles,
             props: true
         },
         {

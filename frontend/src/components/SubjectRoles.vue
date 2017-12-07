@@ -57,7 +57,7 @@
                             <label class="checkbox">
                                 <input type="checkbox"
                                        v-model="role.hasRole"/>
-                                {{role.name}}
+                                {{role.name}}, beskrivelse: {{role.description}}
                             </label>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
 
     export default {
         components: {NotAuthenticated},
-        name: 'subject-admin-roles',
+        name: 'subject-roles',
         props: ['auth', 'authenticated', 'subjectId'],
         data () {
             return {
