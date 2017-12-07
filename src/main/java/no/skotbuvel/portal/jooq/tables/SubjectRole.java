@@ -17,6 +17,7 @@ import no.skotbuvel.portal.jooq.tables.records.SubjectRoleRecord;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
@@ -40,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SubjectRole extends TableImpl<SubjectRoleRecord> {
 
-    private static final long serialVersionUID = -1586783316;
+    private static final long serialVersionUID = -935025180;
 
     /**
      * The reference instance of <code>subject_role</code>
@@ -54,6 +55,11 @@ public class SubjectRole extends TableImpl<SubjectRoleRecord> {
     public Class<SubjectRoleRecord> getRecordType() {
         return SubjectRoleRecord.class;
     }
+
+    /**
+     * The column <code>subject_role.id</code>.
+     */
+    public final TableField<SubjectRoleRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('subject_role_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>subject_role.subject_id</code>.
@@ -133,6 +139,14 @@ public class SubjectRole extends TableImpl<SubjectRoleRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.SUBJECT_ROLE_PKEY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Identity<SubjectRoleRecord, Integer> getIdentity() {
+        return Keys.IDENTITY_SUBJECT_ROLE;
     }
 
     /**

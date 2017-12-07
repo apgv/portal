@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div v-if="authenticated">
-            <h4 class="title is-4">Medlemskap</h4>
+            <h4 class="title is-4">Rolleadministrasjon</h4>
 
             <div class="columns">
                 <div class="column">
@@ -56,6 +56,7 @@
                              class="control box">
                             <label class="checkbox">
                                 <input type="checkbox"
+                                       :value="role.id"
                                        v-model="role.hasRole"/>
                                 <span class="has-text-weight-bold">{{role.name}}</span>, {{role.description}}
                             </label>
@@ -63,7 +64,16 @@
                     </div>
                 </div>
             </div>
-
+            <div>
+                <button @click="save()"
+                        class="button is-success">
+                    Lagre
+                </button>
+                <router-link :to="'/subjects'"
+                             class="button">
+                    Avbryt
+                </router-link>
+            </div>
         </div>
 
         <not-authenticated
@@ -110,6 +120,23 @@
                     this.$snotify.error('Feil ved henting av roller')
                     console.log(error)
                 })
+            },
+            save () {
+                let chosenRoles = this.subjectRoles
+                    .filter(role => {
+                        return role.hasRole === true
+                    }).map(role => {
+                        return role.id
+                    })
+
+                axios.post('/api/subjectroles', {subjectId: this.subjectId, roleIds: chosenRoles}, {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(() => {
+                    this.$snotify.success('Rollene ble oppdatert')
+                }).catch(error => {
+                    this.$snotify.error('Feil ved oppdatering av roller')
+                    console.log(error)
+                })
             }
         },
         computed: {
@@ -123,9 +150,7 @@
                     })
 
                     data.forEach(role => {
-                        if (subjectRoleIds.indexOf(role.id) > -1) {
-                            role.hasRole = true
-                        }
+                        role.hasRole = subjectRoleIds.indexOf(role.id) > -1
                     })
 
                     return data

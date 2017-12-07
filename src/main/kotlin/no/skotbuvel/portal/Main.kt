@@ -20,6 +20,7 @@ import no.skotbuvel.portal.role.RoleRepository
 import no.skotbuvel.portal.subject.Subject
 import no.skotbuvel.portal.subject.SubjectRegistration
 import no.skotbuvel.portal.subject.SubjectRepository
+import no.skotbuvel.portal.subject.SubjectRoleRegistration
 import no.skotbuvel.portal.util.JsonUtil
 import org.flywaydb.core.Flyway
 import spark.Request
@@ -149,6 +150,19 @@ fun main(args: Array<String>) {
 
             if (subjectRegistration != null) {
                 subjectRepository.save(subjectRegistration, JwtUtil.email(decodedJWT))
+                response.status(201)
+            } else {
+                response.status(400)
+            }
+        })
+
+        post("/subjectroles", { request, response ->
+            val decodedJWT = verifyTokenAndCheckRole(request)
+
+            val jsonAdapter = JsonUtil.moshi.adapter(SubjectRoleRegistration::class.java)
+            val subjectRoleRegistration = jsonAdapter.fromJson(request.body())
+            if (subjectRoleRegistration != null) {
+                subjectRepository.updateRoles(subjectRoleRegistration, JwtUtil.email(decodedJWT))
                 response.status(201)
             } else {
                 response.status(400)

@@ -48,6 +48,7 @@ public class Keys {
     public static final Identity<PersonRecord, Integer> IDENTITY_PERSON = Identities0.IDENTITY_PERSON;
     public static final Identity<RoleRecord, Integer> IDENTITY_ROLE = Identities0.IDENTITY_ROLE;
     public static final Identity<SubjectRecord, Integer> IDENTITY_SUBJECT = Identities0.IDENTITY_SUBJECT;
+    public static final Identity<SubjectRoleRecord, Integer> IDENTITY_SUBJECT_ROLE = Identities0.IDENTITY_SUBJECT_ROLE;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
@@ -79,6 +80,7 @@ public class Keys {
         public static Identity<PersonRecord, Integer> IDENTITY_PERSON = createIdentity(Person.PERSON, Person.PERSON.ID);
         public static Identity<RoleRecord, Integer> IDENTITY_ROLE = createIdentity(Role.ROLE, Role.ROLE.ID);
         public static Identity<SubjectRecord, Integer> IDENTITY_SUBJECT = createIdentity(Subject.SUBJECT, Subject.SUBJECT.ID);
+        public static Identity<SubjectRoleRecord, Integer> IDENTITY_SUBJECT_ROLE = createIdentity(SubjectRole.SUBJECT_ROLE, SubjectRole.SUBJECT_ROLE.ID);
     }
 
     private static class UniqueKeys0 extends AbstractKeys {
@@ -87,7 +89,7 @@ public class Keys {
         public static final UniqueKey<PersonRecord> PERSON_PKEY = createUniqueKey(Person.PERSON, "person_pkey", Person.PERSON.ID);
         public static final UniqueKey<RoleRecord> ROLE_PKEY = createUniqueKey(Role.ROLE, "role_pkey", Role.ROLE.ID);
         public static final UniqueKey<SubjectRecord> SUBJECT_PKEY = createUniqueKey(Subject.SUBJECT, "subject_pkey", Subject.SUBJECT.ID);
-        public static final UniqueKey<SubjectRoleRecord> SUBJECT_ROLE_PKEY = createUniqueKey(SubjectRole.SUBJECT_ROLE, "subject_role_pkey", SubjectRole.SUBJECT_ROLE.SUBJECT_ID, SubjectRole.SUBJECT_ROLE.ROLE_ID);
+        public static final UniqueKey<SubjectRoleRecord> SUBJECT_ROLE_PKEY = createUniqueKey(SubjectRole.SUBJECT_ROLE, "subject_role_pkey", SubjectRole.SUBJECT_ROLE.ID, SubjectRole.SUBJECT_ROLE.SUBJECT_ID, SubjectRole.SUBJECT_ROLE.ROLE_ID);
     }
 
     private static class ForeignKeys0 extends AbstractKeys {
