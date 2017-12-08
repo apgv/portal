@@ -1,4 +1,4 @@
-package no.skotbuvel.portal.util
+package no.skotbuvel.portal.moshiadapter
 
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson

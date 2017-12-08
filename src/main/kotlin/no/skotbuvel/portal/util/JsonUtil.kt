@@ -1,7 +1,8 @@
 package no.skotbuvel.portal.util
 
 import com.squareup.moshi.Moshi
-import no.skotbuvel.portal.person.ZonedDateTimeAdapter
+import no.skotbuvel.portal.moshiadapter.LocalDateAdapter
+import no.skotbuvel.portal.moshiadapter.ZonedDateTimeAdapter
 
 object JsonUtil {
 
