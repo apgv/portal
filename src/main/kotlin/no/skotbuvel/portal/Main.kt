@@ -174,8 +174,8 @@ fun main(args: Array<String>) {
             val queryParamActive = request.queryParams("active")
             val activeOnly = queryParamActive?.toBoolean() ?: false
             val roles = roleRepository.findAll(activeOnly)
-            val parameterizedType = Types.newParameterizedType(List::class.java, no.skotbuvel.portal.subject.Role::class.java)
-            JsonUtil.moshi.adapter<List<no.skotbuvel.portal.subject.Role>>(parameterizedType).toJson(roles)
+            val parameterizedType = Types.newParameterizedType(List::class.java, no.skotbuvel.portal.role.Role::class.java)
+            JsonUtil.moshi.adapter<List<no.skotbuvel.portal.role.Role>>(parameterizedType).toJson(roles)
         })
 
         post("/roles", { request, response ->

@@ -3,7 +3,6 @@ package no.skotbuvel.portal.role
 import no.skotbuvel.portal.helper.DbHelper
 import no.skotbuvel.portal.jooq.Sequences.ROLE_ID_SEQ
 import no.skotbuvel.portal.jooq.tables.Role.ROLE
-import no.skotbuvel.portal.subject.Role
 import no.skotbuvel.portal.util.JavaTimeUtil
 import org.jooq.Record
 import org.jooq.TransactionalRunnable

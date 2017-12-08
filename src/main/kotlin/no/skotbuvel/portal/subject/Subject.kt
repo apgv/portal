@@ -1,5 +1,6 @@
 package no.skotbuvel.portal.subject
 
+import no.skotbuvel.portal.role.Role
 import java.time.ZonedDateTime
 
 data class Subject(

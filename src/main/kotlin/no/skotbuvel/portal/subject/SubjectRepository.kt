@@ -6,6 +6,7 @@ import no.skotbuvel.portal.jooq.Sequences.SUBJECT_ROLE_ID_SEQ
 import no.skotbuvel.portal.jooq.tables.Role.ROLE
 import no.skotbuvel.portal.jooq.tables.Subject.SUBJECT
 import no.skotbuvel.portal.jooq.tables.SubjectRole.SUBJECT_ROLE
+import no.skotbuvel.portal.role.Role
 import no.skotbuvel.portal.util.JavaTimeUtil
 import org.jooq.Record
 import org.jooq.Result
