@@ -1,6 +1,6 @@
 package no.skotbuvel.portal.person
 
-class PersonRegistration(
+data class PersonRegistration(
         val fullName: String,
         val email: String,
         val phone: String,

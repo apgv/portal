@@ -1,6 +1,6 @@
 package no.skotbuvel.portal.subject
 
-class SubjectRoleRegistration(
+data class SubjectRoleRegistration(
         val subjectId: Int,
         val roleIds: List<Int>
 )

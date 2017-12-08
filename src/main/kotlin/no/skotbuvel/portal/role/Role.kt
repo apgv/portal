@@ -2,7 +2,7 @@ package no.skotbuvel.portal.role
 
 import java.time.ZonedDateTime
 
-class Role(
+data class Role(
         val id: Int,
         val name: String,
         val description: String,

@@ -1,6 +1,6 @@
 package no.skotbuvel.portal.role
 
-class RoleRegistration(
+data class RoleRegistration(
         val name: String,
         val description: String
 )
