@@ -97,6 +97,7 @@ dependencies {
     compile("org.slf4j:slf4j-simple:1.7.25")
     compile("com.squareup.moshi:moshi:1.5.0")
     compile("com.google.code.gson:gson:2.8.2")
+    compile("com.google.guava:guava:23.5-jre")
     compile("com.auth0:java-jwt:3.3.0")
     compile("com.auth0:jwks-rsa:0.2.0")
     compile("com.zaxxer:HikariCP:2.7.2")

@@ -1,5 +1,7 @@
 package no.skotbuvel.portal.subject
 
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import no.skotbuvel.portal.helper.DbHelper
 import no.skotbuvel.portal.jooq.Sequences.SUBJECT_ID_SEQ
 import no.skotbuvel.portal.jooq.Sequences.SUBJECT_ROLE_ID_SEQ
@@ -11,6 +13,7 @@ import no.skotbuvel.portal.util.JavaTimeUtil
 import org.jooq.Record
 import org.jooq.Result
 import org.jooq.TransactionalRunnable
+import java.util.concurrent.TimeUnit
 
 class SubjectRepository(private val dbHelper: DbHelper) {
 
@@ -30,6 +33,9 @@ class SubjectRepository(private val dbHelper: DbHelper) {
             ROLE.CREATED_DATE
     )
 
+    private val subjectByEmailCache = loadingCacheByEmail()
+    private val subjectByIdCache = loadingCacheById()
+
     fun findAll(): List<Subject> {
         return dbHelper.dslContext()
                 .select(selectParameters)
@@ -45,35 +51,11 @@ class SubjectRepository(private val dbHelper: DbHelper) {
     }
 
     fun findByEmail(email: String): Subject {
-        return dbHelper.dslContext()
-                .select(selectParameters)
-                .from(SUBJECT)
-                .leftJoin(SUBJECT_ROLE)
-                .on(SUBJECT.ID.eq(SUBJECT_ROLE.SUBJECT_ID))
-                .and(SUBJECT_ROLE.ACTIVE.eq(true))
-                .leftJoin(ROLE)
-                .on(ROLE.ID.eq(SUBJECT_ROLE.ROLE_ID))
-                .where(SUBJECT.EMAIL.eq(email))
-                .fetchGroups(SUBJECT.ID)
-                .values
-                .map { mapSubjectWithRoles(it) }
-                .first()
+        return subjectByEmailCache[email]
     }
 
     fun findById(id: Int): Subject {
-        return dbHelper.dslContext()
-                .select(selectParameters)
-                .from(SUBJECT)
-                .leftJoin(SUBJECT_ROLE)
-                .on(SUBJECT.ID.eq(SUBJECT_ROLE.SUBJECT_ID))
-                .and(SUBJECT_ROLE.ACTIVE.eq(true))
-                .leftJoin(ROLE)
-                .on(ROLE.ID.eq(SUBJECT_ROLE.ROLE_ID))
-                .where(SUBJECT.ID.eq(id))
-                .fetchGroups(SUBJECT.ID)
-                .values
-                .map { mapSubjectWithRoles(it) }
-                .first()
+        return subjectByIdCache[id]
     }
 
     fun save(subjectRegistration: SubjectRegistration, createdBy: String) {
@@ -149,6 +131,13 @@ class SubjectRepository(private val dbHelper: DbHelper) {
                         .execute()
             }
         })
+
+        invalidateCaches(subjectRoleRegistration.subjectId)
+    }
+
+    private fun invalidateCaches(subjectId: Int) {
+        subjectByEmailCache.invalidate(subjectByIdCache[subjectId])
+        subjectByIdCache.invalidate(subjectId)
     }
 
     private fun mapSubjectWithRoles(result: Result<Record>): Subject {
@@ -182,4 +171,48 @@ class SubjectRepository(private val dbHelper: DbHelper) {
                     )
                 }
     }
+
+    private fun loadingCacheByEmail() = CacheBuilder.newBuilder()
+            .expireAfterAccess(1, TimeUnit.HOURS)
+            .build(
+                    object : CacheLoader<String, Subject>() {
+                        override fun load(key: String): Subject {
+                            return dbHelper.dslContext()
+                                    .select(selectParameters)
+                                    .from(SUBJECT)
+                                    .leftJoin(SUBJECT_ROLE)
+                                    .on(SUBJECT.ID.eq(SUBJECT_ROLE.SUBJECT_ID))
+                                    .and(SUBJECT_ROLE.ACTIVE.eq(true))
+                                    .leftJoin(ROLE)
+                                    .on(ROLE.ID.eq(SUBJECT_ROLE.ROLE_ID))
+                                    .where(SUBJECT.EMAIL.eq(key))
+                                    .fetchGroups(SUBJECT.ID)
+                                    .values
+                                    .map { mapSubjectWithRoles(it) }
+                                    .first()
+                        }
+                    }
+            )
+
+    private fun loadingCacheById() = CacheBuilder.newBuilder()
+            .expireAfterAccess(1, TimeUnit.HOURS)
+            .build(
+                    object : CacheLoader<Int, Subject>() {
+                        override fun load(key: Int): Subject {
+                            return dbHelper.dslContext()
+                                    .select(selectParameters)
+                                    .from(SUBJECT)
+                                    .leftJoin(SUBJECT_ROLE)
+                                    .on(SUBJECT.ID.eq(SUBJECT_ROLE.SUBJECT_ID))
+                                    .and(SUBJECT_ROLE.ACTIVE.eq(true))
+                                    .leftJoin(ROLE)
+                                    .on(ROLE.ID.eq(SUBJECT_ROLE.ROLE_ID))
+                                    .where(SUBJECT.ID.eq(key))
+                                    .fetchGroups(SUBJECT.ID)
+                                    .values
+                                    .map { mapSubjectWithRoles(it) }
+                                    .first()
+                        }
+                    }
+            )
 }
