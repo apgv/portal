@@ -29,7 +29,6 @@ class MembershipTypeRepository(private val dbHelper: DbHelper) {
                 .from(MEMBERSHIP_TYPE)
                 .fetch()
                 .map { toMembershipType(it) }
-                .toList()
     }
 
     fun save(membershipTypeRegistration: MembershipTypeRegistration, createdBy: String) {
