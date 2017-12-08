@@ -76,38 +76,6 @@ class SubjectRepository(private val dbHelper: DbHelper) {
                 .first()
     }
 
-    private fun mapSubjectWithRoles(result: Result<Record>): Subject {
-        val roles = mapRoles(result)
-
-        val record = result.first()
-
-        return Subject(
-                id = record[SUBJECT.ID],
-                firstName = record[SUBJECT.FIRST_NAME],
-                lastName = record[SUBJECT.LAST_NAME],
-                email = record[SUBJECT.EMAIL],
-                phone = record[SUBJECT.PHONE],
-                roles = roles,
-                createdBy = record[SUBJECT.CREATED_BY],
-                createdDate = record[SUBJECT.CREATED_DATE].toZonedDateTime()
-        )
-    }
-
-    private fun mapRoles(result: Result<Record>): List<Role> {
-        return result
-                .filter { it[ROLE.ID] != null }
-                .map {
-                    Role(
-                            id = it[ROLE.ID],
-                            name = it[ROLE.NAME],
-                            description = it[ROLE.DESCRIPTION],
-                            active = it[ROLE.ACTIVE],
-                            createdBy = it[ROLE.CREATED_BY],
-                            createdDate = it[ROLE.CREATED_DATE].toZonedDateTime()
-                    )
-                }
-    }
-
     fun save(subjectRegistration: SubjectRegistration, createdBy: String) {
         val dslContext = dbHelper.dslContext()
 
@@ -181,5 +149,37 @@ class SubjectRepository(private val dbHelper: DbHelper) {
                         .execute()
             }
         })
+    }
+
+    private fun mapSubjectWithRoles(result: Result<Record>): Subject {
+        val roles = mapRoles(result)
+
+        val record = result.first()
+
+        return Subject(
+                id = record[SUBJECT.ID],
+                firstName = record[SUBJECT.FIRST_NAME],
+                lastName = record[SUBJECT.LAST_NAME],
+                email = record[SUBJECT.EMAIL],
+                phone = record[SUBJECT.PHONE],
+                roles = roles,
+                createdBy = record[SUBJECT.CREATED_BY],
+                createdDate = record[SUBJECT.CREATED_DATE].toZonedDateTime()
+        )
+    }
+
+    private fun mapRoles(result: Result<Record>): List<Role> {
+        return result
+                .filter { it[ROLE.ID] != null }
+                .map {
+                    Role(
+                            id = it[ROLE.ID],
+                            name = it[ROLE.NAME],
+                            description = it[ROLE.DESCRIPTION],
+                            active = it[ROLE.ACTIVE],
+                            createdBy = it[ROLE.CREATED_BY],
+                            createdDate = it[ROLE.CREATED_DATE].toZonedDateTime()
+                    )
+                }
     }
 }

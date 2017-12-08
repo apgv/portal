@@ -30,16 +30,6 @@ class RoleRepository(private val dbHelper: DbHelper) {
                 .map { mapRole(it) }
     }
 
-    private fun mapRole(record: Record) =
-            Role(
-                    id = record[ROLE.ID],
-                    name = record[ROLE.NAME],
-                    description = record[ROLE.DESCRIPTION],
-                    active = record[ROLE.ACTIVE],
-                    createdBy = record[ROLE.CREATED_BY],
-                    createdDate = record[ROLE.CREATED_DATE].toZonedDateTime()
-            )
-
     fun save(roleRegistration: RoleRegistration, createdBy: String) {
         val dslContext = dbHelper.dslContext()
 
@@ -64,4 +54,14 @@ class RoleRepository(private val dbHelper: DbHelper) {
                     .execute()
         })
     }
+
+    private fun mapRole(record: Record) =
+            Role(
+                    id = record[ROLE.ID],
+                    name = record[ROLE.NAME],
+                    description = record[ROLE.DESCRIPTION],
+                    active = record[ROLE.ACTIVE],
+                    createdBy = record[ROLE.CREATED_BY],
+                    createdDate = record[ROLE.CREATED_DATE].toZonedDateTime()
+            )
 }
