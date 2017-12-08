@@ -9,10 +9,11 @@ import org.jooq.TransactionalRunnable
 
 class MembershipTypeRepository(private val dbHelper: DbHelper) {
 
-    fun findAll(activeOnly: Boolean) = if (activeOnly) findAllActive() else findAll()
-
-    private fun findAllActive(): List<MembershipType> {
-        return findAll().filter { membershipType -> membershipType.active }
+    fun findAll(activeOnly: Boolean): List<MembershipType> {
+        return when {
+            activeOnly -> findAll().filter { it -> it.active }
+            else -> findAll()
+        }
     }
 
     private fun findAll(): List<MembershipType> {

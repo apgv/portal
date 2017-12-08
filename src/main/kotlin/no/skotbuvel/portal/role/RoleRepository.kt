@@ -9,10 +9,11 @@ import org.jooq.TransactionalRunnable
 
 class RoleRepository(private val dbHelper: DbHelper) {
 
-    fun findAll(activeOnly: Boolean) = if (activeOnly) findAllActive() else findAll()
-
-    private fun findAllActive(): List<Role> {
-        return findAll().filter { role -> role.active }
+    fun findAll(activeOnly: Boolean): List<Role> {
+        return when {
+            activeOnly -> findAll().filter { it -> it.active }
+            else -> findAll()
+        }
     }
 
     private fun findAll(): List<Role> {
