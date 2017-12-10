@@ -4,7 +4,6 @@
 package no.skotbuvel.portal.jooq.tables;
 
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Role extends TableImpl<RoleRecord> {
 
-    private static final long serialVersionUID = 637610164;
+    private static final long serialVersionUID = 116148510;
 
     /**
      * The reference instance of <code>role</code>
@@ -61,16 +60,6 @@ public class Role extends TableImpl<RoleRecord> {
     public final TableField<RoleRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('role_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>role.original_id</code>.
-     */
-    public final TableField<RoleRecord, Integer> ORIGINAL_ID = createField("original_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
-    /**
-     * The column <code>role.active</code>.
-     */
-    public final TableField<RoleRecord, Boolean> ACTIVE = createField("active", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
-
-    /**
      * The column <code>role.name</code>.
      */
     public final TableField<RoleRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(20).nullable(false), this, "");
@@ -79,26 +68,6 @@ public class Role extends TableImpl<RoleRecord> {
      * The column <code>role.description</code>.
      */
     public final TableField<RoleRecord, String> DESCRIPTION = createField("description", org.jooq.impl.SQLDataType.VARCHAR(500).nullable(false), this, "");
-
-    /**
-     * The column <code>role.created_by</code>.
-     */
-    public final TableField<RoleRecord, String> CREATED_BY = createField("created_by", org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
-
-    /**
-     * The column <code>role.created_date</code>.
-     */
-    public final TableField<RoleRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
-
-    /**
-     * The column <code>role.deleted_by</code>.
-     */
-    public final TableField<RoleRecord, String> DELETED_BY = createField("deleted_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
-
-    /**
-     * The column <code>role.deleted_date</code>.
-     */
-    public final TableField<RoleRecord, OffsetDateTime> DELETED_DATE = createField("deleted_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
 
     /**
      * Create a <code>role</code> table reference

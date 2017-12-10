@@ -27,10 +27,7 @@ class SubjectRepository(private val dbHelper: DbHelper) {
             SUBJECT.CREATED_DATE,
             ROLE.ID,
             ROLE.NAME,
-            ROLE.DESCRIPTION,
-            ROLE.ACTIVE,
-            ROLE.CREATED_BY,
-            ROLE.CREATED_DATE
+            ROLE.DESCRIPTION
     )
 
     private val subjectByEmailCache = loadingCacheByEmail()
@@ -164,10 +161,7 @@ class SubjectRepository(private val dbHelper: DbHelper) {
                     Role(
                             id = it[ROLE.ID],
                             name = it[ROLE.NAME],
-                            description = it[ROLE.DESCRIPTION],
-                            active = it[ROLE.ACTIVE],
-                            createdBy = it[ROLE.CREATED_BY],
-                            createdDate = it[ROLE.CREATED_DATE].toZonedDateTime()
+                            description = it[ROLE.DESCRIPTION]
                     )
                 }
     }

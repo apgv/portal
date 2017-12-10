@@ -111,8 +111,7 @@
             },
             fetchRoles () {
                 axios.get('/api/roles', {
-                    headers: {'X-JWT': this.auth.jwt()},
-                    params: {'active': true}
+                    headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {
                     this.roles = response.data
                 }).catch(error => {

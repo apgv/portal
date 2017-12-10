@@ -13,15 +13,9 @@ CREATE TABLE subject (
 );
 
 CREATE TABLE role (
-  id           SERIAL PRIMARY KEY,
-  original_id  INTEGER                  NOT NULL,
-  active       BOOLEAN                  NOT NULL,
-  name         VARCHAR(20)              NOT NULL,
-  description  VARCHAR(500)             NOT NULL,
-  created_by   VARCHAR(50)              NOT NULL,
-  created_date TIMESTAMP WITH TIME ZONE NOT NULL,
-  deleted_by   VARCHAR(50),
-  deleted_date TIMESTAMP WITH TIME ZONE
+  id          SERIAL PRIMARY KEY,
+  name        VARCHAR(20)  NOT NULL,
+  description VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE subject_role (

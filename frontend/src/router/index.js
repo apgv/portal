@@ -13,7 +13,6 @@ import Subjects from '@/components/Subjects'
 import SubjectAdd from '@/components/SubjectAdd'
 import SubjectRoles from '@/components/SubjectRoles'
 import Roles from '@/components/Roles'
-import RoleAdd from '@/components/RoleAdd'
 import Auth0Callback from '@/components/Auth0Callback'
 import moment from 'moment'
 
@@ -88,11 +87,6 @@ const router = new Router({
             path: '/roles',
             name: 'Roles',
             component: Roles
-        },
-        {
-            path: '/roleadd',
-            name: 'RoleAdd',
-            component: RoleAdd
         },
         {
             path: '/auth0callback',

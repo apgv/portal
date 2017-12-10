@@ -16,17 +16,11 @@ internal class JwtUtilTest {
     @BeforeEach
     internal fun setUp() {
         `when`(decodedJWT.getClaim("email")).thenReturn(TestClaim())
-        `when`(decodedJWT.getClaim(JwtUtil.AUTH0_ROLES)).thenReturn(TestClaim())
     }
 
     @Test
     fun email() {
         assertThat(JwtUtil.email(decodedJWT)).isEqualTo("foobar@example.com")
-    }
-
-    @Test
-    fun roles() {
-        assertThat(JwtUtil.roles(decodedJWT)).containsExactly(Role.BOARD_MEMBER, Role.ADMIN)
     }
 
     private class TestClaim : Claim {
@@ -43,8 +37,7 @@ internal class JwtUtilTest {
         }
 
         override fun <T : Any?> asList(tClazz: Class<T>?): MutableList<T> {
-            @Suppress("UNCHECKED_CAST")
-            return mutableListOf("board_member", "admin") as MutableList<T>
+            TODO("not implemented")
         }
 
         override fun asLong(): Long {

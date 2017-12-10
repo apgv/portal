@@ -3,19 +3,12 @@
         <div v-if="authenticated">
             <h4 class="title is-4">Roller</h4>
 
-            <router-link :to="'/roleadd'">
-                Legg til rolle
-            </router-link>
-
             <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>Navn</th>
                     <th>Beskrivelse</th>
-                    <th>Rollen er aktiv</th>
-                    <th>Registrert av</th>
-                    <th>Registrert dato</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -23,9 +16,6 @@
                     <td>{{role.id}}</td>
                     <td>{{role.name}}</td>
                     <td>{{role.description}}</td>
-                    <td>{{role.active? 'Ja':'Nei'}}</td>
-                    <td>{{role.createdBy}}</td>
-                    <td>{{role.createdDate | formatDate}}</td>
                 </tr>
                 </tbody>
             </table>

@@ -14,7 +14,6 @@ import no.skotbuvel.portal.membershiptype.MembershipTypeRepository
 import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
-import no.skotbuvel.portal.role.RoleRegistration
 import no.skotbuvel.portal.role.RoleRepository
 import no.skotbuvel.portal.subject.*
 import no.skotbuvel.portal.util.JsonUtil
@@ -168,24 +167,9 @@ fun main(args: Array<String>) {
 
         get("/roles", { request, _ ->
             verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
-            val queryParamActive = request.queryParams("active")
-            val activeOnly = queryParamActive?.toBoolean() ?: false
-            val roles = roleRepository.findAll(activeOnly)
+            val roles = roleRepository.findAll()
             val parameterizedType = Types.newParameterizedType(List::class.java, no.skotbuvel.portal.role.Role::class.java)
             JsonUtil.moshi.adapter<List<no.skotbuvel.portal.role.Role>>(parameterizedType).toJson(roles)
-        })
-
-        post("/roles", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
-            val jsonAdapter = JsonUtil.moshi.adapter(RoleRegistration::class.java)
-            val roleRegistration = jsonAdapter.fromJson(request.body())
-
-            if (roleRegistration != null) {
-                roleRepository.save(roleRegistration, JwtUtil.email(decodedJWT))
-                response.status(201)
-            } else {
-                response.status(400)
-            }
         })
 
         after("/*", { _, response ->
