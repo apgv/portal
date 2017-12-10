@@ -100,9 +100,8 @@
         },
         methods: {
             fetchSubject () {
-                axios.get('/api/subjects/search', {
-                    headers: {'X-JWT': this.auth.jwt()},
-                    params: {id: this.subjectId}
+                axios.get(`/api/subjects/${this.subjectId}`, {
+                    headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {
                     this.subject = response.data
                 }).catch(error => {

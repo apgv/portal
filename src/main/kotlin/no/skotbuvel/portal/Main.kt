@@ -17,10 +17,7 @@ import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
 import no.skotbuvel.portal.role.RoleRegistration
 import no.skotbuvel.portal.role.RoleRepository
-import no.skotbuvel.portal.subject.Subject
-import no.skotbuvel.portal.subject.SubjectRegistration
-import no.skotbuvel.portal.subject.SubjectRepository
-import no.skotbuvel.portal.subject.SubjectRoleRegistration
+import no.skotbuvel.portal.subject.*
 import no.skotbuvel.portal.util.JsonUtil
 import org.flywaydb.core.Flyway
 import spark.Request
@@ -130,17 +127,18 @@ fun main(args: Array<String>) {
             JsonUtil.moshi.adapter<List<Subject>>(parameterizedType).toJson(subjects)
         })
 
-        get("/subjects/search", { request, response ->
+        get("/subjects/:id", { request, _ ->
             verifyTokenAndCheckRole(request)
-            val id = request.queryParams("id")
-            val email = request.queryParams("email")
+            val id = request.params(":id")
             val jsonAdapter = JsonUtil.moshi.adapter(Subject::class.java)
+            jsonAdapter.toJson(subjectRepository.findById(id.toInt()))
+        })
 
-            when {
-                !id.isNullOrBlank() -> jsonAdapter.toJson(subjectRepository.findById(id.toInt()))
-                !email.isNullOrBlank() -> jsonAdapter.toJson(subjectRepository.findByEmail(email))
-                else -> response.status(400)
-            }
+        get("/subjects/simplified/:email", { request, _ ->
+            verifyTokenAndCheckRole(request)
+            val email = request.params(":email")
+            val jsonAdapter = JsonUtil.moshi.adapter(SubjectSimple::class.java)
+            jsonAdapter.toJson(toSubjectSimple(subjectRepository.findByEmail(email)))
         })
 
         post("/subjects", { request, response ->

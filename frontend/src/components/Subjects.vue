@@ -60,7 +60,7 @@
         methods: {
             fetchUsers () {
                 if (this.authenticated) {
-                    axios.get('api/subjects', {
+                    axios.get('/api/subjects', {
                         headers: {'X-JWT': this.auth.jwt()}
                     }).then(response => {
                         let subjects = response.data
