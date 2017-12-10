@@ -205,8 +205,8 @@ private fun verifyTokenAndCheckRoles(request: Request,
                                      requiredRoles: List<String>,
                                      subjectRepository: SubjectRepository): DecodedJWT {
     val decodedJWT = JwtUtil.verifyAndDecode(request)
-    val user = userFromJWT(decodedJWT)
-    val subject = subjectRepository.findByEmail(user.email)
+    val jwtUser = userFromJWT(decodedJWT)
+    val subject = subjectRepository.findByEmail(jwtUser.email)
     val subjectRoles = subject.roles.map { it.name.toUpperCase() }
 
     return when {
@@ -215,8 +215,8 @@ private fun verifyTokenAndCheckRoles(request: Request,
         else -> {
             val exceptionMessage = String.format(
                     "User %s (%s) is missing one of the roles %s, has roles %s",
-                    user.email,
-                    user.subject,
+                    jwtUser.email,
+                    jwtUser.subject,
                     requiredRoles,
                     subjectRoles
             )
