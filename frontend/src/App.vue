@@ -34,7 +34,7 @@
                                     v-if="!authenticated"
                                     @click="login()"
                                     class="button is-link">
-                                Log in
+                                Logg inn
                             </button>
                             <a
                                     v-if="authenticated"
