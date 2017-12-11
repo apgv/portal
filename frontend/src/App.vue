@@ -40,7 +40,7 @@
                                     v-if="authenticated"
                                     @click="logout()"
                                     class="button is-link">
-                                Log out
+                                Logg ut
                             </a>
                         </div>
                     </div>
