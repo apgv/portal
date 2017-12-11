@@ -91,7 +91,8 @@ class SubjectRepository(private val dbHelper: DbHelper) {
             val existingRoleIds = dslContext
                     .select(SUBJECT_ROLE.ROLE_ID)
                     .from(SUBJECT_ROLE)
-                    .where(SUBJECT_ROLE.ACTIVE.eq(true))
+                    .where(SUBJECT_ROLE.SUBJECT_ID.eq(subjectRoleRegistration.subjectId))
+                    .and(SUBJECT_ROLE.ACTIVE.eq(true))
                     .fetch()
                     .map { it.value1() }
 
