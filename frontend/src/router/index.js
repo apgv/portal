@@ -13,6 +13,7 @@ import Subjects from '@/components/Subjects'
 import SubjectAdd from '@/components/SubjectAdd'
 import SubjectRoles from '@/components/SubjectRoles'
 import Roles from '@/components/Roles'
+import ExternalRouting from '@/components/ExternalRouting'
 import Auth0Callback from '@/components/Auth0Callback'
 import moment from 'moment'
 
@@ -89,17 +90,22 @@ const router = new Router({
             component: Roles
         },
         {
+            path: '/externalrouting',
+            name: 'ExternalRouting',
+            component: ExternalRouting
+        },
+        {
             path: '/auth0callback',
             name: 'Auth0Callback',
             component: Auth0Callback
         },
         {
             path: '/',
-            redirect: '/auth0callback'
+            redirect: '/externalrouting'
         },
         {
             path: '*',
-            redirect: '/home'
+            redirect: '/externalrouting'
         }
     ]
 })

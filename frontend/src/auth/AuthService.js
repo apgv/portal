@@ -41,10 +41,10 @@ export default class AuthService {
                     if (currentPath) {
                         router.replace(currentPath)
                     } else {
-                        router.replace('home')
+                        router.replace('/home')
                     }
                 } else if (err) {
-                    router.replace('home')
+                    router.replace('/home')
                     console.log(err)
                 }
             })
@@ -83,7 +83,7 @@ export default class AuthService {
         localStorage.removeItem('expires_at')
         this.subject = null
         eventBus.$emit('authChange', false)
-        router.replace('home')
+        router.replace('/home')
     }
 
     isAuthenticated () {

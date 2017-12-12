@@ -21,6 +21,7 @@ import org.flywaydb.core.Flyway
 import spark.Request
 import spark.Spark.*
 import java.net.URI
+import java.net.URLEncoder
 import javax.sql.DataSource
 
 fun main(args: Array<String>) {
@@ -36,10 +37,6 @@ fun main(args: Array<String>) {
     val membershipRepository = MembershipRepository(dbHelper)
     val subjectRepository = SubjectRepository(dbHelper)
     val roleRepository = RoleRepository(dbHelper)
-
-    get("/auth0callback", { _, response ->
-        response.redirect("/")
-    })
 
     path("api", {
         get("/persons", { request, _ ->
@@ -175,6 +172,14 @@ fun main(args: Array<String>) {
         after("/*", { _, response ->
             response.type("application/json")
         })
+    })
+
+    get("/auth0callback", { _, response ->
+        response.redirect("/")
+    })
+
+    get("/*", { request, response ->
+        response.redirect("/?unknown_path=${URLEncoder.encode(request.uri(), "UTF-8")}")
     })
 
 }
