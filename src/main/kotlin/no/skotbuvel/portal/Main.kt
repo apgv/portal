@@ -195,7 +195,7 @@ fun main(args: Array<String>) {
     })
 
     get("/*", { request, response ->
-        response.redirect("/?unknown_path=${URLEncoder.encode(request.uri(), "UTF-8")}")
+        response.redirect("/?unknown_api_path=${URLEncoder.encode(request.uri(), "UTF-8")}")
     })
 
 }

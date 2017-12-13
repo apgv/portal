@@ -1,12 +1,12 @@
 <script>
-    import RoutingService from '../external-routing/RoutingService'
+    import ExternalRoutingService from '../external-routing/ExternalRoutingService'
 
-    const routingService = new RoutingService()
+    const externalRoutingService = new ExternalRoutingService()
 
     export default {
         name: 'external-routing',
         data () {
-            routingService.handleRouting()
+            externalRoutingService.handleRouting()
             return {}
         }
     }
