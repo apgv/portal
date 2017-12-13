@@ -13,11 +13,14 @@
                             Personregister
                         </router-link>
                         <router-link :to="'/membershiptypes'"
+                                     v-if="false"
                                      class="navbar-item">
                             Medlemskapstyper
                         </router-link>
-                        <router-link :to="'/subjects'"
-                                     class="navbar-item">
+                        <router-link
+                                :to="'/subjects'"
+                                v-if="false"
+                                class="navbar-item">
                             Brukere
                         </router-link>
                         <router-link :to="'/roles'"
