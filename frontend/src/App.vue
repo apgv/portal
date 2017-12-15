@@ -1,55 +1,9 @@
 <template>
-    <div id="app">
-        <nav class="navbar">
-            <div class="container">
-                <div class="navbar-menu">
-                    <div class="navbar-start">
-                        <router-link :to="'/home'"
-                                     class="navbar-item">
-                            Forside
-                        </router-link>
-                        <router-link :to="'/persons'"
-                                     class="navbar-item">
-                            Personregister
-                        </router-link>
-                        <router-link :to="'/membershiptypes'"
-                                     v-if="false"
-                                     class="navbar-item">
-                            Medlemskapstyper
-                        </router-link>
-                        <router-link
-                                :to="'/subjects'"
-                                v-if="false"
-                                class="navbar-item">
-                            Brukere
-                        </router-link>
-                        <router-link :to="'/roles'"
-                                     class="navbar-item">
-                            Roller
-                        </router-link>
-                    </div>
-                    <div class="navbar-end">
-                        <div v-if="authenticated" class="navbar-item">
-                            {{auth.subject.firstName}} ({{auth.subject.email}})
-                        </div>
-                        <div class="navbar-item">
-                            <button
-                                    v-if="!authenticated"
-                                    @click="login()"
-                                    class="button is-link">
-                                Logg inn
-                            </button>
-                            <a
-                                    v-if="authenticated"
-                                    @click="logout()"
-                                    class="button is-link">
-                                Logg ut
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
+    <div id="app"
+         class="container">
+        <app-menu :auth="auth"
+                  :authenticated="authenticated">
+        </app-menu>
 
         <vue-snotify></vue-snotify>
 
@@ -63,11 +17,13 @@
 <script>
     import AuthService from './auth/AuthService'
     import {eventBus} from './main'
+    import AppMenu from './components/AppMenu'
 
     const auth = new AuthService()
     const {login, logout, authenticated} = auth
 
     export default {
+        components: {AppMenu},
         name: 'app',
         data () {
             eventBus.$on('authChange', authState => {
@@ -84,6 +40,3 @@
         }
     }
 </script>
-
-<style>
-</style>

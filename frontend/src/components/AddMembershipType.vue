@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div>
         <div v-if="authenticated">
             <h4 class="title is-4">Legg til medlemskapstype</h4>
 
