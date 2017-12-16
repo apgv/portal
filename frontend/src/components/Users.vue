@@ -2,7 +2,7 @@
     <div>
         <div v-if="authenticated">
             <h4 class="title is-4">Brukere</h4>
-            <router-link :to="'/subjectadd'">
+            <router-link :to="'/useradd'">
                 Legg til bruker
             </router-link>
             <table class="table is-fullwidth is-striped is-hoverable">
@@ -20,17 +20,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="subject in subjects">
-                    <td>{{subject.id}}</td>
-                    <td>{{subject.firstName}}</td>
-                    <td>{{subject.lastName}}</td>
-                    <td>{{subject.email}}</td>
-                    <td>{{subject.phone}}</td>
-                    <td>{{subject.roles}}</td>
-                    <td>{{subject.createdBy}}</td>
-                    <td>{{subject.createdDate | formatDate}}</td>
+                <tr v-for="user in users">
+                    <td>{{user.id}}</td>
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.lastName}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.phone}}</td>
+                    <td>{{user.roles}}</td>
+                    <td>{{user.createdBy}}</td>
+                    <td>{{user.createdDate | formatDate}}</td>
                     <td>
-                        <router-link :to="`subjectroles/${subject.id}`">
+                        <router-link :to="`userroles/${user.id}`">
                             Administrer roller
                         </router-link>
                     </td>
@@ -50,28 +50,28 @@
 
     export default {
         components: {NotAuthenticated},
-        name: 'subjects',
+        name: 'users',
         props: ['auth', 'authenticated'],
         data () {
             return {
-                subjects: []
+                users: []
             }
         },
         methods: {
             fetchUsers () {
                 if (this.authenticated) {
-                    axios.get('/api/subjects', {
+                    axios.get('/api/users', {
                         headers: {'X-JWT': this.auth.jwt()}
                     }).then(response => {
-                        let subjects = response.data
-                        subjects.forEach(subject => {
-                            subject.roles = subject.roles
+                        let users = response.data
+                        users.forEach(user => {
+                            user.roles = user.roles
                                 .map(role => {
                                     return role.name
                                 })
                                 .join(', ')
                         })
-                        this.subjects = subjects
+                        this.users = users
                     }).catch(error => {
                         this.$snotify.error('Feil ved henting av brukere')
                         console.log(error)

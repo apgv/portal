@@ -10,8 +10,8 @@ import no.skotbuvel.portal.jooq.tables.Membership;
 import no.skotbuvel.portal.jooq.tables.MembershipType;
 import no.skotbuvel.portal.jooq.tables.Person;
 import no.skotbuvel.portal.jooq.tables.Role;
-import no.skotbuvel.portal.jooq.tables.Subject;
-import no.skotbuvel.portal.jooq.tables.SubjectRole;
+import no.skotbuvel.portal.jooq.tables.User;
+import no.skotbuvel.portal.jooq.tables.UserRole;
 
 import org.jooq.Index;
 import org.jooq.OrderField;
@@ -39,8 +39,8 @@ public class Indexes {
     public static final Index MEMBERSHIP_TYPE_PKEY = Indexes0.MEMBERSHIP_TYPE_PKEY;
     public static final Index PERSON_PKEY = Indexes0.PERSON_PKEY;
     public static final Index ROLE_PKEY = Indexes0.ROLE_PKEY;
-    public static final Index SUBJECT_PKEY = Indexes0.SUBJECT_PKEY;
-    public static final Index SUBJECT_ROLE_PKEY = Indexes0.SUBJECT_ROLE_PKEY;
+    public static final Index USER_PKEY = Indexes0.USER_PKEY;
+    public static final Index USER_ROLE_PKEY = Indexes0.USER_ROLE_PKEY;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
@@ -51,7 +51,7 @@ public class Indexes {
         public static Index MEMBERSHIP_TYPE_PKEY = createIndex("membership_type_pkey", MembershipType.MEMBERSHIP_TYPE, new OrderField[] { MembershipType.MEMBERSHIP_TYPE.ID }, true);
         public static Index PERSON_PKEY = createIndex("person_pkey", Person.PERSON, new OrderField[] { Person.PERSON.ID }, true);
         public static Index ROLE_PKEY = createIndex("role_pkey", Role.ROLE, new OrderField[] { Role.ROLE.ID }, true);
-        public static Index SUBJECT_PKEY = createIndex("subject_pkey", Subject.SUBJECT, new OrderField[] { Subject.SUBJECT.ID }, true);
-        public static Index SUBJECT_ROLE_PKEY = createIndex("subject_role_pkey", SubjectRole.SUBJECT_ROLE, new OrderField[] { SubjectRole.SUBJECT_ROLE.ID, SubjectRole.SUBJECT_ROLE.SUBJECT_ID, SubjectRole.SUBJECT_ROLE.ROLE_ID }, true);
+        public static Index USER_PKEY = createIndex("user_pkey", User.USER, new OrderField[] { User.USER.ID }, true);
+        public static Index USER_ROLE_PKEY = createIndex("user_role_pkey", UserRole.USER_ROLE, new OrderField[] { UserRole.USER_ROLE.ID, UserRole.USER_ROLE.USER_ID, UserRole.USER_ROLE.ROLE_ID }, true);
     }
 }

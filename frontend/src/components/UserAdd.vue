@@ -6,7 +6,7 @@
             <div class="field">
                 <label class="label">Fornavn</label>
                 <p class="control has-icons-left">
-                    <input v-model="subject.firstName"
+                    <input v-model="user.firstName"
                            v-validate="'required|max:20'"
                            name="firstname"
                            class="input"
@@ -24,7 +24,7 @@
             <div class="field">
                 <label class="label">Etternavn</label>
                 <p class="control has-icons-left">
-                    <input v-model="subject.lastName"
+                    <input v-model="user.lastName"
                            v-validate="'required|max:20'"
                            name="lastname"
                            class="input"
@@ -42,7 +42,7 @@
             <div class="field">
                 <label class="label">E-post</label>
                 <p class="control has-icons-left">
-                    <input v-model="subject.email"
+                    <input v-model="user.email"
                            v-validate="'required|email|max:40'"
                            name="email"
                            class="input"
@@ -61,7 +61,7 @@
             <div class="field">
                 <label class="label">Telefon</label>
                 <p class="control has-icons-left">
-                    <input v-model="subject.phone"
+                    <input v-model="user.phone"
                            v-validate="'digits:8'"
                            name="phone"
                            class="input"
@@ -81,7 +81,7 @@
                         class="button is-success">
                     Lagre
                 </button>
-                <router-link :to="'/subjects'"
+                <router-link :to="'/users'"
                              class="button">
                     Avbryt
                 </router-link>
@@ -100,11 +100,11 @@
 
     export default {
         components: {NotAuthenticated},
-        name: 'subject-add',
+        name: 'user-add',
         props: ['auth', 'authenticated'],
         data () {
             return {
-                subject: {
+                user: {
                     firstName: null,
                     lastName: null,
                     email: null,
@@ -117,10 +117,10 @@
                 if (this.authenticated) {
                     this.$validator.validateAll().then((result) => {
                         if (result) {
-                            axios.post('api/subjects', this.subject, {
+                            axios.post('api/users', this.user, {
                                 headers: {'X-JWT': this.auth.jwt()}
                             }).then(() => {
-                                this.subject = {
+                                this.user = {
                                     firstName: null,
                                     lastName: null,
                                     email: null,

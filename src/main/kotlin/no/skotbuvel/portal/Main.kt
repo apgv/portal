@@ -15,7 +15,7 @@ import no.skotbuvel.portal.person.Person
 import no.skotbuvel.portal.person.PersonRegistration
 import no.skotbuvel.portal.person.PersonRepository
 import no.skotbuvel.portal.role.RoleRepository
-import no.skotbuvel.portal.subject.*
+import no.skotbuvel.portal.user.*
 import no.skotbuvel.portal.util.JsonUtil
 import org.flywaydb.core.Flyway
 import spark.Request
@@ -35,7 +35,7 @@ fun main(args: Array<String>) {
     val personRepository = PersonRepository(dbHelper)
     val membershipTypeRepository = MembershipTypeRepository(dbHelper)
     val membershipRepository = MembershipRepository(dbHelper)
-    val subjectRepository = SubjectRepository(dbHelper)
+    val userRepository = UserRepository(dbHelper)
     val roleRepository = RoleRepository(dbHelper)
 
     before("/*", { request, response ->
@@ -56,7 +56,7 @@ fun main(args: Array<String>) {
 
     path("api", {
         get("/persons", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
+            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
 
             val persons = personRepository.findAll()
 
@@ -65,7 +65,7 @@ fun main(args: Array<String>) {
         })
 
         get("/persons/:id", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
+            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
 
             val id = request.params(":id")
 
@@ -75,7 +75,7 @@ fun main(args: Array<String>) {
         })
 
         post("/persons", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
+            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
 
             val jsonAdapter = JsonUtil.moshi.adapter(PersonRegistration::class.java)
             val personRegistration = jsonAdapter.fromJson(request.body())
@@ -89,7 +89,7 @@ fun main(args: Array<String>) {
         })
 
         post("/memberships", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
+            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
 
             val jsonAdapter = JsonUtil.moshi.adapter(MembershipRegistration::class.java)
             val membershipRegistration = jsonAdapter.fromJson(request.body())
@@ -103,14 +103,14 @@ fun main(args: Array<String>) {
         })
 
         delete("/memberships/:id", { request, _ ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
+            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
 
             val id = request.params(":id")
             membershipRepository.delete(id.toInt(), JwtUtil.email(decodedJWT))
         })
 
         get("/membershiptypes", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
+            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
             val queryParamActive = request.queryParams("active")
             val activeOnly = queryParamActive?.toBoolean() ?: false
             val membershiptTypes = membershipTypeRepository.findAll(activeOnly)
@@ -119,7 +119,7 @@ fun main(args: Array<String>) {
         })
 
         post("/membershiptypes", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
+            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
             val jsonAdapter = JsonUtil.moshi.adapter(MembershipTypeRegistration::class.java)
             val membershipTypeRegistration = jsonAdapter.fromJson(request.body())
 
@@ -131,47 +131,47 @@ fun main(args: Array<String>) {
             }
         })
 
-        get("/subjects", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
-            val subjects = subjectRepository.findAll()
-            val parameterizedType = Types.newParameterizedType(List::class.java, Subject::class.java)
-            JsonUtil.moshi.adapter<List<Subject>>(parameterizedType).toJson(subjects)
+        get("/users", { request, _ ->
+            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            val users = userRepository.findAll()
+            val parameterizedType = Types.newParameterizedType(List::class.java, User::class.java)
+            JsonUtil.moshi.adapter<List<User>>(parameterizedType).toJson(users)
         })
 
-        get("/subjects/:id", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
+        get("/users/:id", { request, _ ->
+            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
             val id = request.params(":id")
-            val jsonAdapter = JsonUtil.moshi.adapter(Subject::class.java)
-            jsonAdapter.toJson(subjectRepository.findById(id.toInt()))
+            val jsonAdapter = JsonUtil.moshi.adapter(User::class.java)
+            jsonAdapter.toJson(userRepository.findById(id.toInt()))
         })
 
         get("/subjects/simplified/:email", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
+            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
             val email = request.params(":email")
             val jsonAdapter = JsonUtil.moshi.adapter(SubjectSimple::class.java)
-            jsonAdapter.toJson(toSubjectSimple(subjectRepository.findByEmail(email)))
+            jsonAdapter.toJson(toSubjectSimple(userRepository.findByEmail(email)))
         })
 
-        post("/subjects", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
-            val jsonAdapter = JsonUtil.moshi.adapter(SubjectRegistration::class.java)
-            val subjectRegistration = jsonAdapter.fromJson(request.body())
+        post("/users", { request, response ->
+            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            val jsonAdapter = JsonUtil.moshi.adapter(UserRegistration::class.java)
+            val userRegistration = jsonAdapter.fromJson(request.body())
 
-            if (subjectRegistration != null) {
-                subjectRepository.save(subjectRegistration, JwtUtil.email(decodedJWT))
+            if (userRegistration != null) {
+                userRepository.save(userRegistration, JwtUtil.email(decodedJWT))
                 response.status(201)
             } else {
                 response.status(400)
             }
         })
 
-        post("/subjectroles", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
+        post("/userroles", { request, response ->
+            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
 
-            val jsonAdapter = JsonUtil.moshi.adapter(SubjectRoleRegistration::class.java)
-            val subjectRoleRegistration = jsonAdapter.fromJson(request.body())
-            if (subjectRoleRegistration != null) {
-                subjectRepository.updateRoles(subjectRoleRegistration, JwtUtil.email(decodedJWT))
+            val jsonAdapter = JsonUtil.moshi.adapter(UserRoleRegistration::class.java)
+            val userRoleRegistration = jsonAdapter.fromJson(request.body())
+            if (userRoleRegistration != null) {
+                userRepository.updateRoles(userRoleRegistration, JwtUtil.email(decodedJWT))
                 response.status(201)
             } else {
                 response.status(400)
@@ -179,7 +179,7 @@ fun main(args: Array<String>) {
         })
 
         get("/roles", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), subjectRepository)
+            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
             val roles = roleRepository.findAll()
             val parameterizedType = Types.newParameterizedType(List::class.java, no.skotbuvel.portal.role.Role::class.java)
             JsonUtil.moshi.adapter<List<no.skotbuvel.portal.role.Role>>(parameterizedType).toJson(roles)
@@ -208,22 +208,22 @@ private fun migrateDatabase(dataSource: DataSource) {
 
 private fun verifyTokenAndCheckRoles(request: Request,
                                      requiredRoles: List<String>,
-                                     subjectRepository: SubjectRepository): DecodedJWT {
+                                     userRepository: UserRepository): DecodedJWT {
     val decodedJWT = JwtUtil.verifyAndDecode(request)
     val jwtUser = userFromJWT(decodedJWT)
-    val subject = subjectRepository.findByEmail(jwtUser.email)
-    val subjectRoles = subject.roles.map { it.name.toUpperCase() }
+    val user = userRepository.findByEmail(jwtUser.email)
+    val userRoles = user.roles.map { it.name.toUpperCase() }
 
     return when {
         requiredRoles.isEmpty() -> decodedJWT
-        subjectRoles.intersect(requiredRoles).isNotEmpty() -> decodedJWT
+        userRoles.intersect(requiredRoles).isNotEmpty() -> decodedJWT
         else -> {
             val exceptionMessage = String.format(
                     "User %s (%s) is missing one of the roles %s, has roles %s",
                     jwtUser.email,
                     jwtUser.subject,
                     requiredRoles,
-                    subjectRoles
+                    userRoles
             )
             throw IllegalAccessException(exceptionMessage)
         }

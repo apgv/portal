@@ -14,8 +14,8 @@ import no.skotbuvel.portal.jooq.tables.Membership;
 import no.skotbuvel.portal.jooq.tables.MembershipType;
 import no.skotbuvel.portal.jooq.tables.Person;
 import no.skotbuvel.portal.jooq.tables.Role;
-import no.skotbuvel.portal.jooq.tables.Subject;
-import no.skotbuvel.portal.jooq.tables.SubjectRole;
+import no.skotbuvel.portal.jooq.tables.User;
+import no.skotbuvel.portal.jooq.tables.UserRole;
 
 import org.jooq.Catalog;
 import org.jooq.Sequence;
@@ -36,7 +36,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultSchema extends SchemaImpl {
 
-    private static final long serialVersionUID = -1664874908;
+    private static final long serialVersionUID = 1360751918;
 
     /**
      * The reference instance of <code></code>
@@ -64,14 +64,14 @@ public class DefaultSchema extends SchemaImpl {
     public final Role ROLE = no.skotbuvel.portal.jooq.tables.Role.ROLE;
 
     /**
-     * The table <code>subject</code>.
+     * The table <code>user</code>.
      */
-    public final Subject SUBJECT = no.skotbuvel.portal.jooq.tables.Subject.SUBJECT;
+    public final User USER = no.skotbuvel.portal.jooq.tables.User.USER;
 
     /**
-     * The table <code>subject_role</code>.
+     * The table <code>user_role</code>.
      */
-    public final SubjectRole SUBJECT_ROLE = no.skotbuvel.portal.jooq.tables.SubjectRole.SUBJECT_ROLE;
+    public final UserRole USER_ROLE = no.skotbuvel.portal.jooq.tables.UserRole.USER_ROLE;
 
     /**
      * No further instances allowed
@@ -102,8 +102,8 @@ public class DefaultSchema extends SchemaImpl {
             Sequences.MEMBERSHIP_TYPE_ID_SEQ,
             Sequences.PERSON_ID_SEQ,
             Sequences.ROLE_ID_SEQ,
-            Sequences.SUBJECT_ID_SEQ,
-            Sequences.SUBJECT_ROLE_ID_SEQ);
+            Sequences.USER_ID_SEQ,
+            Sequences.USER_ROLE_ID_SEQ);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class DefaultSchema extends SchemaImpl {
             MembershipType.MEMBERSHIP_TYPE,
             Person.PERSON,
             Role.ROLE,
-            Subject.SUBJECT,
-            SubjectRole.SUBJECT_ROLE);
+            User.USER,
+            UserRole.USER_ROLE);
     }
 }

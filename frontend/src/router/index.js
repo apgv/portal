@@ -9,9 +9,9 @@ import AddPerson from '@/components/AddPerson'
 import Membership from '@/components/Membership'
 import MembershipTypes from '@/components/MembershipTypes'
 import AddMembershipType from '@/components/AddMembershipType'
-import Subjects from '@/components/Subjects'
-import SubjectAdd from '@/components/SubjectAdd'
-import SubjectRoles from '@/components/SubjectRoles'
+import Users from '@/components/Users'
+import UserAdd from '@/components/UserAdd'
+import UserRoles from '@/components/UserRoles'
 import Roles from '@/components/Roles'
 import ExternalRouting from '@/components/ExternalRouting'
 import Auth0Callback from '@/components/Auth0Callback'
@@ -69,19 +69,19 @@ const router = new Router({
             component: AddMembershipType
         },
         {
-            path: '/subjects',
-            name: 'Subjects',
-            component: Subjects
+            path: '/users',
+            name: 'Users',
+            component: Users
         },
         {
-            path: '/subjectadd',
-            name: 'SubjectAdd',
-            component: SubjectAdd
+            path: '/useradd',
+            name: 'UserAdd',
+            component: UserAdd
         },
         {
-            path: '/subjectroles/:subjectId',
-            name: 'SubjectRoles',
-            component: SubjectRoles,
+            path: '/userroles/:userId',
+            name: 'UserRoles',
+            component: UserRoles,
             props: true
         },
         {

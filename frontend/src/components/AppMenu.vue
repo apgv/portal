@@ -37,7 +37,7 @@
                                              class="navbar-item">
                                     Medlemskapstyper
                                 </router-link>
-                                <router-link :to="'/subjects'"
+                                <router-link :to="'/users'"
                                              @click.native="toggleMobileMenu()"
                                              v-if="false"
                                              class="navbar-item">
@@ -78,7 +78,7 @@
                     Medlemskapstyper
                 </router-link>
                 <router-link
-                        :to="'/subjects'"
+                        :to="'/users'"
                         v-if="false"
                         class="navbar-item">
                     Brukere

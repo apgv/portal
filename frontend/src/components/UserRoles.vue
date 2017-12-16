@@ -13,7 +13,7 @@
                             </div>
                             <div class="field-body">
                                 <div class="field">
-                                    {{subject.firstName}}
+                                    {{user.firstName}}
                                 </div>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                             </div>
                             <div class="field-body">
                                 <div class="field">
-                                    {{subject.lastName}}
+                                    {{user.lastName}}
                                 </div>
                             </div>
                         </div>
@@ -33,7 +33,7 @@
                             </div>
                             <div class="field-body">
                                 <div class="field">
-                                    {{subject.email}}
+                                    {{user.email}}
                                 </div>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="field-body">
                                 <div class="field">
-                                    {{subject.phone}}
+                                    {{user.phone}}
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                 <div class="column">
                     <div class="field">
                         <label class="label">Roller</label>
-                        <div v-for="role in subjectRoles"
+                        <div v-for="role in userRoles"
                              class="control box">
                             <label class="checkbox">
                                 <input type="checkbox"
@@ -69,7 +69,7 @@
                         class="button is-success">
                     Lagre
                 </button>
-                <router-link :to="'/subjects'"
+                <router-link :to="'/users'"
                              class="button">
                     Avbryt
                 </router-link>
@@ -89,21 +89,21 @@
 
     export default {
         components: {NotAuthenticated},
-        name: 'subject-roles',
-        props: ['auth', 'authenticated', 'subjectId'],
+        name: 'user-roles',
+        props: ['auth', 'authenticated', 'userId'],
         data () {
             return {
-                subject: {},
+                user: {},
                 roles: [],
                 checkedRoles: []
             }
         },
         methods: {
-            fetchSubject () {
-                axios.get(`/api/subjects/${this.subjectId}`, {
+            fetchUser () {
+                axios.get(`/api/users/${this.userId}`, {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {
-                    this.subject = response.data
+                    this.user = response.data
                 }).catch(error => {
                     this.$snotify.error('Feil ved henting av bruker')
                     console.log(error)
@@ -120,14 +120,14 @@
                 })
             },
             save () {
-                let chosenRoles = this.subjectRoles
+                let chosenRoles = this.userRoles
                     .filter(role => {
                         return role.hasRole === true
                     }).map(role => {
                         return role.id
                     })
 
-                axios.post('/api/subjectroles', {subjectId: this.subjectId, roleIds: chosenRoles}, {
+                axios.post('/api/userroles', {userId: this.userId, roleIds: chosenRoles}, {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(() => {
                     this.$snotify.success('Rollene ble oppdatert')
@@ -138,17 +138,17 @@
             }
         },
         computed: {
-            subjectRoles: function () {
-                let subjectRoles = this.subject.roles
+            userRoles: function () {
+                let userRoles = this.user.roles
                 let data = this.roles
 
-                if (subjectRoles && data) {
-                    let subjectRoleIds = subjectRoles.map(role => {
+                if (userRoles && data) {
+                    let userRoleIds = userRoles.map(role => {
                         return role.id
                     })
 
                     data.forEach(role => {
-                        role.hasRole = subjectRoleIds.indexOf(role.id) > -1
+                        role.hasRole = userRoleIds.indexOf(role.id) > -1
                     })
 
                     return data
@@ -158,7 +158,7 @@
             }
         },
         created () {
-            this.fetchSubject()
+            this.fetchUser()
             this.fetchRoles()
         }
     }

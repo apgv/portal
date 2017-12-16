@@ -44,12 +44,12 @@ public class Sequences {
     public static final Sequence<Long> ROLE_ID_SEQ = new SequenceImpl<Long>("role_id_seq", DefaultSchema.DEFAULT_SCHEMA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
     /**
-     * The sequence <code>subject_id_seq</code>
+     * The sequence <code>user_id_seq</code>
      */
-    public static final Sequence<Long> SUBJECT_ID_SEQ = new SequenceImpl<Long>("subject_id_seq", DefaultSchema.DEFAULT_SCHEMA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+    public static final Sequence<Long> USER_ID_SEQ = new SequenceImpl<Long>("user_id_seq", DefaultSchema.DEFAULT_SCHEMA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
     /**
-     * The sequence <code>subject_role_id_seq</code>
+     * The sequence <code>user_role_id_seq</code>
      */
-    public static final Sequence<Long> SUBJECT_ROLE_ID_SEQ = new SequenceImpl<Long>("subject_role_id_seq", DefaultSchema.DEFAULT_SCHEMA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+    public static final Sequence<Long> USER_ROLE_ID_SEQ = new SequenceImpl<Long>("user_role_id_seq", DefaultSchema.DEFAULT_SCHEMA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 }
