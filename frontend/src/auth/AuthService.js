@@ -54,7 +54,7 @@ export default class AuthService {
     }
 
     setSubject (authResult) {
-        axios.get(`/api/subjects/simplified/${authResult.idTokenPayload.email}`, {
+        axios.get(`/api/subjects/${authResult.idTokenPayload.email}`, {
             headers: {'X-JWT': this.jwt()}
         }).then(response => {
             localStorage.setItem('subject', JSON.stringify(response.data))

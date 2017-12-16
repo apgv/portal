@@ -145,13 +145,6 @@ fun main(args: Array<String>) {
             jsonAdapter.toJson(userRepository.findById(id.toInt()))
         })
 
-        get("/subjects/simplified/:email", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
-            val email = request.params(":email")
-            val jsonAdapter = JsonUtil.moshi.adapter(SubjectSimple::class.java)
-            jsonAdapter.toJson(toSubjectSimple(userRepository.findByEmail(email)))
-        })
-
         post("/users", { request, response ->
             val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
             val jsonAdapter = JsonUtil.moshi.adapter(UserRegistration::class.java)
@@ -183,6 +176,13 @@ fun main(args: Array<String>) {
             val roles = roleRepository.findAll()
             val parameterizedType = Types.newParameterizedType(List::class.java, no.skotbuvel.portal.role.Role::class.java)
             JsonUtil.moshi.adapter<List<no.skotbuvel.portal.role.Role>>(parameterizedType).toJson(roles)
+        })
+
+        get("/subjects/:email", { request, _ ->
+            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            val email = request.params(":email")
+            val jsonAdapter = JsonUtil.moshi.adapter(Subject::class.java)
+            jsonAdapter.toJson(toSubject(userRepository.findByEmail(email)))
         })
 
         after("/*", { _, response ->
