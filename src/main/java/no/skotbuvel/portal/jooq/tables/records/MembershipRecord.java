@@ -31,7 +31,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> implements Record10<Integer, Integer, Boolean, Integer, Integer, Date, String, OffsetDateTime, String, OffsetDateTime> {
 
-    private static final long serialVersionUID = 1032604571;
+    private static final long serialVersionUID = 1823824605;
 
     /**
      * Setter for <code>membership.id</code>.
@@ -146,30 +146,30 @@ public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> impl
     }
 
     /**
-     * Setter for <code>membership.deleted_by</code>.
+     * Setter for <code>membership.changed_by</code>.
      */
-    public void setDeletedBy(String value) {
+    public void setChangedBy(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>membership.deleted_by</code>.
+     * Getter for <code>membership.changed_by</code>.
      */
-    public String getDeletedBy() {
+    public String getChangedBy() {
         return (String) get(8);
     }
 
     /**
-     * Setter for <code>membership.deleted_date</code>.
+     * Setter for <code>membership.changed_date</code>.
      */
-    public void setDeletedDate(OffsetDateTime value) {
+    public void setChangedDate(OffsetDateTime value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>membership.deleted_date</code>.
+     * Getter for <code>membership.changed_date</code>.
      */
-    public OffsetDateTime getDeletedDate() {
+    public OffsetDateTime getChangedDate() {
         return (OffsetDateTime) get(9);
     }
 
@@ -274,7 +274,7 @@ public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> impl
      */
     @Override
     public Field<String> field9() {
-        return Membership.MEMBERSHIP.DELETED_BY;
+        return Membership.MEMBERSHIP.CHANGED_BY;
     }
 
     /**
@@ -282,7 +282,7 @@ public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> impl
      */
     @Override
     public Field<OffsetDateTime> field10() {
-        return Membership.MEMBERSHIP.DELETED_DATE;
+        return Membership.MEMBERSHIP.CHANGED_DATE;
     }
 
     /**
@@ -354,7 +354,7 @@ public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> impl
      */
     @Override
     public String component9() {
-        return getDeletedBy();
+        return getChangedBy();
     }
 
     /**
@@ -362,7 +362,7 @@ public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> impl
      */
     @Override
     public OffsetDateTime component10() {
-        return getDeletedDate();
+        return getChangedDate();
     }
 
     /**
@@ -434,7 +434,7 @@ public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> impl
      */
     @Override
     public String value9() {
-        return getDeletedBy();
+        return getChangedBy();
     }
 
     /**
@@ -442,7 +442,7 @@ public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> impl
      */
     @Override
     public OffsetDateTime value10() {
-        return getDeletedDate();
+        return getChangedDate();
     }
 
     /**
@@ -522,7 +522,7 @@ public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> impl
      */
     @Override
     public MembershipRecord value9(String value) {
-        setDeletedBy(value);
+        setChangedBy(value);
         return this;
     }
 
@@ -531,7 +531,7 @@ public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> impl
      */
     @Override
     public MembershipRecord value10(OffsetDateTime value) {
-        setDeletedDate(value);
+        setChangedDate(value);
         return this;
     }
 
@@ -567,7 +567,7 @@ public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> impl
     /**
      * Create a detached, initialised MembershipRecord
      */
-    public MembershipRecord(Integer id, Integer originalId, Boolean active, Integer personId, Integer membershipTypeId, Date paymentDate, String createdBy, OffsetDateTime createdDate, String deletedBy, OffsetDateTime deletedDate) {
+    public MembershipRecord(Integer id, Integer originalId, Boolean active, Integer personId, Integer membershipTypeId, Date paymentDate, String createdBy, OffsetDateTime createdDate, String changedBy, OffsetDateTime changedDate) {
         super(Membership.MEMBERSHIP);
 
         set(0, id);
@@ -578,7 +578,7 @@ public class MembershipRecord extends UpdatableRecordImpl<MembershipRecord> impl
         set(5, paymentDate);
         set(6, createdBy);
         set(7, createdDate);
-        set(8, deletedBy);
-        set(9, deletedDate);
+        set(8, changedBy);
+        set(9, changedDate);
     }
 }

@@ -30,7 +30,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implements Record8<Integer, Integer, Integer, Boolean, String, OffsetDateTime, String, OffsetDateTime> {
 
-    private static final long serialVersionUID = -1111953015;
+    private static final long serialVersionUID = 437545161;
 
     /**
      * Setter for <code>user_role.id</code>.
@@ -117,30 +117,30 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
     }
 
     /**
-     * Setter for <code>user_role.deleted_by</code>.
+     * Setter for <code>user_role.changed_by</code>.
      */
-    public void setDeletedBy(String value) {
+    public void setChangedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>user_role.deleted_by</code>.
+     * Getter for <code>user_role.changed_by</code>.
      */
-    public String getDeletedBy() {
+    public String getChangedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>user_role.deleted_date</code>.
+     * Setter for <code>user_role.changed_date</code>.
      */
-    public void setDeletedDate(OffsetDateTime value) {
+    public void setChangedDate(OffsetDateTime value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>user_role.deleted_date</code>.
+     * Getter for <code>user_role.changed_date</code>.
      */
-    public OffsetDateTime getDeletedDate() {
+    public OffsetDateTime getChangedDate() {
         return (OffsetDateTime) get(7);
     }
 
@@ -229,7 +229,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
      */
     @Override
     public Field<String> field7() {
-        return UserRole.USER_ROLE.DELETED_BY;
+        return UserRole.USER_ROLE.CHANGED_BY;
     }
 
     /**
@@ -237,7 +237,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
      */
     @Override
     public Field<OffsetDateTime> field8() {
-        return UserRole.USER_ROLE.DELETED_DATE;
+        return UserRole.USER_ROLE.CHANGED_DATE;
     }
 
     /**
@@ -293,7 +293,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
      */
     @Override
     public String component7() {
-        return getDeletedBy();
+        return getChangedBy();
     }
 
     /**
@@ -301,7 +301,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
      */
     @Override
     public OffsetDateTime component8() {
-        return getDeletedDate();
+        return getChangedDate();
     }
 
     /**
@@ -357,7 +357,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
      */
     @Override
     public String value7() {
-        return getDeletedBy();
+        return getChangedBy();
     }
 
     /**
@@ -365,7 +365,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
      */
     @Override
     public OffsetDateTime value8() {
-        return getDeletedDate();
+        return getChangedDate();
     }
 
     /**
@@ -427,7 +427,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
      */
     @Override
     public UserRoleRecord value7(String value) {
-        setDeletedBy(value);
+        setChangedBy(value);
         return this;
     }
 
@@ -436,7 +436,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
      */
     @Override
     public UserRoleRecord value8(OffsetDateTime value) {
-        setDeletedDate(value);
+        setChangedDate(value);
         return this;
     }
 
@@ -470,7 +470,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
     /**
      * Create a detached, initialised UserRoleRecord
      */
-    public UserRoleRecord(Integer id, Integer userId, Integer roleId, Boolean active, String createdBy, OffsetDateTime createdDate, String deletedBy, OffsetDateTime deletedDate) {
+    public UserRoleRecord(Integer id, Integer userId, Integer roleId, Boolean active, String createdBy, OffsetDateTime createdDate, String changedBy, OffsetDateTime changedDate) {
         super(UserRole.USER_ROLE);
 
         set(0, id);
@@ -479,7 +479,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
         set(3, active);
         set(4, createdBy);
         set(5, createdDate);
-        set(6, deletedBy);
-        set(7, deletedDate);
+        set(6, changedBy);
+        set(7, changedDate);
     }
 }

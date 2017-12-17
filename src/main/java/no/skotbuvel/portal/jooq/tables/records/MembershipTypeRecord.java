@@ -30,7 +30,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeRecord> implements Record10<Integer, Boolean, String, Integer, Integer, String, OffsetDateTime, String, OffsetDateTime, Integer> {
 
-    private static final long serialVersionUID = -2033610735;
+    private static final long serialVersionUID = 1327962789;
 
     /**
      * Setter for <code>membership_type.id</code>.
@@ -131,30 +131,30 @@ public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeReco
     }
 
     /**
-     * Setter for <code>membership_type.deleted_by</code>.
+     * Setter for <code>membership_type.changed_by</code>.
      */
-    public void setDeletedBy(String value) {
+    public void setChangedBy(String value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>membership_type.deleted_by</code>.
+     * Getter for <code>membership_type.changed_by</code>.
      */
-    public String getDeletedBy() {
+    public String getChangedBy() {
         return (String) get(7);
     }
 
     /**
-     * Setter for <code>membership_type.deleted_date</code>.
+     * Setter for <code>membership_type.changed_date</code>.
      */
-    public void setDeletedDate(OffsetDateTime value) {
+    public void setChangedDate(OffsetDateTime value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>membership_type.deleted_date</code>.
+     * Getter for <code>membership_type.changed_date</code>.
      */
-    public OffsetDateTime getDeletedDate() {
+    public OffsetDateTime getChangedDate() {
         return (OffsetDateTime) get(8);
     }
 
@@ -265,7 +265,7 @@ public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeReco
      */
     @Override
     public Field<String> field8() {
-        return MembershipType.MEMBERSHIP_TYPE.DELETED_BY;
+        return MembershipType.MEMBERSHIP_TYPE.CHANGED_BY;
     }
 
     /**
@@ -273,7 +273,7 @@ public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeReco
      */
     @Override
     public Field<OffsetDateTime> field9() {
-        return MembershipType.MEMBERSHIP_TYPE.DELETED_DATE;
+        return MembershipType.MEMBERSHIP_TYPE.CHANGED_DATE;
     }
 
     /**
@@ -345,7 +345,7 @@ public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeReco
      */
     @Override
     public String component8() {
-        return getDeletedBy();
+        return getChangedBy();
     }
 
     /**
@@ -353,7 +353,7 @@ public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeReco
      */
     @Override
     public OffsetDateTime component9() {
-        return getDeletedDate();
+        return getChangedDate();
     }
 
     /**
@@ -425,7 +425,7 @@ public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeReco
      */
     @Override
     public String value8() {
-        return getDeletedBy();
+        return getChangedBy();
     }
 
     /**
@@ -433,7 +433,7 @@ public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeReco
      */
     @Override
     public OffsetDateTime value9() {
-        return getDeletedDate();
+        return getChangedDate();
     }
 
     /**
@@ -512,7 +512,7 @@ public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeReco
      */
     @Override
     public MembershipTypeRecord value8(String value) {
-        setDeletedBy(value);
+        setChangedBy(value);
         return this;
     }
 
@@ -521,7 +521,7 @@ public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeReco
      */
     @Override
     public MembershipTypeRecord value9(OffsetDateTime value) {
-        setDeletedDate(value);
+        setChangedDate(value);
         return this;
     }
 
@@ -566,7 +566,7 @@ public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeReco
     /**
      * Create a detached, initialised MembershipTypeRecord
      */
-    public MembershipTypeRecord(Integer id, Boolean active, String type, Integer year, Integer price, String createdBy, OffsetDateTime createdDate, String deletedBy, OffsetDateTime deletedDate, Integer originalId) {
+    public MembershipTypeRecord(Integer id, Boolean active, String type, Integer year, Integer price, String createdBy, OffsetDateTime createdDate, String changedBy, OffsetDateTime changedDate, Integer originalId) {
         super(MembershipType.MEMBERSHIP_TYPE);
 
         set(0, id);
@@ -576,8 +576,8 @@ public class MembershipTypeRecord extends UpdatableRecordImpl<MembershipTypeReco
         set(4, price);
         set(5, createdBy);
         set(6, createdDate);
-        set(7, deletedBy);
-        set(8, deletedDate);
+        set(7, changedBy);
+        set(8, changedDate);
         set(9, originalId);
     }
 }

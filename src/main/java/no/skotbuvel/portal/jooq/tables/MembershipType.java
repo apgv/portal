@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MembershipType extends TableImpl<MembershipTypeRecord> {
 
-    private static final long serialVersionUID = -282966116;
+    private static final long serialVersionUID = -2090255172;
 
     /**
      * The reference instance of <code>membership_type</code>
@@ -91,14 +91,14 @@ public class MembershipType extends TableImpl<MembershipTypeRecord> {
     public final TableField<MembershipTypeRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
 
     /**
-     * The column <code>membership_type.deleted_by</code>.
+     * The column <code>membership_type.changed_by</code>.
      */
-    public final TableField<MembershipTypeRecord, String> DELETED_BY = createField("deleted_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
+    public final TableField<MembershipTypeRecord, String> CHANGED_BY = createField("changed_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>membership_type.deleted_date</code>.
+     * The column <code>membership_type.changed_date</code>.
      */
-    public final TableField<MembershipTypeRecord, OffsetDateTime> DELETED_DATE = createField("deleted_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
+    public final TableField<MembershipTypeRecord, OffsetDateTime> CHANGED_DATE = createField("changed_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
 
     /**
      * The column <code>membership_type.original_id</code>.

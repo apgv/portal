@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UserRole extends TableImpl<UserRoleRecord> {
 
-    private static final long serialVersionUID = -1424813647;
+    private static final long serialVersionUID = 1669398545;
 
     /**
      * The reference instance of <code>user_role</code>
@@ -87,14 +87,14 @@ public class UserRole extends TableImpl<UserRoleRecord> {
     public final TableField<UserRoleRecord, OffsetDateTime> CREATED_DATE = createField("created_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE.nullable(false), this, "");
 
     /**
-     * The column <code>user_role.deleted_by</code>.
+     * The column <code>user_role.changed_by</code>.
      */
-    public final TableField<UserRoleRecord, String> DELETED_BY = createField("deleted_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
+    public final TableField<UserRoleRecord, String> CHANGED_BY = createField("changed_by", org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>user_role.deleted_date</code>.
+     * The column <code>user_role.changed_date</code>.
      */
-    public final TableField<UserRoleRecord, OffsetDateTime> DELETED_DATE = createField("deleted_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
+    public final TableField<UserRoleRecord, OffsetDateTime> CHANGED_DATE = createField("changed_date", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "");
 
     /**
      * Create a <code>user_role</code> table reference

@@ -101,8 +101,8 @@ class UserRepository(private val dbHelper: DbHelper) {
             if (deletedRoleIds.isNotEmpty()) {
                 dslContext.update(USER_ROLE)
                         .set(USER_ROLE.ACTIVE, false)
-                        .set(USER_ROLE.DELETED_BY, createdBy)
-                        .set(USER_ROLE.DELETED_DATE, JavaTimeUtil.nowEuropeOslo())
+                        .set(USER_ROLE.CHANGED_BY, createdBy)
+                        .set(USER_ROLE.CHANGED_DATE, JavaTimeUtil.nowEuropeOslo())
                         .where(USER_ROLE.USER_ID.eq(userRoleRegistration.userId))
                         .and(USER_ROLE.ROLE_ID.`in`(deletedRoleIds))
                         .execute()

@@ -30,7 +30,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Record11<Integer, Integer, Boolean, String, String, String, String, String, OffsetDateTime, String, OffsetDateTime> {
 
-    private static final long serialVersionUID = 666704159;
+    private static final long serialVersionUID = 2123523527;
 
     /**
      * Setter for <code>user.id</code>.
@@ -159,30 +159,30 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     /**
-     * Setter for <code>user.deleted_by</code>.
+     * Setter for <code>user.changed_by</code>.
      */
-    public void setDeletedBy(String value) {
+    public void setChangedBy(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>user.deleted_by</code>.
+     * Getter for <code>user.changed_by</code>.
      */
-    public String getDeletedBy() {
+    public String getChangedBy() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>user.deleted_date</code>.
+     * Setter for <code>user.changed_date</code>.
      */
-    public void setDeletedDate(OffsetDateTime value) {
+    public void setChangedDate(OffsetDateTime value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>user.deleted_date</code>.
+     * Getter for <code>user.changed_date</code>.
      */
-    public OffsetDateTime getDeletedDate() {
+    public OffsetDateTime getChangedDate() {
         return (OffsetDateTime) get(10);
     }
 
@@ -295,7 +295,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
      */
     @Override
     public Field<String> field10() {
-        return User.USER.DELETED_BY;
+        return User.USER.CHANGED_BY;
     }
 
     /**
@@ -303,7 +303,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
      */
     @Override
     public Field<OffsetDateTime> field11() {
-        return User.USER.DELETED_DATE;
+        return User.USER.CHANGED_DATE;
     }
 
     /**
@@ -383,7 +383,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
      */
     @Override
     public String component10() {
-        return getDeletedBy();
+        return getChangedBy();
     }
 
     /**
@@ -391,7 +391,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
      */
     @Override
     public OffsetDateTime component11() {
-        return getDeletedDate();
+        return getChangedDate();
     }
 
     /**
@@ -471,7 +471,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
      */
     @Override
     public String value10() {
-        return getDeletedBy();
+        return getChangedBy();
     }
 
     /**
@@ -479,7 +479,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
      */
     @Override
     public OffsetDateTime value11() {
-        return getDeletedDate();
+        return getChangedDate();
     }
 
     /**
@@ -568,7 +568,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
      */
     @Override
     public UserRecord value10(String value) {
-        setDeletedBy(value);
+        setChangedBy(value);
         return this;
     }
 
@@ -577,7 +577,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
      */
     @Override
     public UserRecord value11(OffsetDateTime value) {
-        setDeletedDate(value);
+        setChangedDate(value);
         return this;
     }
 
@@ -614,7 +614,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     /**
      * Create a detached, initialised UserRecord
      */
-    public UserRecord(Integer id, Integer originalId, Boolean active, String firstName, String lastName, String email, String phone, String createdBy, OffsetDateTime createdDate, String deletedBy, OffsetDateTime deletedDate) {
+    public UserRecord(Integer id, Integer originalId, Boolean active, String firstName, String lastName, String email, String phone, String createdBy, OffsetDateTime createdDate, String changedBy, OffsetDateTime changedDate) {
         super(User.USER);
 
         set(0, id);
@@ -626,7 +626,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         set(6, phone);
         set(7, createdBy);
         set(8, createdDate);
-        set(9, deletedBy);
-        set(10, deletedDate);
+        set(9, changedBy);
+        set(10, changedDate);
     }
 }

@@ -30,7 +30,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements Record11<Integer, Integer, Boolean, String, String, String, String, String, OffsetDateTime, String, OffsetDateTime> {
 
-    private static final long serialVersionUID = 196608352;
+    private static final long serialVersionUID = -311905504;
 
     /**
      * Setter for <code>person.id</code>.
@@ -159,30 +159,30 @@ public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements R
     }
 
     /**
-     * Setter for <code>person.deleted_by</code>.
+     * Setter for <code>person.changed_by</code>.
      */
-    public void setDeletedBy(String value) {
+    public void setChangedBy(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>person.deleted_by</code>.
+     * Getter for <code>person.changed_by</code>.
      */
-    public String getDeletedBy() {
+    public String getChangedBy() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>person.deleted_date</code>.
+     * Setter for <code>person.changed_date</code>.
      */
-    public void setDeletedDate(OffsetDateTime value) {
+    public void setChangedDate(OffsetDateTime value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>person.deleted_date</code>.
+     * Getter for <code>person.changed_date</code>.
      */
-    public OffsetDateTime getDeletedDate() {
+    public OffsetDateTime getChangedDate() {
         return (OffsetDateTime) get(10);
     }
 
@@ -295,7 +295,7 @@ public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements R
      */
     @Override
     public Field<String> field10() {
-        return Person.PERSON.DELETED_BY;
+        return Person.PERSON.CHANGED_BY;
     }
 
     /**
@@ -303,7 +303,7 @@ public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements R
      */
     @Override
     public Field<OffsetDateTime> field11() {
-        return Person.PERSON.DELETED_DATE;
+        return Person.PERSON.CHANGED_DATE;
     }
 
     /**
@@ -383,7 +383,7 @@ public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements R
      */
     @Override
     public String component10() {
-        return getDeletedBy();
+        return getChangedBy();
     }
 
     /**
@@ -391,7 +391,7 @@ public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements R
      */
     @Override
     public OffsetDateTime component11() {
-        return getDeletedDate();
+        return getChangedDate();
     }
 
     /**
@@ -471,7 +471,7 @@ public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements R
      */
     @Override
     public String value10() {
-        return getDeletedBy();
+        return getChangedBy();
     }
 
     /**
@@ -479,7 +479,7 @@ public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements R
      */
     @Override
     public OffsetDateTime value11() {
-        return getDeletedDate();
+        return getChangedDate();
     }
 
     /**
@@ -568,7 +568,7 @@ public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements R
      */
     @Override
     public PersonRecord value10(String value) {
-        setDeletedBy(value);
+        setChangedBy(value);
         return this;
     }
 
@@ -577,7 +577,7 @@ public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements R
      */
     @Override
     public PersonRecord value11(OffsetDateTime value) {
-        setDeletedDate(value);
+        setChangedDate(value);
         return this;
     }
 
@@ -614,7 +614,7 @@ public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements R
     /**
      * Create a detached, initialised PersonRecord
      */
-    public PersonRecord(Integer id, Integer originalId, Boolean active, String fullName, String email, String phone, String address, String createdBy, OffsetDateTime createdDate, String deletedBy, OffsetDateTime deletedDate) {
+    public PersonRecord(Integer id, Integer originalId, Boolean active, String fullName, String email, String phone, String address, String createdBy, OffsetDateTime createdDate, String changedBy, OffsetDateTime changedDate) {
         super(Person.PERSON);
 
         set(0, id);
@@ -626,7 +626,7 @@ public class PersonRecord extends UpdatableRecordImpl<PersonRecord> implements R
         set(6, address);
         set(7, createdBy);
         set(8, createdDate);
-        set(9, deletedBy);
-        set(10, deletedDate);
+        set(9, changedBy);
+        set(10, changedDate);
     }
 }

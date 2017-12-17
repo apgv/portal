@@ -42,8 +42,8 @@ class MembershipRepository(private val dbHelper: DbHelper) {
         dslContext.transaction(TransactionalRunnable {
             dslContext.update(MEMBERSHIP)
                     .set(MEMBERSHIP.ACTIVE, false)
-                    .set(MEMBERSHIP.DELETED_BY, deletedBy)
-                    .set(MEMBERSHIP.DELETED_DATE, JavaTimeUtil.nowEuropeOslo())
+                    .set(MEMBERSHIP.CHANGED_BY, deletedBy)
+                    .set(MEMBERSHIP.CHANGED_DATE, JavaTimeUtil.nowEuropeOslo())
                     .where(MEMBERSHIP.ID.eq(id))
                     .execute()
         })
