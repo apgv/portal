@@ -5,7 +5,7 @@ import VeeValidate, {Validator} from 'vee-validate'
 import Snotify, {SnotifyPosition} from 'vue-snotify'
 import Home from '@/components/Home'
 import Persons from '@/components/Persons'
-import AddPerson from '@/components/AddPerson'
+import PersonAddOrEdit from '@/components/PersonAddOrEdit'
 import Membership from '@/components/Membership'
 import MembershipTypes from '@/components/MembershipTypes'
 import AddMembershipType from '@/components/AddMembershipType'
@@ -48,9 +48,10 @@ const router = new Router({
             component: Persons
         },
         {
-            path: '/addperson',
-            name: 'AddPerson',
-            component: AddPerson
+            path: '/personaddoredit/:personId?',
+            name: 'PersonAddOrEdit',
+            component: PersonAddOrEdit,
+            props: true
         },
         {
             path: '/membership/:personId',

@@ -171,11 +171,11 @@
 
                 axios.post('/api/memberships', membership, {
                     headers: {'X-JWT': this.auth.jwt()}
-                }).then(response => {
+                }).then(() => {
                     this.membership.paymentDate = null
                     this.membership = null
                     this.$snotify.success('Medlemskap ble lagret')
-                    console.log('response.status=' + response.status)
+                    this.fetchPerson()
                 }).catch(error => {
                     this.$snotify.error('Feil ved lagring av medlemskap')
                     console.log(error)
@@ -184,7 +184,7 @@
             deleteMembership (membership) {
                 axios.delete(`/api/memberships/${membership.id}`, {
                     headers: {'X-JWT': this.auth.jwt()}
-                }).then(response => {
+                }).then(() => {
                     let index = this.person.memberships.indexOf(membership)
 
                     if (index > -1) {
@@ -192,7 +192,6 @@
                     }
 
                     this.$snotify.success('Medlemskap ble slettet')
-                    console.log('response.status=' + response.status)
                 }).catch(error => {
                     this.$snotify.error('Feil ved sletting av medlemskap')
                     console.log(error)

@@ -1,7 +1,15 @@
 <template>
     <div>
         <div v-if="authenticated">
-            <h4 class="title is-4">Legg til person</h4>
+
+            <h4 v-if="personId"
+                class="title is-4">
+                Endre person
+            </h4>
+            <h4 v-else
+                class="title is-4">
+                Legg til person
+            </h4>
 
             <div class="field">
                 <label class="label">Navn</label>
@@ -95,15 +103,14 @@
 </template>
 
 <script>
-    import PersonService from '../PersonService'
     import NotAuthenticated from './NotAuthenticated.vue'
-
-    const personService = new PersonService()
+    import axios from 'axios'
+    import router from '../router'
 
     export default {
-        name: 'AddPerson',
+        name: 'PersonAddOrEdit',
         components: {NotAuthenticated},
-        props: ['auth', 'authenticated'],
+        props: ['auth', 'authenticated', 'personId'],
         data () {
             return {
                 person: {
@@ -115,30 +122,60 @@
             }
         },
         methods: {
+            fetchPerson () {
+                if (this.authenticated && this.personId) {
+                    axios.get(`/api/persons/${this.personId}`, {
+                        headers: {'X-JWT': this.auth.jwt()}
+                    }).then(response => {
+                        this.person = response.data
+                    }).catch(error => {
+                        this.$snotify.error('Feil ved henting av person')
+                        console.log(error)
+                    })
+                }
+            },
             save () {
                 if (this.authenticated) {
                     this.$validator.validateAll().then((result) => {
                         if (result) {
-                            personService.save(this.person, this.auth.jwt())
-                                .then(() => {
-                                    this.person = {
-                                        fullName: null,
-                                        email: null,
-                                        phone: null,
-                                        address: null
-                                    }
+                            const successCallback = () => {
+                                this.person = {
+                                    fullName: null,
+                                    email: null,
+                                    phone: null,
+                                    address: null
+                                }
 
-                                    this.$validator.reset()
-                                    this.$snotify.success('Person ble lagret')
-                                })
-                                .catch(error => {
-                                    this.$snotify.error('Feil ved lagring av person')
-                                    console.log(error)
-                                })
+                                this.$validator.reset()
+                                this.$snotify.success('Person ble lagret')
+                            }
+
+                            const errorCallback = (error) => {
+                                this.$snotify.error('Feil ved lagring av person')
+                                console.log(error)
+                            }
+
+                            if (this.personId) {
+                                axios.put('/api/persons', this.person, {
+                                    headers: {'X-JWT': this.auth.jwt()}
+                                }).then(successCallback)
+                                    .then(() => {
+                                        router.replace('/persons')
+                                    })
+                                    .catch(errorCallback)
+                            } else {
+                                axios.post('/api/persons', this.person, {
+                                    headers: {'X-JWT': this.auth.jwt()}
+                                }).then(successCallback)
+                                    .catch(errorCallback)
+                            }
                         }
                     })
                 }
             }
+        },
+        created () {
+            this.fetchPerson()
         }
     }
 </script>

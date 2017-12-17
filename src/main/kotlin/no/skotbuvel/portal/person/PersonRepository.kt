@@ -36,6 +36,7 @@ class PersonRepository(private val dbHelper: DbHelper) {
                 .and(MEMBERSHIP.ACTIVE.eq(true))
                 .leftJoin(MEMBERSHIP_TYPE)
                 .on(MEMBERSHIP.MEMBERSHIP_TYPE_ID.eq(MEMBERSHIP_TYPE.ID))
+                .where(PERSON.ACTIVE.eq(true))
                 .fetchGroups(PERSON.ID)
                 .values
                 .map { mapPersonWithMembership(it) }
@@ -51,6 +52,7 @@ class PersonRepository(private val dbHelper: DbHelper) {
                 .leftJoin(MEMBERSHIP_TYPE)
                 .on(MEMBERSHIP.MEMBERSHIP_TYPE_ID.eq(MEMBERSHIP_TYPE.ID))
                 .where(PERSON.ID.eq(id))
+                .and(PERSON.ACTIVE.eq(true))
                 .fetchGroups(PERSON.ID)
                 .values
                 .map { mapPersonWithMembership(it) }
@@ -82,6 +84,54 @@ class PersonRepository(private val dbHelper: DbHelper) {
                     createdBy,
                     JavaTimeUtil.nowEuropeOslo()
             )
+                    .execute()
+        })
+    }
+
+    fun update(personRegistration: PersonRegistration, updatedBy: String) {
+        val dslContext = dbHelper.dslContext()
+
+        dslContext.transaction(TransactionalRunnable {
+            val originalId = dslContext.select(PERSON.ORIGINAL_ID)
+                    .from(PERSON)
+                    .where(PERSON.ID.eq(personRegistration.id))
+                    .fetchOne()
+                    .map { it[PERSON.ORIGINAL_ID] }
+
+            dslContext.update(PERSON)
+                    .set(PERSON.ACTIVE, false)
+                    .set(PERSON.CHANGED_BY, updatedBy)
+                    .set(PERSON.CHANGED_DATE, JavaTimeUtil.nowEuropeOslo())
+                    .where(PERSON.ID.eq(personRegistration.id))
+                    .execute()
+
+            dslContext.insertInto(PERSON,
+                    PERSON.ID,
+                    PERSON.ORIGINAL_ID,
+                    PERSON.ACTIVE,
+                    PERSON.FULL_NAME,
+                    PERSON.EMAIL,
+                    PERSON.PHONE,
+                    PERSON.ADDRESS,
+                    PERSON.CREATED_BY,
+                    PERSON.CREATED_DATE
+            ).values(
+                    dslContext.nextval(PERSON_ID_SEQ).toInt(),
+                    originalId,
+                    true,
+                    personRegistration.fullName,
+                    personRegistration.email,
+                    personRegistration.phone,
+                    personRegistration.address,
+                    updatedBy,
+                    JavaTimeUtil.nowEuropeOslo()
+            )
+                    .execute()
+
+            dslContext.update(MEMBERSHIP)
+                    .set(MEMBERSHIP.PERSON_ID, dslContext.currval(PERSON_ID_SEQ).toInt())
+                    .where(MEMBERSHIP.PERSON_ID.eq(personRegistration.id))
+                    .and(MEMBERSHIP.ACTIVE.eq(true))
                     .execute()
         })
     }

@@ -38,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <router-link :to="'/addperson'">
+            <router-link :to="'/personaddoredit'">
                 Legg til person
             </router-link>
             <div class="is-pulled-right">
@@ -52,6 +52,7 @@
                     <th>E-post</th>
                     <th>Telefon</th>
                     <th>Adresse</th>
+                    <th>Endre</th>
                     <th>Registrert av</th>
                     <th>Registrert dato</th>
                     <th>Medlem</th>
@@ -65,6 +66,11 @@
                     <td>{{person.email}}</td>
                     <td>{{person.phone}}</td>
                     <td>{{person.address}}</td>
+                    <td>
+                        <router-link :to="`/personaddoredit/${person.id}`">
+                            Endre
+                        </router-link>
+                    </td>
                     <td>{{person.createdBy}}</td>
                     <td>{{person.createdDate | formatDate}}</td>
                     <td>{{hasMembership(person.memberships) ? 'Ja' : 'Nei'}}</td>
@@ -86,12 +92,12 @@
 
 <script>
     import NotAuthenticated from './NotAuthenticated.vue'
-    import AddPerson from './AddPerson.vue'
+    import PersonAddOrEdit from './PersonAddOrEdit.vue'
     import axios from 'axios'
 
     export default {
         components: {
-            AddPerson,
+            PersonAddOrEdit,
             NotAuthenticated
         },
         name: 'Persons',

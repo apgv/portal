@@ -88,6 +88,18 @@ fun main(args: Array<String>) {
             }
         })
 
+        put("/persons", { request, response ->
+            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            val jsonAdapter = JsonUtil.moshi.adapter(PersonRegistration::class.java)
+            val personRegistration = jsonAdapter.fromJson(request.body())
+
+            if (personRegistration?.id != null) {
+                personRepository.update(personRegistration, JwtUtil.email(decodedJWT))
+            } else {
+                response.status(400)
+            }
+        })
+
         post("/memberships", { request, response ->
             val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
 
