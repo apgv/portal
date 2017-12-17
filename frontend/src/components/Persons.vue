@@ -47,21 +47,17 @@
             <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Navn</th>
                     <th>E-post</th>
                     <th>Telefon</th>
                     <th>Adresse</th>
                     <th>Endre</th>
-                    <th>Registrert av</th>
-                    <th>Registrert dato</th>
                     <th>Medlem</th>
                     <th>Administrer medlemskap</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="person in filteredPersons">
-                    <td>{{person.id}}</td>
                     <td>{{person.fullName}}</td>
                     <td>{{person.email}}</td>
                     <td>{{person.phone}}</td>
@@ -71,8 +67,6 @@
                             Endre
                         </router-link>
                     </td>
-                    <td>{{person.createdBy}}</td>
-                    <td>{{person.createdDate | formatDate}}</td>
                     <td>{{hasMembership(person.memberships) ? 'Ja' : 'Nei'}}</td>
                     <td>
                         <router-link :to="`/membership/${person.id}`">
