@@ -94,9 +94,9 @@ class PersonRepository(private val dbHelper: DbHelper) {
         return Person(
                 id = record[PERSON.ID],
                 fullName = record[PERSON.FULL_NAME],
-                email = record[PERSON.EMAIL],
-                phone = record[PERSON.PHONE],
-                address = record[PERSON.ADDRESS],
+                email = record[PERSON.EMAIL].orEmpty(),
+                phone = record[PERSON.PHONE].orEmpty(),
+                address = record[PERSON.ADDRESS].orEmpty(),
                 memberships = memberships,
                 createdBy = record[PERSON.CREATED_BY],
                 createdDate = record[PERSON.CREATED_DATE].toZonedDateTime()

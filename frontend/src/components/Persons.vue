@@ -134,9 +134,10 @@
 
                 if (filterKey) {
                     data = data.filter(row => {
-                        return Object.keys(row).some(key => {
-                            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
-                        })
+                        return row['fullName'].toLowerCase().indexOf(filterKey) > -1 ||
+                            row['email'].toLowerCase().indexOf(filterKey) > -1 ||
+                            row['phone'].indexOf(filterKey) > -1 ||
+                            row['address'].toLowerCase().indexOf(filterKey) > -1
                     })
                 }
 
