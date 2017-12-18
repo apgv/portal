@@ -18,6 +18,8 @@ import no.skotbuvel.portal.person.PersonRepository
 import no.skotbuvel.portal.role.RoleRepository
 import no.skotbuvel.portal.user.*
 import no.skotbuvel.portal.util.JsonUtil
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.flywaydb.core.Flyway
 import spark.Request
 import spark.Spark.*
@@ -28,6 +30,8 @@ import javax.sql.DataSource
 fun main(args: Array<String>) {
     port(System.getenv("PORT").toInt())
     staticFiles.location("/frontend")
+
+    val logger = logger()
 
     val dbHelper = DbHelper(HerokuPostgresConfig(URI(System.getenv("DATABASE_URL"))))
 
@@ -212,10 +216,13 @@ fun main(args: Array<String>) {
     })
 
     exception(JWTVerificationException::class.java, { exception, _, response ->
+        logger.error(exception)
         response.redirect("/?unknown_api_path=${encodeURL("/reauthenticate")}")
     })
 
 }
+
+fun logger(): Logger = LogManager.getLogger()
 
 private fun migrateDatabase(dataSource: DataSource) {
     val flyway = Flyway()
