@@ -15,6 +15,7 @@ import UserRoles from '@/components/UserRoles'
 import Roles from '@/components/Roles'
 import ExternalRouting from '@/components/ExternalRouting'
 import Auth0Callback from '@/components/Auth0Callback'
+import ReAuthenticate from '@/components/ReAuthenticate'
 import moment from 'moment'
 
 Vue.use(Router)
@@ -99,6 +100,11 @@ const router = new Router({
             path: '/auth0callback',
             name: 'Auth0Callback',
             component: Auth0Callback
+        },
+        {
+            path: '/reauthenticate',
+            name: 'ReAuthenticate',
+            component: ReAuthenticate
         },
         {
             path: '/',

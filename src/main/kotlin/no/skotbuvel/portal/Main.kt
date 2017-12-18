@@ -1,5 +1,6 @@
 package no.skotbuvel.portal
 
+import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.squareup.moshi.Types
 import no.skotbuvel.portal.auth.JwtUtil
@@ -207,7 +208,11 @@ fun main(args: Array<String>) {
     })
 
     get("/*", { request, response ->
-        response.redirect("/?unknown_api_path=${URLEncoder.encode(request.uri(), "UTF-8")}")
+        response.redirect("/?unknown_api_path=${encodeURL(request.uri())}")
+    })
+
+    exception(JWTVerificationException::class.java, { exception, _, response ->
+        response.redirect("/?unknown_api_path=${encodeURL("/reauthenticate")}")
     })
 
 }
@@ -241,3 +246,5 @@ private fun verifyTokenAndCheckRoles(request: Request,
         }
     }
 }
+
+private fun encodeURL(uri: String) = URLEncoder.encode(uri, "UTF-8")

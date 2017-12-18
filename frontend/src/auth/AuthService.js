@@ -27,7 +27,10 @@ export default class AuthService {
     })
 
     login () {
-        localStorage.setItem('current_path', router.currentRoute.path)
+        if (router.currentRoute.path !== '/reauthenticate') {
+            localStorage.setItem('current_path', router.currentRoute.path)
+        }
+
         this.auth0.authorize()
     }
 
