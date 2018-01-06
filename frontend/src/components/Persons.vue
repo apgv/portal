@@ -152,8 +152,8 @@
                 }
 
                 if (this.noMembershipFilter) {
-                    data = data.filter(row => {
-                        return row['memberships'].length === 0
+                    data = data.filter(person => {
+                        return !this.hasMembership(person.memberships)
                     })
                 }
 
