@@ -20,42 +20,38 @@
                                          class="navbar-item">
                                 Forside
                             </router-link>
+                            <router-link :to="'/persons'"
+                                         @click.native="toggleMobileMenu()"
+                                         class="navbar-item">
+                                Personregister
+                            </router-link>
+                            <router-link :to="'/membershiptypes'"
+                                         @click.native="toggleMobileMenu()"
+                                         v-if="false"
+                                         class="navbar-item">
+                                Medlemskapstyper
+                            </router-link>
+                            <router-link :to="'/users'"
+                                         @click.native="toggleMobileMenu()"
+                                         v-if="false"
+                                         class="navbar-item">
+                                Brukere
+                            </router-link>
+                            <router-link :to="'/roles'"
+                                         @click.native="toggleMobileMenu()"
+                                         class="navbar-item">
+                                Roller
+                            </router-link>
                             <a v-if="!authenticated"
                                @click="login()"
                                class="navbar-item">
                                 Logg inn
                             </a>
-                            <div v-if="authenticated">
-                                <router-link :to="'/persons'"
-                                             @click.native="toggleMobileMenu()"
-                                             class="navbar-item">
-                                    Personregister
-                                </router-link>
-                                <router-link :to="'/membershiptypes'"
-                                             @click.native="toggleMobileMenu()"
-                                             v-if="false"
-                                             class="navbar-item">
-                                    Medlemskapstyper
-                                </router-link>
-                                <router-link :to="'/users'"
-                                             @click.native="toggleMobileMenu()"
-                                             v-if="false"
-                                             class="navbar-item">
-                                    Brukere
-                                </router-link>
-                                <router-link :to="'/roles'"
-                                             @click.native="toggleMobileMenu()"
-                                             class="navbar-item">
-                                    Roller
-                                </router-link>
-                                <div class="navbar-item">
-                                    {{auth.subject.firstName}} ({{auth.subject.email}})
-                                </div>
-                                <a @click="logout()"
-                                   class="navbar-item">
-                                    Logg ut
-                                </a>
-                            </div>
+                            <a v-if="authenticated"
+                               @click="logout()"
+                               class="navbar-item">
+                                Logg ut
+                            </a>
                         </div>
                     </div>
                 </div>
