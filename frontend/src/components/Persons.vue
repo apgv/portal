@@ -133,17 +133,17 @@
                 let filterKey = this.filterKey && this.filterKey.toLowerCase()
 
                 if (filterKey) {
-                    data = data.filter(row => {
-                        return row['fullName'].toLowerCase().indexOf(filterKey) > -1 ||
-                            row['email'].toLowerCase().indexOf(filterKey) > -1 ||
-                            row['phone'].indexOf(filterKey) > -1 ||
-                            row['address'].toLowerCase().indexOf(filterKey) > -1
+                    data = data.filter(person => {
+                        return person.fullName.toLowerCase().indexOf(filterKey) > -1 ||
+                            person.email.toLowerCase().indexOf(filterKey) > -1 ||
+                            person.phone.indexOf(filterKey) > -1 ||
+                            person.address.toLowerCase().indexOf(filterKey) > -1
                     })
                 }
 
                 if (this.membershipYearsFilter.length > 0) {
-                    data = data.filter(row => {
-                        let years = row['memberships'].map(membership => {
+                    data = data.filter(person => {
+                        let years = person.memberships.map(membership => {
                             return membership.year
                         })
 
