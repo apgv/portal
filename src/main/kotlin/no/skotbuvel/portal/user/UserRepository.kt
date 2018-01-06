@@ -30,8 +30,8 @@ class UserRepository(private val dbHelper: DbHelper) {
             ROLE.DESCRIPTION
     )
 
-    private val USERByEmailCache = loadingCacheByEmail()
-    private val USERByIdCache = loadingCacheById()
+    private val userByEmailCache = loadingCacheByEmail()
+    private val userByIdCache = loadingCacheById()
 
     fun findAll(): List<User> {
         return dbHelper.dslContext()
@@ -48,11 +48,11 @@ class UserRepository(private val dbHelper: DbHelper) {
     }
 
     fun findByEmail(email: String): User {
-        return USERByEmailCache[email]
+        return userByEmailCache[email]
     }
 
     fun findById(id: Int): User {
-        return USERByIdCache[id]
+        return userByIdCache[id]
     }
 
     fun save(userRegistration: UserRegistration, createdBy: String) {
@@ -133,9 +133,9 @@ class UserRepository(private val dbHelper: DbHelper) {
         invalidateCaches(userRoleRegistration.userId)
     }
 
-    private fun invalidateCaches(USERId: Int) {
-        USERByEmailCache.invalidate(USERByIdCache[USERId])
-        USERByIdCache.invalidate(USERId)
+    private fun invalidateCaches(UserId: Int) {
+        userByEmailCache.invalidate(userByIdCache[UserId])
+        userByIdCache.invalidate(UserId)
     }
 
     private fun mapUSERWithRoles(result: Result<Record>): User {
