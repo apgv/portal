@@ -1,6 +1,11 @@
 <template>
     <div>
         <div v-if="authenticated">
+            <missing-roles :auth="auth"
+                           :authenticated="authenticated"
+                           :requiredRoles="requiredRoles">
+            </missing-roles>
+
             <h4 class="title is-4">Personregister</h4>
 
             <div class="columns">
@@ -38,7 +43,8 @@
                     </div>
                 </div>
             </div>
-            <router-link :to="'/personaddoredit'">
+            <router-link v-if="auth.hasOneOfRoles(requiredRoles)"
+                         :to="'/personaddoredit'">
                 Legg til person
             </router-link>
             <div class="is-pulled-right">
@@ -88,16 +94,20 @@
 import NotAuthenticated from './NotAuthenticated.vue'
 import PersonAddOrEdit from './PersonAddOrEdit.vue'
 import axios from 'axios'
+import MissingRoles from './MissingRoles'
+import {STYREMEDLEM} from '../auth/Roles'
 
 export default {
     components: {
         PersonAddOrEdit,
+        MissingRoles,
         NotAuthenticated
     },
     name: 'Persons',
     props: ['auth', 'authenticated'],
     data () {
         return {
+            requiredRoles: [STYREMEDLEM],
             persons: [],
             filterKey: '',
             currentYear: new Date().getFullYear(),
@@ -108,7 +118,7 @@ export default {
     },
     methods: {
         fetchPersons () {
-            if (this.authenticated) {
+            if (this.authenticated && this.auth.hasOneOfRoles(this.requiredRoles)) {
                 axios.get('/api/persons', {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {

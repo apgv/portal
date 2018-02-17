@@ -4,6 +4,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.squareup.moshi.Types
 import no.skotbuvel.portal.auth.JwtUtil
+import no.skotbuvel.portal.auth.Role
 import no.skotbuvel.portal.auth.userFromJWT
 import no.skotbuvel.portal.config.HerokuPostgresConfig
 import no.skotbuvel.portal.helper.DbHelper
@@ -61,7 +62,7 @@ fun main(args: Array<String>) {
 
     path("api", {
         get("/persons", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            verifyTokenAndCheckRoles(request, listOf(Role.STYREMEDLEM), userRepository)
 
             val persons = personRepository.findAll()
 
@@ -231,12 +232,12 @@ private fun migrateDatabase(dataSource: DataSource) {
 }
 
 private fun verifyTokenAndCheckRoles(request: Request,
-                                     requiredRoles: List<String>,
+                                     requiredRoles: List<Role>,
                                      userRepository: UserRepository): DecodedJWT {
     val decodedJWT = JwtUtil.verifyAndDecode(request)
     val jwtUser = userFromJWT(decodedJWT)
     val user = userRepository.findByEmail(jwtUser.email)
-    val userRoles = user.roles.map { it.name.toUpperCase() }
+    val userRoles = user.roles.map { Role.valueOfIgnoreCase(it.name) }
 
     return when {
         requiredRoles.isEmpty() -> decodedJWT
