@@ -45,42 +45,42 @@
 </template>
 
 <script>
-    import NotAuthenticated from './NotAuthenticated'
-    import axios from 'axios'
+import NotAuthenticated from './NotAuthenticated'
+import axios from 'axios'
 
-    export default {
-        components: {NotAuthenticated},
-        name: 'users',
-        props: ['auth', 'authenticated'],
-        data () {
-            return {
-                users: []
-            }
-        },
-        methods: {
-            fetchUsers () {
-                if (this.authenticated) {
-                    axios.get('/api/users', {
-                        headers: {'X-JWT': this.auth.jwt()}
-                    }).then(response => {
-                        let users = response.data
-                        users.forEach(user => {
-                            user.roles = user.roles
-                                .map(role => {
-                                    return role.name
-                                })
-                                .join(', ')
-                        })
-                        this.users = users
-                    }).catch(error => {
-                        this.$snotify.error('Feil ved henting av brukere')
-                        console.log(error)
-                    })
-                }
-            }
-        },
-        created () {
-            this.fetchUsers()
+export default {
+    components: {NotAuthenticated},
+    name: 'users',
+    props: ['auth', 'authenticated'],
+    data () {
+        return {
+            users: []
         }
+    },
+    methods: {
+        fetchUsers () {
+            if (this.authenticated) {
+                axios.get('/api/users', {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(response => {
+                    let users = response.data
+                    users.forEach(user => {
+                        user.roles = user.roles
+                            .map(role => {
+                                return role.name
+                            })
+                            .join(', ')
+                    })
+                    this.users = users
+                }).catch(error => {
+                    this.$snotify.error('Feil ved henting av brukere')
+                    console.log(error)
+                })
+            }
+        }
+    },
+    created () {
+        this.fetchUsers()
     }
+}
 </script>

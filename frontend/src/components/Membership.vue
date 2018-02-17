@@ -108,104 +108,104 @@
 </template>
 
 <script>
-    import NotAuthenticated from './NotAuthenticated.vue'
-    import axios from 'axios'
-    import flatPickr from 'vue-flatpickr-component'
-    import {Norwegian} from 'flatpickr/dist/l10n/no'
-    import 'flatpickr/dist/flatpickr.css'
-    import moment from 'moment'
+import NotAuthenticated from './NotAuthenticated.vue'
+import axios from 'axios'
+import flatPickr from 'vue-flatpickr-component'
+import {Norwegian} from 'flatpickr/dist/l10n/no'
+import 'flatpickr/dist/flatpickr.css'
+import moment from 'moment'
 
-    export default {
-        name: 'Membership',
-        components: {NotAuthenticated, flatPickr},
-        props: ['auth', 'authenticated', 'personId'],
-        data () {
-            return {
-                person: {
-                    fullName: null,
-                    email: null,
-                    phone: null
-                },
-                membershipTypes: [],
-                membership: null,
-                flatPickrConfig: {
-                    locale: Norwegian,
-                    dateFormat: 'd.m.Y'
-                }
-            }
-        },
-        methods: {
-            fetchPerson () {
-                if (this.authenticated) {
-                    axios.get(`/api/persons/${this.personId}`, {
-                        headers: {'X-JWT': this.auth.jwt()}
-                    }).then(response => {
-                        this.person = response.data
-                    }).catch(error => {
-                        this.$snotify.error('Feil ved henting av person')
-                        console.log(error)
-                    })
-                }
+export default {
+    name: 'Membership',
+    components: {NotAuthenticated, flatPickr},
+    props: ['auth', 'authenticated', 'personId'],
+    data () {
+        return {
+            person: {
+                fullName: null,
+                email: null,
+                phone: null
             },
-            fetchMembershipTypes () {
-                if (this.authenticated) {
-                    axios.get('/api/membershiptypes', {
-                        headers: {'X-JWT': this.auth.jwt()},
-                        params: {'active': true}
-                    }).then(response => {
-                        this.membershipTypes = response.data
-                    }).catch(error => {
-                        this.$snotify.error('Feil ved henting av medlemskapstyper')
-                        console.log(error)
-                    })
-                }
-            },
-            save () {
-                let norwegianDate = moment(this.membership.paymentDate, 'DD.MM.YYYY')
-
-                let membership = {
-                    personId: this.person.id,
-                    membershipTypeId: this.membership.id,
-                    paymentDate: norwegianDate.format('YYYY-MM-DD')
-                }
-
-                axios.post('/api/memberships', membership, {
-                    headers: {'X-JWT': this.auth.jwt()}
-                }).then(() => {
-                    this.membership.paymentDate = null
-                    this.membership = null
-                    this.$snotify.success('Medlemskap ble lagret')
-                    this.fetchPerson()
-                }).catch(error => {
-                    this.$snotify.error('Feil ved lagring av medlemskap')
-                    console.log(error)
-                })
-            },
-            deleteMembership (membership) {
-                axios.delete(`/api/memberships/${membership.id}`, {
-                    headers: {'X-JWT': this.auth.jwt()}
-                }).then(() => {
-                    let index = this.person.memberships.indexOf(membership)
-
-                    if (index > -1) {
-                        this.person.memberships.splice(index, 1)
-                    }
-
-                    this.$snotify.success('Medlemskap ble slettet')
-                }).catch(error => {
-                    this.$snotify.error('Feil ved sletting av medlemskap')
-                    console.log(error)
-                })
+            membershipTypes: [],
+            membership: null,
+            flatPickrConfig: {
+                locale: Norwegian,
+                dateFormat: 'd.m.Y'
             }
-        },
-        computed: {
-            formIsValid: function () {
-                return this.membership && this.membership.paymentDate
-            }
-        },
-        created () {
-            this.fetchPerson()
-            this.fetchMembershipTypes()
         }
+    },
+    methods: {
+        fetchPerson () {
+            if (this.authenticated) {
+                axios.get(`/api/persons/${this.personId}`, {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(response => {
+                    this.person = response.data
+                }).catch(error => {
+                    this.$snotify.error('Feil ved henting av person')
+                    console.log(error)
+                })
+            }
+        },
+        fetchMembershipTypes () {
+            if (this.authenticated) {
+                axios.get('/api/membershiptypes', {
+                    headers: {'X-JWT': this.auth.jwt()},
+                    params: {'active': true}
+                }).then(response => {
+                    this.membershipTypes = response.data
+                }).catch(error => {
+                    this.$snotify.error('Feil ved henting av medlemskapstyper')
+                    console.log(error)
+                })
+            }
+        },
+        save () {
+            let norwegianDate = moment(this.membership.paymentDate, 'DD.MM.YYYY')
+
+            let membership = {
+                personId: this.person.id,
+                membershipTypeId: this.membership.id,
+                paymentDate: norwegianDate.format('YYYY-MM-DD')
+            }
+
+            axios.post('/api/memberships', membership, {
+                headers: {'X-JWT': this.auth.jwt()}
+            }).then(() => {
+                this.membership.paymentDate = null
+                this.membership = null
+                this.$snotify.success('Medlemskap ble lagret')
+                this.fetchPerson()
+            }).catch(error => {
+                this.$snotify.error('Feil ved lagring av medlemskap')
+                console.log(error)
+            })
+        },
+        deleteMembership (membership) {
+            axios.delete(`/api/memberships/${membership.id}`, {
+                headers: {'X-JWT': this.auth.jwt()}
+            }).then(() => {
+                let index = this.person.memberships.indexOf(membership)
+
+                if (index > -1) {
+                    this.person.memberships.splice(index, 1)
+                }
+
+                this.$snotify.success('Medlemskap ble slettet')
+            }).catch(error => {
+                this.$snotify.error('Feil ved sletting av medlemskap')
+                console.log(error)
+            })
+        }
+    },
+    computed: {
+        formIsValid: function () {
+            return this.membership && this.membership.paymentDate
+        }
+    },
+    created () {
+        this.fetchPerson()
+        this.fetchMembershipTypes()
     }
+}
 </script>

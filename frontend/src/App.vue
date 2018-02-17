@@ -15,28 +15,28 @@
 </template>
 
 <script>
-    import AuthService from './auth/AuthService'
-    import {eventBus} from './main'
-    import AppMenu from './components/AppMenu'
+import AuthService from './auth/AuthService'
+import {eventBus} from './main'
+import AppMenu from './components/AppMenu'
 
-    const auth = new AuthService()
-    const {login, logout, authenticated} = auth
+const auth = new AuthService()
+const {login, logout, authenticated} = auth
 
-    export default {
-        components: {AppMenu},
-        name: 'app',
-        data () {
-            eventBus.$on('authChange', authState => {
-                this.authenticated = authState.authenticated
-            })
-            return {
-                auth,
-                authenticated
-            }
-        },
-        methods: {
-            login,
-            logout
+export default {
+    components: {AppMenu},
+    name: 'app',
+    data () {
+        eventBus.$on('authChange', authState => {
+            this.authenticated = authState.authenticated
+        })
+        return {
+            auth,
+            authenticated
         }
+    },
+    methods: {
+        login,
+        logout
     }
+}
 </script>

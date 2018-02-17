@@ -95,47 +95,47 @@
 </template>
 
 <script>
-    import NotAuthenticated from './NotAuthenticated'
-    import axios from 'axios'
+import NotAuthenticated from './NotAuthenticated'
+import axios from 'axios'
 
-    export default {
-        components: {NotAuthenticated},
-        name: 'user-add',
-        props: ['auth', 'authenticated'],
-        data () {
-            return {
-                user: {
-                    firstName: null,
-                    lastName: null,
-                    email: null,
-                    phone: null
-                }
+export default {
+    components: {NotAuthenticated},
+    name: 'user-add',
+    props: ['auth', 'authenticated'],
+    data () {
+        return {
+            user: {
+                firstName: null,
+                lastName: null,
+                email: null,
+                phone: null
             }
-        },
-        methods: {
-            save () {
-                if (this.authenticated) {
-                    this.$validator.validateAll().then((result) => {
-                        if (result) {
-                            axios.post('api/users', this.user, {
-                                headers: {'X-JWT': this.auth.jwt()}
-                            }).then(() => {
-                                this.user = {
-                                    firstName: null,
-                                    lastName: null,
-                                    email: null,
-                                    phone: null
-                                }
-                                this.$validator.reset()
-                                this.$snotify.success('Bruker ble lagret')
-                            }).catch(error => {
-                                this.$snotify.error('Feil ved lagring av bruker')
-                                console.log(error)
-                            })
-                        }
-                    })
-                }
+        }
+    },
+    methods: {
+        save () {
+            if (this.authenticated) {
+                this.$validator.validateAll().then((result) => {
+                    if (result) {
+                        axios.post('api/users', this.user, {
+                            headers: {'X-JWT': this.auth.jwt()}
+                        }).then(() => {
+                            this.user = {
+                                firstName: null,
+                                lastName: null,
+                                email: null,
+                                phone: null
+                            }
+                            this.$validator.reset()
+                            this.$snotify.success('Bruker ble lagret')
+                        }).catch(error => {
+                            this.$snotify.error('Feil ved lagring av bruker')
+                            console.log(error)
+                        })
+                    }
+                })
             }
         }
     }
+}
 </script>

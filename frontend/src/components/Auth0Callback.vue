@@ -6,12 +6,12 @@
 </template>
 
 <script>
-    export default {
-        name: 'Auth0Callback',
-        props: ['auth'],
-        data () {
-            this.auth.handleAuthentication()
-            return {}
-        }
+export default {
+    name: 'Auth0Callback',
+    props: ['auth'],
+    data () {
+        this.auth.handleAuthentication()
+        return {}
     }
+}
 </script>

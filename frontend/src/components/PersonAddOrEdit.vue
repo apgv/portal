@@ -103,79 +103,79 @@
 </template>
 
 <script>
-    import NotAuthenticated from './NotAuthenticated.vue'
-    import axios from 'axios'
-    import router from '../router'
+import NotAuthenticated from './NotAuthenticated.vue'
+import axios from 'axios'
+import router from '../router'
 
-    export default {
-        name: 'PersonAddOrEdit',
-        components: {NotAuthenticated},
-        props: ['auth', 'authenticated', 'personId'],
-        data () {
-            return {
-                person: {
-                    fullName: null,
-                    email: null,
-                    phone: null,
-                    address: null
-                }
+export default {
+    name: 'PersonAddOrEdit',
+    components: {NotAuthenticated},
+    props: ['auth', 'authenticated', 'personId'],
+    data () {
+        return {
+            person: {
+                fullName: null,
+                email: null,
+                phone: null,
+                address: null
             }
-        },
-        methods: {
-            fetchPerson () {
-                if (this.authenticated && this.personId) {
-                    axios.get(`/api/persons/${this.personId}`, {
-                        headers: {'X-JWT': this.auth.jwt()}
-                    }).then(response => {
-                        this.person = response.data
-                    }).catch(error => {
-                        this.$snotify.error('Feil ved henting av person')
-                        console.log(error)
-                    })
-                }
-            },
-            save () {
-                if (this.authenticated) {
-                    this.$validator.validateAll().then((result) => {
-                        if (result) {
-                            const successCallback = () => {
-                                this.person = {
-                                    fullName: null,
-                                    email: null,
-                                    phone: null,
-                                    address: null
-                                }
-
-                                this.$validator.reset()
-                                this.$snotify.success('Person ble lagret')
-                            }
-
-                            const errorCallback = (error) => {
-                                this.$snotify.error('Feil ved lagring av person')
-                                console.log(error)
-                            }
-
-                            if (this.personId) {
-                                axios.put('/api/persons', this.person, {
-                                    headers: {'X-JWT': this.auth.jwt()}
-                                }).then(successCallback)
-                                    .then(() => {
-                                        router.replace('/persons')
-                                    })
-                                    .catch(errorCallback)
-                            } else {
-                                axios.post('/api/persons', this.person, {
-                                    headers: {'X-JWT': this.auth.jwt()}
-                                }).then(successCallback)
-                                    .catch(errorCallback)
-                            }
-                        }
-                    })
-                }
-            }
-        },
-        created () {
-            this.fetchPerson()
         }
+    },
+    methods: {
+        fetchPerson () {
+            if (this.authenticated && this.personId) {
+                axios.get(`/api/persons/${this.personId}`, {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(response => {
+                    this.person = response.data
+                }).catch(error => {
+                    this.$snotify.error('Feil ved henting av person')
+                    console.log(error)
+                })
+            }
+        },
+        save () {
+            if (this.authenticated) {
+                this.$validator.validateAll().then((result) => {
+                    if (result) {
+                        const successCallback = () => {
+                            this.person = {
+                                fullName: null,
+                                email: null,
+                                phone: null,
+                                address: null
+                            }
+
+                            this.$validator.reset()
+                            this.$snotify.success('Person ble lagret')
+                        }
+
+                        const errorCallback = (error) => {
+                            this.$snotify.error('Feil ved lagring av person')
+                            console.log(error)
+                        }
+
+                        if (this.personId) {
+                            axios.put('/api/persons', this.person, {
+                                headers: {'X-JWT': this.auth.jwt()}
+                            }).then(successCallback)
+                                .then(() => {
+                                    router.replace('/persons')
+                                })
+                                .catch(errorCallback)
+                        } else {
+                            axios.post('/api/persons', this.person, {
+                                headers: {'X-JWT': this.auth.jwt()}
+                            }).then(successCallback)
+                                .catch(errorCallback)
+                        }
+                    }
+                })
+            }
+        }
+    },
+    created () {
+        this.fetchPerson()
     }
+}
 </script>

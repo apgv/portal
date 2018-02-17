@@ -76,45 +76,45 @@
 </template>
 
 <script>
-    import NotAuthenticated from './NotAuthenticated'
-    import axios from 'axios'
+import NotAuthenticated from './NotAuthenticated'
+import axios from 'axios'
 
-    export default {
-        components: {NotAuthenticated},
-        name: 'AddMembershipType',
-        props: ['auth', 'authenticated'],
-        data () {
-            return {
-                membershipType: {
-                    year: null,
-                    type: null,
-                    price: null
-                }
+export default {
+    components: {NotAuthenticated},
+    name: 'AddMembershipType',
+    props: ['auth', 'authenticated'],
+    data () {
+        return {
+            membershipType: {
+                year: null,
+                type: null,
+                price: null
             }
-        },
-        methods: {
-            save () {
-                if (this.authenticated) {
-                    this.$validator.validateAll().then((result) => {
-                        if (result) {
-                            axios.post('api/membershiptypes', this.membershipType, {
-                                headers: {'X-JWT': this.auth.jwt()}
-                            }).then(() => {
-                                this.membershipType = {
-                                    year: null,
-                                    type: null,
-                                    price: null
-                                }
-                                this.$validator.reset()
-                                this.$snotify.success('Medlemskapstype ble lagret')
-                            }).catch(error => {
-                                this.$snotify.error('Feil ved lagring av medlemskapstype')
-                                console.log(error)
-                            })
-                        }
-                    })
-                }
+        }
+    },
+    methods: {
+        save () {
+            if (this.authenticated) {
+                this.$validator.validateAll().then((result) => {
+                    if (result) {
+                        axios.post('api/membershiptypes', this.membershipType, {
+                            headers: {'X-JWT': this.auth.jwt()}
+                        }).then(() => {
+                            this.membershipType = {
+                                year: null,
+                                type: null,
+                                price: null
+                            }
+                            this.$validator.reset()
+                            this.$snotify.success('Medlemskapstype ble lagret')
+                        }).catch(error => {
+                            this.$snotify.error('Feil ved lagring av medlemskapstype')
+                            console.log(error)
+                        })
+                    }
+                })
             }
         }
     }
+}
 </script>

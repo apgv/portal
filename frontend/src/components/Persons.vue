@@ -85,83 +85,83 @@
 </template>
 
 <script>
-    import NotAuthenticated from './NotAuthenticated.vue'
-    import PersonAddOrEdit from './PersonAddOrEdit.vue'
-    import axios from 'axios'
+import NotAuthenticated from './NotAuthenticated.vue'
+import PersonAddOrEdit from './PersonAddOrEdit.vue'
+import axios from 'axios'
 
-    export default {
-        components: {
-            PersonAddOrEdit,
-            NotAuthenticated
-        },
-        name: 'Persons',
-        props: ['auth', 'authenticated'],
-        data () {
-            return {
-                persons: [],
-                filterKey: '',
-                currentYear: new Date().getFullYear(),
-                nextYear: new Date().getFullYear() + 1,
-                membershipYearsFilter: [],
-                noMembershipFilter: false
-            }
-        },
-        methods: {
-            fetchPersons () {
-                if (this.authenticated) {
-                    axios.get('/api/persons', {
-                        headers: {'X-JWT': this.auth.jwt()}
-                    }).then(response => {
-                        this.persons = response.data
-                    }).catch(error => {
-                        this.$snotify.error('Feil ved henting av personer')
-                        console.log(error)
-                    })
-                }
-            },
-            hasMembership (memberships) {
-                let years = memberships.map(membership => {
-                    return membership.year
-                })
-
-                return years.some(year => [this.currentYear, this.nextYear].includes(year))
-            }
-        },
-        computed: {
-            filteredPersons: function () {
-                let data = this.persons
-                let filterKey = this.filterKey && this.filterKey.toLowerCase()
-
-                if (filterKey) {
-                    data = data.filter(person => {
-                        return person.fullName.toLowerCase().indexOf(filterKey) > -1 ||
-                            person.email.toLowerCase().indexOf(filterKey) > -1 ||
-                            person.phone.indexOf(filterKey) > -1 ||
-                            person.address.toLowerCase().indexOf(filterKey) > -1
-                    })
-                }
-
-                if (this.membershipYearsFilter.length > 0) {
-                    data = data.filter(person => {
-                        let years = person.memberships.map(membership => {
-                            return membership.year
-                        })
-
-                        return years.some(year => this.membershipYearsFilter.includes(year))
-                    })
-                }
-
-                if (this.noMembershipFilter) {
-                    data = data.filter(person => {
-                        return !this.hasMembership(person.memberships)
-                    })
-                }
-
-                return data
-            }
-        },
-        created () {
-            this.fetchPersons()
+export default {
+    components: {
+        PersonAddOrEdit,
+        NotAuthenticated
+    },
+    name: 'Persons',
+    props: ['auth', 'authenticated'],
+    data () {
+        return {
+            persons: [],
+            filterKey: '',
+            currentYear: new Date().getFullYear(),
+            nextYear: new Date().getFullYear() + 1,
+            membershipYearsFilter: [],
+            noMembershipFilter: false
         }
+    },
+    methods: {
+        fetchPersons () {
+            if (this.authenticated) {
+                axios.get('/api/persons', {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(response => {
+                    this.persons = response.data
+                }).catch(error => {
+                    this.$snotify.error('Feil ved henting av personer')
+                    console.log(error)
+                })
+            }
+        },
+        hasMembership (memberships) {
+            let years = memberships.map(membership => {
+                return membership.year
+            })
+
+            return years.some(year => [this.currentYear, this.nextYear].includes(year))
+        }
+    },
+    computed: {
+        filteredPersons: function () {
+            let data = this.persons
+            let filterKey = this.filterKey && this.filterKey.toLowerCase()
+
+            if (filterKey) {
+                data = data.filter(person => {
+                    return person.fullName.toLowerCase().indexOf(filterKey) > -1 ||
+                        person.email.toLowerCase().indexOf(filterKey) > -1 ||
+                        person.phone.indexOf(filterKey) > -1 ||
+                        person.address.toLowerCase().indexOf(filterKey) > -1
+                })
+            }
+
+            if (this.membershipYearsFilter.length > 0) {
+                data = data.filter(person => {
+                    let years = person.memberships.map(membership => {
+                        return membership.year
+                    })
+
+                    return years.some(year => this.membershipYearsFilter.includes(year))
+                })
+            }
+
+            if (this.noMembershipFilter) {
+                data = data.filter(person => {
+                    return !this.hasMembership(person.memberships)
+                })
+            }
+
+            return data
+        }
+    },
+    created () {
+        this.fetchPersons()
     }
+}
 </script>

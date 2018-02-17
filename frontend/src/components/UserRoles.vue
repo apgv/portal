@@ -84,82 +84,82 @@
 </template>
 
 <script>
-    import NotAuthenticated from './NotAuthenticated'
-    import axios from 'axios'
+import NotAuthenticated from './NotAuthenticated'
+import axios from 'axios'
 
-    export default {
-        components: {NotAuthenticated},
-        name: 'user-roles',
-        props: ['auth', 'authenticated', 'userId'],
-        data () {
-            return {
-                user: {},
-                roles: [],
-                checkedRoles: []
-            }
-        },
-        methods: {
-            fetchUser () {
-                axios.get(`/api/users/${this.userId}`, {
-                    headers: {'X-JWT': this.auth.jwt()}
-                }).then(response => {
-                    this.user = response.data
-                }).catch(error => {
-                    this.$snotify.error('Feil ved henting av bruker')
-                    console.log(error)
-                })
-            },
-            fetchRoles () {
-                axios.get('/api/roles', {
-                    headers: {'X-JWT': this.auth.jwt()}
-                }).then(response => {
-                    this.roles = response.data
-                }).catch(error => {
-                    this.$snotify.error('Feil ved henting av roller')
-                    console.log(error)
-                })
-            },
-            save () {
-                let chosenRoles = this.userRoles
-                    .filter(role => {
-                        return role.hasRole === true
-                    }).map(role => {
-                        return role.id
-                    })
-
-                axios.post('/api/userroles', {userId: this.userId, roleIds: chosenRoles}, {
-                    headers: {'X-JWT': this.auth.jwt()}
-                }).then(() => {
-                    this.$snotify.success('Rollene ble oppdatert')
-                }).catch(error => {
-                    this.$snotify.error('Feil ved oppdatering av roller')
-                    console.log(error)
-                })
-            }
-        },
-        computed: {
-            userRoles: function () {
-                let userRoles = this.user.roles
-                let data = this.roles
-
-                if (userRoles && data) {
-                    let userRoleIds = userRoles.map(role => {
-                        return role.id
-                    })
-
-                    data.forEach(role => {
-                        role.hasRole = userRoleIds.indexOf(role.id) > -1
-                    })
-
-                    return data
-                } else {
-                    return []
-                }
-            }
-        },
-        created () {
-            this.fetchUser()
-            this.fetchRoles()
+export default {
+    components: {NotAuthenticated},
+    name: 'user-roles',
+    props: ['auth', 'authenticated', 'userId'],
+    data () {
+        return {
+            user: {},
+            roles: [],
+            checkedRoles: []
         }
+    },
+    methods: {
+        fetchUser () {
+            axios.get(`/api/users/${this.userId}`, {
+                headers: {'X-JWT': this.auth.jwt()}
+            }).then(response => {
+                this.user = response.data
+            }).catch(error => {
+                this.$snotify.error('Feil ved henting av bruker')
+                console.log(error)
+            })
+        },
+        fetchRoles () {
+            axios.get('/api/roles', {
+                headers: {'X-JWT': this.auth.jwt()}
+            }).then(response => {
+                this.roles = response.data
+            }).catch(error => {
+                this.$snotify.error('Feil ved henting av roller')
+                console.log(error)
+            })
+        },
+        save () {
+            let chosenRoles = this.userRoles
+                .filter(role => {
+                    return role.hasRole === true
+                }).map(role => {
+                    return role.id
+                })
+
+            axios.post('/api/userroles', {userId: this.userId, roleIds: chosenRoles}, {
+                headers: {'X-JWT': this.auth.jwt()}
+            }).then(() => {
+                this.$snotify.success('Rollene ble oppdatert')
+            }).catch(error => {
+                this.$snotify.error('Feil ved oppdatering av roller')
+                console.log(error)
+            })
+        }
+    },
+    computed: {
+        userRoles: function () {
+            let userRoles = this.user.roles
+            let data = this.roles
+
+            if (userRoles && data) {
+                let userRoleIds = userRoles.map(role => {
+                    return role.id
+                })
+
+                data.forEach(role => {
+                    role.hasRole = userRoleIds.indexOf(role.id) > -1
+                })
+
+                return data
+            } else {
+                return []
+            }
+        }
+    },
+    created () {
+        this.fetchUser()
+        this.fetchRoles()
     }
+}
 </script>

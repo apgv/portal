@@ -106,31 +106,31 @@
 </template>
 
 <script>
-    export default {
-        name: 'app-menu',
-        props: ['auth', 'authenticated'],
-        data () {
-            return {
-                showMobileMenu: false
-            }
+export default {
+    name: 'app-menu',
+    props: ['auth', 'authenticated'],
+    data () {
+        return {
+            showMobileMenu: false
+        }
+    },
+    methods: {
+        toggleMobileMenu () {
+            this.showMobileMenu = !this.showMobileMenu
         },
-        methods: {
-            toggleMobileMenu () {
-                this.showMobileMenu = !this.showMobileMenu
-            },
-            login () {
-                this.auth.login()
-            },
-            logout () {
-                this.auth.logout()
-                this.toggleMobileMenu()
-            }
+        login () {
+            this.auth.login()
         },
-        computed: {
-            showNavBurger: function () {
-                // navbar-menu is hidden on touch devices < 1024px
-                return document.documentElement.clientWidth < 1024
-            }
+        logout () {
+            this.auth.logout()
+            this.toggleMobileMenu()
+        }
+    },
+    computed: {
+        showNavBurger: function () {
+            // navbar-menu is hidden on touch devices < 1024px
+            return document.documentElement.clientWidth < 1024
         }
     }
+}
 </script>

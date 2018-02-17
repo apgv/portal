@@ -38,34 +38,34 @@
 </template>
 
 <script>
-    import NotAuthenticated from './NotAuthenticated'
-    import axios from 'axios'
+import NotAuthenticated from './NotAuthenticated'
+import axios from 'axios'
 
-    export default {
-        name: 'MembershipTypes',
-        components: {NotAuthenticated},
-        props: ['auth', 'authenticated'],
-        data () {
-            return {
-                membershipTypes: []
-            }
-        },
-        methods: {
-            fetchMembershipTypes () {
-                if (this.authenticated) {
-                    axios.get('/api/membershiptypes', {
-                        headers: {'X-JWT': this.auth.jwt()}
-                    }).then(response => {
-                        this.membershipTypes = response.data
-                    }).catch(error => {
-                        this.$snotify.error('Feil ved henting av medlemskapstyper')
-                        console.log(error)
-                    })
-                }
-            }
-        },
-        created () {
-            this.fetchMembershipTypes()
+export default {
+    name: 'MembershipTypes',
+    components: {NotAuthenticated},
+    props: ['auth', 'authenticated'],
+    data () {
+        return {
+            membershipTypes: []
         }
+    },
+    methods: {
+        fetchMembershipTypes () {
+            if (this.authenticated) {
+                axios.get('/api/membershiptypes', {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(response => {
+                    this.membershipTypes = response.data
+                }).catch(error => {
+                    this.$snotify.error('Feil ved henting av medlemskapstyper')
+                    console.log(error)
+                })
+            }
+        }
+    },
+    created () {
+        this.fetchMembershipTypes()
     }
+}
 </script>

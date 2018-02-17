@@ -5,8 +5,8 @@
 </template>
 
 <script>
-    export default {
-        name: 'not-authenticated',
-        props: ['auth', 'authenticated']
-    }
+export default {
+    name: 'not-authenticated',
+    props: ['auth', 'authenticated']
+}
 </script>

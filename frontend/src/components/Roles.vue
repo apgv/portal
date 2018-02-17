@@ -28,34 +28,34 @@
 </template>
 
 <script>
-    import NotAuthenticated from './NotAuthenticated'
-    import axios from 'axios'
+import NotAuthenticated from './NotAuthenticated'
+import axios from 'axios'
 
-    export default {
-        components: {NotAuthenticated},
-        name: 'roles',
-        props: ['auth', 'authenticated'],
-        data () {
-            return {
-                roles: []
-            }
-        },
-        methods: {
-            fetchRoles () {
-                if (this.authenticated) {
-                    axios.get('api/roles', {
-                        headers: {'X-JWT': this.auth.jwt()}
-                    }).then(response => {
-                        this.roles = response.data
-                    }).catch(error => {
-                        this.$snotify.error('Feil ved henting av roller')
-                        console.log(error)
-                    })
-                }
-            }
-        },
-        created () {
-            this.fetchRoles()
+export default {
+    components: {NotAuthenticated},
+    name: 'roles',
+    props: ['auth', 'authenticated'],
+    data () {
+        return {
+            roles: []
         }
+    },
+    methods: {
+        fetchRoles () {
+            if (this.authenticated) {
+                axios.get('api/roles', {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(response => {
+                    this.roles = response.data
+                }).catch(error => {
+                    this.$snotify.error('Feil ved henting av roller')
+                    console.log(error)
+                })
+            }
+        }
+    },
+    created () {
+        this.fetchRoles()
     }
+}
 </script>
