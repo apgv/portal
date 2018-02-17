@@ -1,7 +1,5 @@
 package no.skotbuvel.portal.user
 
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
 import no.skotbuvel.portal.helper.DbHelper
 import no.skotbuvel.portal.jooq.Sequences.USER_ID_SEQ
 import no.skotbuvel.portal.jooq.Sequences.USER_ROLE_ID_SEQ
@@ -13,7 +11,6 @@ import no.skotbuvel.portal.util.JavaTimeUtil
 import org.jooq.Record
 import org.jooq.Result
 import org.jooq.TransactionalRunnable
-import java.util.concurrent.TimeUnit
 
 class UserRepository(private val dbHelper: DbHelper) {
 
@@ -30,9 +27,6 @@ class UserRepository(private val dbHelper: DbHelper) {
             ROLE.DESCRIPTION
     )
 
-    private val userByEmailCache = loadingCacheByEmail()
-    private val userByIdCache = loadingCacheById()
-
     fun findAll(): List<User> {
         return dbHelper.dslContext()
                 .select(selectParameters)
@@ -44,15 +38,39 @@ class UserRepository(private val dbHelper: DbHelper) {
                 .on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
                 .fetchGroups(USER.ID)
                 .values
-                .map { mapUSERWithRoles(it) }
+                .map { mapUserWithRoles(it) }
     }
 
     fun findByEmail(email: String): User {
-        return userByEmailCache[email]
+        return dbHelper.dslContext()
+                .select(selectParameters)
+                .from(USER)
+                .leftJoin(USER_ROLE)
+                .on(USER.ID.eq(USER_ROLE.USER_ID))
+                .and(USER_ROLE.ACTIVE.eq(true))
+                .leftJoin(ROLE)
+                .on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
+                .where(USER.EMAIL.eq(email))
+                .fetchGroups(USER.ID)
+                .values
+                .map { mapUserWithRoles(it) }
+                .first()
     }
 
     fun findById(id: Int): User {
-        return userByIdCache[id]
+        return dbHelper.dslContext()
+                .select(selectParameters)
+                .from(USER)
+                .leftJoin(USER_ROLE)
+                .on(USER.ID.eq(USER_ROLE.USER_ID))
+                .and(USER_ROLE.ACTIVE.eq(true))
+                .leftJoin(ROLE)
+                .on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
+                .where(USER.ID.eq(id))
+                .fetchGroups(USER.ID)
+                .values
+                .map { mapUserWithRoles(it) }
+                .first()
     }
 
     fun save(userRegistration: UserRegistration, createdBy: String) {
@@ -129,16 +147,9 @@ class UserRepository(private val dbHelper: DbHelper) {
                         .execute()
             }
         })
-
-        invalidateCaches(userRoleRegistration.userId)
     }
 
-    private fun invalidateCaches(UserId: Int) {
-        userByEmailCache.invalidate(userByIdCache[UserId])
-        userByIdCache.invalidate(UserId)
-    }
-
-    private fun mapUSERWithRoles(result: Result<Record>): User {
+    private fun mapUserWithRoles(result: Result<Record>): User {
         val roles = mapRoles(result)
 
         val record = result.first()
@@ -166,48 +177,4 @@ class UserRepository(private val dbHelper: DbHelper) {
                     )
                 }
     }
-
-    private fun loadingCacheByEmail() = CacheBuilder.newBuilder()
-            .expireAfterAccess(1, TimeUnit.HOURS)
-            .build(
-                    object : CacheLoader<String, User>() {
-                        override fun load(key: String): User {
-                            return dbHelper.dslContext()
-                                    .select(selectParameters)
-                                    .from(USER)
-                                    .leftJoin(USER_ROLE)
-                                    .on(USER.ID.eq(USER_ROLE.USER_ID))
-                                    .and(USER_ROLE.ACTIVE.eq(true))
-                                    .leftJoin(ROLE)
-                                    .on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
-                                    .where(USER.EMAIL.eq(key))
-                                    .fetchGroups(USER.ID)
-                                    .values
-                                    .map { mapUSERWithRoles(it) }
-                                    .first()
-                        }
-                    }
-            )
-
-    private fun loadingCacheById() = CacheBuilder.newBuilder()
-            .expireAfterAccess(1, TimeUnit.HOURS)
-            .build(
-                    object : CacheLoader<Int, User>() {
-                        override fun load(key: Int): User {
-                            return dbHelper.dslContext()
-                                    .select(selectParameters)
-                                    .from(USER)
-                                    .leftJoin(USER_ROLE)
-                                    .on(USER.ID.eq(USER_ROLE.USER_ID))
-                                    .and(USER_ROLE.ACTIVE.eq(true))
-                                    .leftJoin(ROLE)
-                                    .on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
-                                    .where(USER.ID.eq(key))
-                                    .fetchGroups(USER.ID)
-                                    .values
-                                    .map { mapUSERWithRoles(it) }
-                                    .first()
-                        }
-                    }
-            )
 }
