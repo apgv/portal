@@ -86,7 +86,7 @@
             </div>
             <div class="navbar-end">
                 <div v-if="authenticated" class="navbar-item">
-                    {{auth.subject.firstName}} ({{auth.subject.email}})
+                    {{loggedInUser}}
                 </div>
                 <div class="navbar-item">
                     <a v-if="!authenticated"
@@ -106,12 +106,18 @@
 </template>
 
 <script>
+import {eventBus} from '../main'
+
 export default {
     name: 'app-menu',
     props: ['auth', 'authenticated'],
     data () {
+        eventBus.$on('subjectResolved', () => {
+            this.setLoggedInUser()
+        })
         return {
-            showMobileMenu: false
+            showMobileMenu: false,
+            loggedInUser: null
         }
     },
     methods: {
@@ -124,6 +130,13 @@ export default {
         logout () {
             this.auth.logout()
             this.toggleMobileMenu()
+        },
+        setLoggedInUser () {
+            if (this.auth.getSubject()) {
+                this.loggedInUser = `${this.auth.getSubject().firstName} (${this.auth.getSubject().email})`
+            } else {
+                return ''
+            }
         }
     },
     computed: {
@@ -131,6 +144,9 @@ export default {
             // navbar-menu is hidden on touch devices < 1024px
             return document.documentElement.clientWidth < 1024
         }
+    },
+    created () {
+        this.setLoggedInUser()
     }
 }
 </script>

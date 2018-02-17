@@ -5,7 +5,6 @@ import axios from 'axios'
 
 export default class AuthService {
     authenticated = this.isAuthenticated()
-    subject = this.getSubject()
 
     constructor () {
         this.login = this.login.bind(this)
@@ -15,6 +14,7 @@ export default class AuthService {
         this.logout = this.logout.bind(this)
         this.isAuthenticated = this.isAuthenticated.bind(this)
         this.jwt = this.jwt.bind(this)
+        this.hasOneOfRoles = this.hasOneOfRoles.bind(this)
     }
 
     auth0 = new auth0.WebAuth({
@@ -61,6 +61,7 @@ export default class AuthService {
             headers: {'X-JWT': this.jwt()}
         }).then(response => {
             localStorage.setItem('subject', JSON.stringify(response.data))
+            eventBus.$emit('subjectResolved')
         }).catch(error => {
             this.logout()
             console.log(error)
@@ -81,6 +82,7 @@ export default class AuthService {
     }
 
     logout () {
+        localStorage.removeItem('subject')
         localStorage.removeItem('access_token')
         localStorage.removeItem('id_token')
         localStorage.removeItem('expires_at')
@@ -96,5 +98,11 @@ export default class AuthService {
 
     jwt () {
         return localStorage.getItem('id_token')
+    }
+
+    hasOneOfRoles (roles) {
+        return this.getSubject().roles.some(role => {
+            return roles.indexOf(role) > -1
+        })
     }
 }
