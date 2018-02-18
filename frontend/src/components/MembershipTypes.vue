@@ -1,6 +1,12 @@
 <template>
     <div>
         <div v-if="authenticated">
+
+            <missing-roles :auth="auth"
+                           :authenticated="authenticated"
+                           :requiredRoles="requiredRoles">
+            </missing-roles>
+
             <h4 class="title is-4">Medlemskapstyper</h4>
 
             <router-link :to="'/addmembershiptype'">
@@ -40,19 +46,31 @@
 <script>
 import NotAuthenticated from './NotAuthenticated'
 import axios from 'axios'
+import MissingRoles from './MissingRoles'
+import {STYREMEDLEM} from '../auth/Roles'
 
 export default {
     name: 'MembershipTypes',
-    components: {NotAuthenticated},
+    components: {
+        MissingRoles,
+        NotAuthenticated
+    },
     props: ['auth', 'authenticated'],
     data () {
         return {
+            requiredRoles: [STYREMEDLEM],
             membershipTypes: []
         }
     },
     methods: {
+        hasRequiredRole: function () {
+            return this.authenticated && this.auth.hasOneOfTheRoles(this.requiredRoles)
+        },
+        isAuthenticatedAndHasRequiredRole: function () {
+            return this.authenticated && this.hasRequiredRole()
+        },
         fetchMembershipTypes () {
-            if (this.authenticated) {
+            if (this.isAuthenticatedAndHasRequiredRole()) {
                 axios.get('/api/membershiptypes', {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {
