@@ -157,7 +157,7 @@ fun main(args: Array<String>) {
         })
 
         get("/users/:id", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            verifyTokenAndCheckRoles(request, listOf(Role.STYRELEDER, Role.ADMIN), userRepository)
             val id = request.params(":id")
             val jsonAdapter = JsonUtil.moshi.adapter(User::class.java)
             jsonAdapter.toJson(userRepository.findById(id.toInt()))
@@ -177,7 +177,7 @@ fun main(args: Array<String>) {
         })
 
         post("/userroles", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            val decodedJWT = verifyTokenAndCheckRoles(request, listOf(Role.STYRELEDER, Role.ADMIN), userRepository)
 
             val jsonAdapter = JsonUtil.moshi.adapter(UserRoleRegistration::class.java)
             val userRoleRegistration = jsonAdapter.fromJson(request.body())
@@ -190,7 +190,7 @@ fun main(args: Array<String>) {
         })
 
         get("/roles", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            verifyTokenAndCheckRoles(request, listOf(Role.STYREMEDLEM), userRepository)
             val roles = roleRepository.findAll()
             val parameterizedType = Types.newParameterizedType(List::class.java, no.skotbuvel.portal.role.Role::class.java)
             JsonUtil.moshi.adapter<List<no.skotbuvel.portal.role.Role>>(parameterizedType).toJson(roles)

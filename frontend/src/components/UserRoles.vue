@@ -1,6 +1,12 @@
 <template>
     <div>
         <div v-if="authenticated">
+
+            <missing-roles :auth="auth"
+                           :authenticated="authenticated"
+                           :requiredRoles="requiredRoles">
+            </missing-roles>
+
             <h4 class="title is-4">Rolleadministrasjon</h4>
 
             <div class="columns">
@@ -66,6 +72,7 @@
             </div>
             <div>
                 <button @click="save()"
+                        :disabled="!hasRequiredRole()"
                         class="button is-success">
                     Lagre
                 </button>
@@ -76,9 +83,8 @@
             </div>
         </div>
 
-        <not-authenticated
-                :auth="auth"
-                :authenticated="authenticated">
+        <not-authenticated :auth="auth"
+                           :authenticated="authenticated">
         </not-authenticated>
     </div>
 </template>
@@ -86,55 +92,73 @@
 <script>
 import NotAuthenticated from './NotAuthenticated'
 import axios from 'axios'
+import MissingRoles from './MissingRoles'
+import {ADMIN, STYRELEDER} from '../auth/Roles'
 
 export default {
-    components: {NotAuthenticated},
+    components: {
+        MissingRoles,
+        NotAuthenticated
+    },
     name: 'user-roles',
     props: ['auth', 'authenticated', 'userId'],
     data () {
         return {
+            requiredRoles: [STYRELEDER, ADMIN],
             user: {},
             roles: [],
             checkedRoles: []
         }
     },
     methods: {
+        hasRequiredRole: function () {
+            return this.authenticated && this.auth.hasOneOfTheRoles(this.requiredRoles)
+        },
+        isAuthenticatedAndHasRequiredRole: function () {
+            return this.authenticated && this.hasRequiredRole()
+        },
         fetchUser () {
-            axios.get(`/api/users/${this.userId}`, {
-                headers: {'X-JWT': this.auth.jwt()}
-            }).then(response => {
-                this.user = response.data
-            }).catch(error => {
-                this.$snotify.error('Feil ved henting av bruker')
-                console.log(error)
-            })
+            if (this.isAuthenticatedAndHasRequiredRole()) {
+                axios.get(`/api/users/${this.userId}`, {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(response => {
+                    this.user = response.data
+                }).catch(error => {
+                    this.$snotify.error('Feil ved henting av bruker')
+                    console.log(error)
+                })
+            }
         },
         fetchRoles () {
-            axios.get('/api/roles', {
-                headers: {'X-JWT': this.auth.jwt()}
-            }).then(response => {
-                this.roles = response.data
-            }).catch(error => {
-                this.$snotify.error('Feil ved henting av roller')
-                console.log(error)
-            })
+            if (this.auth.isSTYREMEDLEM()) {
+                axios.get('/api/roles', {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(response => {
+                    this.roles = response.data
+                }).catch(error => {
+                    this.$snotify.error('Feil ved henting av roller')
+                    console.log(error)
+                })
+            }
         },
         save () {
-            let chosenRoles = this.userRoles
-                .filter(role => {
-                    return role.hasRole === true
-                }).map(role => {
-                    return role.id
-                })
+            if (this.isAuthenticatedAndHasRequiredRole()) {
+                let chosenRoles = this.userRoles
+                    .filter(role => {
+                        return role.hasRole === true
+                    }).map(role => {
+                        return role.id
+                    })
 
-            axios.post('/api/userroles', {userId: this.userId, roleIds: chosenRoles}, {
-                headers: {'X-JWT': this.auth.jwt()}
-            }).then(() => {
-                this.$snotify.success('Rollene ble oppdatert')
-            }).catch(error => {
-                this.$snotify.error('Feil ved oppdatering av roller')
-                console.log(error)
-            })
+                axios.post('/api/userroles', {userId: this.userId, roleIds: chosenRoles}, {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(() => {
+                    this.$snotify.success('Rollene ble oppdatert')
+                }).catch(error => {
+                    this.$snotify.error('Feil ved oppdatering av roller')
+                    console.log(error)
+                })
+            }
         }
     },
     computed: {
