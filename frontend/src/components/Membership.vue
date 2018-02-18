@@ -3,6 +3,11 @@
         <div v-if="authenticated">
             <h4 class="title is-4">Medlemskap</h4>
 
+            <missing-roles :auth="auth"
+                           :authenticated="authenticated"
+                           :requiredRoles="requiredRoles">
+            </missing-roles>
+
             <div class="columns">
                 <div class="column">
                     <label class="label">Personinfo</label>
@@ -56,7 +61,9 @@
                             {{membership.year}} {{membership.type}}
                         </div>
                         <div class="column">
-                            <a @click="deleteMembership(membership)" class="button icon">
+                            <a @click="deleteMembership(membership)"
+                               :disabled="!hasRequiredRole()"
+                               class="button icon">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </div>
@@ -90,7 +97,7 @@
             </div>
             <div>
                 <button @click="save()"
-                        :disabled="!formIsValid"
+                        :disabled="!formIsValid || !hasRequiredRole()"
                         class="button is-success">
                     Lagre
                 </button>
@@ -114,13 +121,20 @@ import flatPickr from 'vue-flatpickr-component'
 import {Norwegian} from 'flatpickr/dist/l10n/no'
 import 'flatpickr/dist/flatpickr.css'
 import moment from 'moment'
+import MissingRoles from './MissingRoles'
+import {KASSERER, STYRELEDER} from '../auth/Roles'
 
 export default {
     name: 'Membership',
-    components: {NotAuthenticated, flatPickr},
+    components: {
+        MissingRoles,
+        NotAuthenticated,
+        flatPickr
+    },
     props: ['auth', 'authenticated', 'personId'],
     data () {
         return {
+            requiredRoles: [KASSERER, STYRELEDER],
             person: {
                 fullName: null,
                 email: null,
@@ -135,8 +149,14 @@ export default {
         }
     },
     methods: {
+        hasRequiredRole: function () {
+            return this.authenticated && this.auth.hasOneOfTheRoles(this.requiredRoles)
+        },
+        isAuthenticatedAndHasRequiredRole: function () {
+            return this.authenticated && this.hasRequiredRole()
+        },
         fetchPerson () {
-            if (this.authenticated) {
+            if (this.authenticated && this.auth.isSTYREMEDLEM()) {
                 axios.get(`/api/persons/${this.personId}`, {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {
@@ -148,7 +168,7 @@ export default {
             }
         },
         fetchMembershipTypes () {
-            if (this.authenticated) {
+            if (this.authenticated && this.auth.isSTYREMEDLEM()) {
                 axios.get('/api/membershiptypes', {
                     headers: {'X-JWT': this.auth.jwt()},
                     params: {'active': true}
@@ -161,41 +181,45 @@ export default {
             }
         },
         save () {
-            let norwegianDate = moment(this.membership.paymentDate, 'DD.MM.YYYY')
+            if (this.isAuthenticatedAndHasRequiredRole()) {
+                let norwegianDate = moment(this.membership.paymentDate, 'DD.MM.YYYY')
 
-            let membership = {
-                personId: this.person.id,
-                membershipTypeId: this.membership.id,
-                paymentDate: norwegianDate.format('YYYY-MM-DD')
-            }
-
-            axios.post('/api/memberships', membership, {
-                headers: {'X-JWT': this.auth.jwt()}
-            }).then(() => {
-                this.membership.paymentDate = null
-                this.membership = null
-                this.$snotify.success('Medlemskap ble lagret')
-                this.fetchPerson()
-            }).catch(error => {
-                this.$snotify.error('Feil ved lagring av medlemskap')
-                console.log(error)
-            })
-        },
-        deleteMembership (membership) {
-            axios.delete(`/api/memberships/${membership.id}`, {
-                headers: {'X-JWT': this.auth.jwt()}
-            }).then(() => {
-                let index = this.person.memberships.indexOf(membership)
-
-                if (index > -1) {
-                    this.person.memberships.splice(index, 1)
+                let membership = {
+                    personId: this.person.id,
+                    membershipTypeId: this.membership.id,
+                    paymentDate: norwegianDate.format('YYYY-MM-DD')
                 }
 
-                this.$snotify.success('Medlemskap ble slettet')
-            }).catch(error => {
-                this.$snotify.error('Feil ved sletting av medlemskap')
-                console.log(error)
-            })
+                axios.post('/api/memberships', membership, {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(() => {
+                    this.membership.paymentDate = null
+                    this.membership = null
+                    this.$snotify.success('Medlemskap ble lagret')
+                    this.fetchPerson()
+                }).catch(error => {
+                    this.$snotify.error('Feil ved lagring av medlemskap')
+                    console.log(error)
+                })
+            }
+        },
+        deleteMembership (membership) {
+            if (this.isAuthenticatedAndHasRequiredRole()) {
+                axios.delete(`/api/memberships/${membership.id}`, {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(() => {
+                    let index = this.person.memberships.indexOf(membership)
+
+                    if (index > -1) {
+                        this.person.memberships.splice(index, 1)
+                    }
+
+                    this.$snotify.success('Medlemskap ble slettet')
+                }).catch(error => {
+                    this.$snotify.error('Feil ved sletting av medlemskap')
+                    console.log(error)
+                })
+            }
         }
     },
     computed: {

@@ -107,7 +107,7 @@ fun main(args: Array<String>) {
         })
 
         post("/memberships", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            val decodedJWT = verifyTokenAndCheckRoles(request, listOf(Role.KASSERER, Role.STYRELEDER), userRepository)
 
             val jsonAdapter = JsonUtil.moshi.adapter(MembershipRegistration::class.java)
             val membershipRegistration = jsonAdapter.fromJson(request.body())
@@ -121,14 +121,14 @@ fun main(args: Array<String>) {
         })
 
         delete("/memberships/:id", { request, _ ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            val decodedJWT = verifyTokenAndCheckRoles(request, listOf(Role.KASSERER, Role.STYRELEDER), userRepository)
 
             val id = request.params(":id")
             membershipRepository.delete(id.toInt(), JwtUtil.email(decodedJWT))
         })
 
         get("/membershiptypes", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            verifyTokenAndCheckRoles(request, listOf(Role.STYREMEDLEM), userRepository)
             val queryParamActive = request.queryParams("active")
             val activeOnly = queryParamActive?.toBoolean() ?: false
             val membershiptTypes = membershipTypeRepository.findAll(activeOnly)

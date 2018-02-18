@@ -2,6 +2,7 @@ import auth0 from 'auth0-js'
 import router from '../router'
 import {eventBus} from '../main'
 import axios from 'axios'
+import {STYREMEDLEM} from './Roles'
 
 export default class AuthService {
     authenticated = this.isAuthenticated()
@@ -16,6 +17,7 @@ export default class AuthService {
         this.jwt = this.jwt.bind(this)
         this.hasOneOfTheRoles = this.hasOneOfTheRoles.bind(this)
         this.hasNoneOfTheRoles = this.hasNoneOfTheRoles.bind(this)
+        this.isSTYREMEDLEM = this.isSTYREMEDLEM.bind(this)
     }
 
     auth0 = new auth0.WebAuth({
@@ -109,5 +111,9 @@ export default class AuthService {
 
     hasNoneOfTheRoles (roles) {
         return !this.hasOneOfTheRoles(roles)
+    }
+
+    isSTYREMEDLEM () {
+        return this.getSubject().roles.indexOf(STYREMEDLEM) > -1
     }
 }
