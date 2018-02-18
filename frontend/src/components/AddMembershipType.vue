@@ -1,6 +1,12 @@
 <template>
     <div>
         <div v-if="authenticated">
+
+            <missing-roles :auth="auth"
+                           :authenticated="authenticated"
+                           :requiredRoles="requiredRoles">
+            </missing-roles>
+
             <h4 class="title is-4">Legg til medlemskapstype</h4>
 
             <div class="field">
@@ -60,6 +66,7 @@
 
             <div>
                 <button @click="save()"
+                        :disabled="!hasRequiredRole()"
                         class="button is-success">
                     Lagre
                 </button>
@@ -78,13 +85,19 @@
 <script>
 import NotAuthenticated from './NotAuthenticated'
 import axios from 'axios'
+import MissingRoles from './MissingRoles'
+import {KASSERER, STYRELEDER} from '../auth/Roles'
 
 export default {
-    components: {NotAuthenticated},
+    components: {
+        MissingRoles,
+        NotAuthenticated
+    },
     name: 'AddMembershipType',
     props: ['auth', 'authenticated'],
     data () {
         return {
+            requiredRoles: [KASSERER, STYRELEDER],
             membershipType: {
                 year: null,
                 type: null,
@@ -93,8 +106,14 @@ export default {
         }
     },
     methods: {
+        hasRequiredRole: function () {
+            return this.authenticated && this.auth.hasOneOfTheRoles(this.requiredRoles)
+        },
+        isAuthenticatedAndHasRequiredRole: function () {
+            return this.authenticated && this.hasRequiredRole()
+        },
         save () {
-            if (this.authenticated) {
+            if (this.isAuthenticatedAndHasRequiredRole()) {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
                         axios.post('api/membershiptypes', this.membershipType, {

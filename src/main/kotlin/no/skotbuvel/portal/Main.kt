@@ -137,7 +137,7 @@ fun main(args: Array<String>) {
         })
 
         post("/membershiptypes", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            val decodedJWT = verifyTokenAndCheckRoles(request, listOf(Role.KASSERER, Role.STYRELEDER), userRepository)
             val jsonAdapter = JsonUtil.moshi.adapter(MembershipTypeRegistration::class.java)
             val membershipTypeRegistration = jsonAdapter.fromJson(request.body())
 
