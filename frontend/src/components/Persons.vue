@@ -1,6 +1,7 @@
 <template>
     <div>
         <div v-if="authenticated">
+
             <missing-roles :auth="auth"
                            :authenticated="authenticated"
                            :requiredRoles="requiredRoles">
@@ -116,8 +117,14 @@ export default {
         }
     },
     methods: {
+        hasRequiredRole: function () {
+            return this.authenticated && this.auth.hasOneOfTheRoles(this.requiredRoles)
+        },
+        isAuthenticatedAndHasRequiredRole: function () {
+            return this.authenticated && this.hasRequiredRole()
+        },
         fetchPersons () {
-            if (this.authenticated && this.auth.hasOneOfTheRoles(this.requiredRoles)) {
+            if (this.isAuthenticatedAndHasRequiredRole()) {
                 axios.get('/api/persons', {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {
