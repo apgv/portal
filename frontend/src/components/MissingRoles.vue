@@ -3,7 +3,8 @@
              class="message is-warning">
         <div class="message-body">
             <p>
-                Du har ikke tilstrekkelige rettigheter. Denne siden krever én av rollene: {{requiredRoles.join(', ')}}.
+                Det er begrensninger for hva du kan se og eller kan gjøre da denne siden krever én av rollene:
+                {{requiredRoles.join(', ')}}.
             </p>
             <p>
                 Du er registrert med rollene: {{auth.getSubject().roles.join(', ')}}
