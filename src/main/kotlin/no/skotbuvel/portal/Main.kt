@@ -150,7 +150,7 @@ fun main(args: Array<String>) {
         })
 
         get("/users", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            verifyTokenAndCheckRoles(request, listOf(Role.STYREMEDLEM), userRepository)
             val users = userRepository.findAll()
             val parameterizedType = Types.newParameterizedType(List::class.java, User::class.java)
             JsonUtil.moshi.adapter<List<User>>(parameterizedType).toJson(users)

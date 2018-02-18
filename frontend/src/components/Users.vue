@@ -1,10 +1,18 @@
 <template>
     <div>
         <div v-if="authenticated">
+
+            <missing-roles :auth="auth"
+                           :authenticated="authenticated"
+                           :requiredRoles="requiredRoles">
+            </missing-roles>
+
             <h4 class="title is-4">Brukere</h4>
+
             <router-link :to="'/useradd'">
                 Legg til bruker
             </router-link>
+
             <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
                 <tr>
@@ -38,6 +46,7 @@
                 </tbody>
             </table>
         </div>
+
         <not-authenticated :auth="auth"
                            :authenticated="authenticated">
         </not-authenticated>
@@ -47,19 +56,31 @@
 <script>
 import NotAuthenticated from './NotAuthenticated'
 import axios from 'axios'
+import MissingRoles from './MissingRoles'
+import {STYREMEDLEM} from '../auth/Roles'
 
 export default {
-    components: {NotAuthenticated},
+    components: {
+        MissingRoles,
+        NotAuthenticated
+    },
     name: 'users',
     props: ['auth', 'authenticated'],
     data () {
         return {
+            requiredRoles: [STYREMEDLEM],
             users: []
         }
     },
     methods: {
+        hasRequiredRole: function () {
+            return this.authenticated && this.auth.hasOneOfTheRoles(this.requiredRoles)
+        },
+        isAuthenticatedAndHasRequiredRole: function () {
+            return this.authenticated && this.hasRequiredRole()
+        },
         fetchUsers () {
-            if (this.authenticated) {
+            if (this.isAuthenticatedAndHasRequiredRole()) {
                 axios.get('/api/users', {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {
