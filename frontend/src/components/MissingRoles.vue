@@ -18,7 +18,7 @@ export default {
     props: ['auth', 'authenticated', 'requiredRoles'],
     computed: {
         isMissingRoles: function () {
-            return this.authenticated && !this.auth.hasOneOfRoles(this.requiredRoles)
+            return this.authenticated && this.auth.hasNoneOfTheRoles(this.requiredRoles)
         }
     }
 }

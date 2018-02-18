@@ -14,7 +14,8 @@ export default class AuthService {
         this.logout = this.logout.bind(this)
         this.isAuthenticated = this.isAuthenticated.bind(this)
         this.jwt = this.jwt.bind(this)
-        this.hasOneOfRoles = this.hasOneOfRoles.bind(this)
+        this.hasOneOfTheRoles = this.hasOneOfTheRoles.bind(this)
+        this.hasNoneOfTheRoles = this.hasNoneOfTheRoles.bind(this)
     }
 
     auth0 = new auth0.WebAuth({
@@ -100,9 +101,13 @@ export default class AuthService {
         return localStorage.getItem('id_token')
     }
 
-    hasOneOfRoles (roles) {
+    hasOneOfTheRoles (roles) {
         return this.getSubject().roles.some(role => {
             return roles.indexOf(role) > -1
         })
+    }
+
+    hasNoneOfTheRoles (roles) {
+        return !this.hasOneOfTheRoles(roles)
     }
 }

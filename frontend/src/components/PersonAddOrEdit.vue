@@ -1,6 +1,10 @@
 <template>
     <div>
         <div v-if="authenticated">
+            <missing-roles :auth="auth"
+                           :authenticated="authenticated"
+                           :requiredRoles="requiredRoles">
+            </missing-roles>
 
             <h4 v-if="personId"
                 class="title is-4">
@@ -86,6 +90,7 @@
 
             <div>
                 <button @click="save()"
+                        :disabled="auth.hasNoneOfTheRoles(requiredRoles)"
                         class="button is-success">
                     Lagre
                 </button>
@@ -106,13 +111,19 @@
 import NotAuthenticated from './NotAuthenticated.vue'
 import axios from 'axios'
 import router from '../router'
+import MissingRoles from './MissingRoles'
+import {STYREMEDLEM} from '../auth/Roles'
 
 export default {
     name: 'PersonAddOrEdit',
-    components: {NotAuthenticated},
+    components: {
+        MissingRoles,
+        NotAuthenticated
+    },
     props: ['auth', 'authenticated', 'personId'],
     data () {
         return {
+            requiredRoles: [STYREMEDLEM],
             person: {
                 fullName: null,
                 email: null,
@@ -123,7 +134,7 @@ export default {
     },
     methods: {
         fetchPerson () {
-            if (this.authenticated && this.personId) {
+            if (this.authenticated && this.auth.hasOneOfTheRoles(this.requiredRoles) && this.personId) {
                 axios.get(`/api/persons/${this.personId}`, {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {
@@ -135,7 +146,7 @@ export default {
             }
         },
         save () {
-            if (this.authenticated) {
+            if (this.authenticated && this.auth.hasOneOfTheRoles(this.requiredRoles)) {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
                         const successCallback = () => {

@@ -43,8 +43,7 @@
                     </div>
                 </div>
             </div>
-            <router-link v-if="auth.hasOneOfRoles(requiredRoles)"
-                         :to="'/personaddoredit'">
+            <router-link :to="'/personaddoredit'">
                 Legg til person
             </router-link>
             <div class="is-pulled-right">
@@ -118,7 +117,7 @@ export default {
     },
     methods: {
         fetchPersons () {
-            if (this.authenticated && this.auth.hasOneOfRoles(this.requiredRoles)) {
+            if (this.authenticated && this.auth.hasOneOfTheRoles(this.requiredRoles)) {
                 axios.get('/api/persons', {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {

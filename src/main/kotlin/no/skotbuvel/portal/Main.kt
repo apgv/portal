@@ -71,7 +71,7 @@ fun main(args: Array<String>) {
         })
 
         get("/persons/:id", { request, _ ->
-            verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            verifyTokenAndCheckRoles(request, listOf(Role.STYREMEDLEM), userRepository)
 
             val id = request.params(":id")
 
@@ -81,7 +81,7 @@ fun main(args: Array<String>) {
         })
 
         post("/persons", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            val decodedJWT = verifyTokenAndCheckRoles(request, listOf(Role.STYREMEDLEM), userRepository)
 
             val jsonAdapter = JsonUtil.moshi.adapter(PersonRegistration::class.java)
             val personRegistration = jsonAdapter.fromJson(request.body())
@@ -95,7 +95,7 @@ fun main(args: Array<String>) {
         })
 
         put("/persons", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            val decodedJWT = verifyTokenAndCheckRoles(request, listOf(Role.STYREMEDLEM), userRepository)
             val jsonAdapter = JsonUtil.moshi.adapter(PersonRegistration::class.java)
             val personRegistration = jsonAdapter.fromJson(request.body())
 
