@@ -164,7 +164,7 @@ fun main(args: Array<String>) {
         })
 
         post("/users", { request, response ->
-            val decodedJWT = verifyTokenAndCheckRoles(request, emptyList(), userRepository)
+            val decodedJWT = verifyTokenAndCheckRoles(request, listOf(Role.STYRELEDER, Role.ADMIN), userRepository)
             val jsonAdapter = JsonUtil.moshi.adapter(UserRegistration::class.java)
             val userRegistration = jsonAdapter.fromJson(request.body())
 
