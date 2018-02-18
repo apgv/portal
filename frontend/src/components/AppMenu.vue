@@ -27,13 +27,11 @@
                             </router-link>
                             <router-link :to="'/membershiptypes'"
                                          @click.native="toggleMobileMenu()"
-                                         v-if="false"
                                          class="navbar-item">
                                 Medlemskapstyper
                             </router-link>
                             <router-link :to="'/users'"
                                          @click.native="toggleMobileMenu()"
-                                         v-if="false"
                                          class="navbar-item">
                                 Brukere
                             </router-link>
@@ -69,13 +67,11 @@
                     Personregister
                 </router-link>
                 <router-link :to="'/membershiptypes'"
-                             v-if="false"
                              class="navbar-item">
                     Medlemskapstyper
                 </router-link>
                 <router-link
                         :to="'/users'"
-                        v-if="false"
                         class="navbar-item">
                     Brukere
                 </router-link>
