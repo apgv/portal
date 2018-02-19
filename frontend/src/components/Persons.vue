@@ -75,7 +75,7 @@
                         </router-link>
                     </td>
                     <td>
-                        <a @click="deletePerson(person)"
+                        <a @click="toggleDeleteModal(person)"
                            :disabled="!hasRequiredRole()"
                            class="button icon is-text">
                             <i class="fa fa-trash"></i>
@@ -90,6 +90,32 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div v-if="showDeleteModal"
+             class="modal"
+             :class="{'is-active': showDeleteModal}">
+            <div @click="hideDeleteModal"
+                 class="modal-background"></div>
+            <div class="modal-content">
+                <div class="box">
+                    <article class="media">
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    Er du sikker på at du vil slette {{personToDelete.fullName}}?
+                                </p>
+                            </div>
+                            <div>
+                                <a @click="deletePerson(personToDelete)"
+                                   class="button is-danger">Slett</a>
+                                <a @click="hideDeleteModal"
+                                   class="button is-text">Avbryt</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
         </div>
 
         <not-authenticated :auth="auth"
@@ -121,7 +147,9 @@ export default {
             currentYear: new Date().getFullYear(),
             nextYear: new Date().getFullYear() + 1,
             membershipYearsFilter: [],
-            noMembershipFilter: false
+            noMembershipFilter: false,
+            showDeleteModal: false,
+            personToDelete: null
         }
     },
     methods: {
@@ -150,19 +178,29 @@ export default {
 
             return years.some(year => [this.currentYear, this.nextYear].includes(year))
         },
-        deletePerson (person) {
+        toggleDeleteModal (person) {
+            this.personToDelete = person
+            this.showDeleteModal = true
+        },
+        hideDeleteModal () {
+            this.personToDelete = null
+            this.showDeleteModal = false
+        },
+        deletePerson () {
             if (this.isAuthenticatedAndHasRequiredRole()) {
-                axios.delete(`/api/persons/${person.id}`, {
+                axios.delete(`/api/persons/${this.personToDelete.id}`, {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(() => {
-                    let index = this.persons.indexOf(person)
+                    let index = this.persons.indexOf(this.personToDelete)
 
                     if (index > -1) {
                         this.persons.splice(index, 1)
                     }
 
+                    this.hideDeleteModal()
                     this.$snotify.success('Person ble slettet')
                 }).catch(error => {
+                    this.hideDeleteModal()
                     this.$snotify.error('Feil ved sletting av person. NB En person som skal slettes kan ikke ha noen medlemskap knyttet til seg. Slett alle medlemskap først.')
                     console.log(error)
                 })
