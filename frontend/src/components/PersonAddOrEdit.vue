@@ -141,7 +141,7 @@ export default {
             return this.authenticated && this.hasRequiredRole()
         },
         fetchPerson () {
-            if (this.isAuthenticatedAndHasRequiredRole()) {
+            if (this.isAuthenticatedAndHasRequiredRole() && this.personId) {
                 axios.get(`/api/persons/${this.personId}`, {
                     headers: {'X-JWT': this.auth.jwt()}
                 }).then(response => {
