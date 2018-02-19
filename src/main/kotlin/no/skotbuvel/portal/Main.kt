@@ -106,6 +106,12 @@ fun main(args: Array<String>) {
             }
         })
 
+        delete("/persons/:id", { request, _ ->
+            val decodedJWT = verifyTokenAndCheckRoles(request, listOf(Role.STYREMEDLEM), userRepository)
+            val id = request.params(":id")
+            personRepository.delete(id.toInt(), JwtUtil.email(decodedJWT))
+        })
+
         post("/memberships", { request, response ->
             val decodedJWT = verifyTokenAndCheckRoles(request, listOf(Role.KASSERER, Role.STYRELEDER), userRepository)
 

@@ -136,6 +136,28 @@ class PersonRepository(private val dbHelper: DbHelper) {
         })
     }
 
+    fun delete(id: Int, deletedBy: String) {
+        val dslContext = dbHelper.dslContext()
+
+        dslContext.transaction(TransactionalRunnable {
+            val membershipCount = dslContext.selectCount()
+                    .from(MEMBERSHIP)
+                    .where(MEMBERSHIP.PERSON_ID.eq(id))
+                    .fetchOne(0, Int::class.java)
+
+            if (membershipCount > 0) {
+                throw IllegalStateException("Alle medlemskap må slettes før personen kan slettes")
+            }
+
+            dslContext.update(PERSON)
+                    .set(PERSON.ACTIVE, false)
+                    .set(PERSON.CHANGED_BY, deletedBy)
+                    .set(PERSON.CHANGED_DATE, JavaTimeUtil.nowEuropeOslo())
+                    .where(PERSON.ID.eq(id))
+                    .execute()
+        })
+    }
+
     private fun mapPersonWithMembership(result: Result<Record>): Person {
         val memberships = mapMemberships(result)
 

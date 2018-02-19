@@ -58,6 +58,7 @@
                     <th>Telefon</th>
                     <th>Adresse</th>
                     <th>Endre</th>
+                    <th>Slett</th>
                     <th>Medlem</th>
                     <th>Administrer medlemskap</th>
                 </tr>
@@ -72,6 +73,13 @@
                         <router-link :to="`/personaddoredit/${person.id}`">
                             Endre
                         </router-link>
+                    </td>
+                    <td>
+                        <a @click="deletePerson(person)"
+                           :disabled="!hasRequiredRole()"
+                           class="button icon is-text">
+                            <i class="fa fa-trash"></i>
+                        </a>
                     </td>
                     <td>{{hasMembership(person.memberships) ? 'Ja' : 'Nei'}}</td>
                     <td>
@@ -141,6 +149,24 @@ export default {
             })
 
             return years.some(year => [this.currentYear, this.nextYear].includes(year))
+        },
+        deletePerson (person) {
+            if (this.isAuthenticatedAndHasRequiredRole()) {
+                axios.delete(`/api/persons/${person.id}`, {
+                    headers: {'X-JWT': this.auth.jwt()}
+                }).then(() => {
+                    let index = this.persons.indexOf(person)
+
+                    if (index > -1) {
+                        this.persons.splice(index, 1)
+                    }
+
+                    this.$snotify.success('Person ble slettet')
+                }).catch(error => {
+                    this.$snotify.error('Feil ved sletting av person. NB En person som skal slettes kan ikke ha noen medlemskap knyttet til seg. Slett alle medlemskap først.')
+                    console.log(error)
+                })
+            }
         }
     },
     computed: {
