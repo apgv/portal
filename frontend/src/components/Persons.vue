@@ -75,7 +75,7 @@
                         </router-link>
                     </td>
                     <td>
-                        <a @click="toggleDeleteModal(person)"
+                        <a @click="showDeleteModal(person)"
                            :disabled="!hasRequiredRole()"
                            class="button icon is-text">
                             <i class="fa fa-trash"></i>
@@ -92,31 +92,12 @@
             </table>
         </div>
 
-        <div v-if="showDeleteModal"
-             class="modal"
-             :class="{'is-active': showDeleteModal}">
-            <div @click="hideDeleteModal"
-                 class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <article class="media">
-                        <div class="media-content">
-                            <div class="content">
-                                <p>
-                                    Er du sikker på at du vil slette {{personToDelete.fullName}}?
-                                </p>
-                            </div>
-                            <div>
-                                <a @click="deletePerson(personToDelete)"
-                                   class="button is-danger">Slett</a>
-                                <a @click="hideDeleteModal"
-                                   class="button is-text">Avbryt</a>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </div>
+        <confirm-delete-modal :showConfirmDeleteModal="showConfirmDeleteModal"
+                              :deleteFunction="deletePerson"
+                              :toBeDeleted="personToDelete"
+                              :toBeDeletedDisplayName="toBeDeletedDisplayName"
+                              @close="hideDeleteModal">
+        </confirm-delete-modal>
 
         <not-authenticated :auth="auth"
                            :authenticated="authenticated">
@@ -130,9 +111,11 @@ import PersonAddOrEdit from './PersonAddOrEdit.vue'
 import axios from 'axios'
 import MissingRoles from './MissingRoles'
 import {STYREMEDLEM} from '../auth/Roles'
+import ConfirmDeleteModal from './ConfirmDeleteModal'
 
 export default {
     components: {
+        ConfirmDeleteModal,
         PersonAddOrEdit,
         MissingRoles,
         NotAuthenticated
@@ -148,7 +131,7 @@ export default {
             nextYear: new Date().getFullYear() + 1,
             membershipYearsFilter: [],
             noMembershipFilter: false,
-            showDeleteModal: false,
+            showConfirmDeleteModal: false,
             personToDelete: null
         }
     },
@@ -178,13 +161,13 @@ export default {
 
             return years.some(year => [this.currentYear, this.nextYear].includes(year))
         },
-        toggleDeleteModal (person) {
+        showDeleteModal (person) {
             this.personToDelete = person
-            this.showDeleteModal = true
+            this.showConfirmDeleteModal = true
         },
         hideDeleteModal () {
             this.personToDelete = null
-            this.showDeleteModal = false
+            this.showConfirmDeleteModal = false
         },
         deletePerson () {
             if (this.isAuthenticatedAndHasRequiredRole()) {
@@ -238,6 +221,9 @@ export default {
             }
 
             return data
+        },
+        toBeDeletedDisplayName: function () {
+            return this.personToDelete ? this.personToDelete.fullName : ''
         }
     },
     created () {
