@@ -143,6 +143,7 @@ class PersonRepository(private val dbHelper: DbHelper) {
             val membershipCount = dslContext.selectCount()
                     .from(MEMBERSHIP)
                     .where(MEMBERSHIP.PERSON_ID.eq(id))
+                    .and(MEMBERSHIP.ACTIVE.eq(true))
                     .fetchOne(0, Int::class.java)
 
             if (membershipCount > 0) {
