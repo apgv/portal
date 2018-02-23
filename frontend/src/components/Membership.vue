@@ -58,10 +58,10 @@
                     <div v-for="membership in person.memberships"
                          class="columns">
                         <div class="column">
-                            {{membership.year}} {{membership.type}}
+                            {{membershipInfo(membership)}}
                         </div>
                         <div class="column">
-                            <a @click="deleteMembership(membership)"
+                            <a @click="showDeleteModal(membership)"
                                :disabled="!hasRequiredRole()"
                                class="button icon">
                                 <i class="fa fa-trash"></i>
@@ -108,6 +108,13 @@
             </div>
         </div>
 
+        <confirm-delete-modal :showConfirmDeleteModal="showConfirmDeleteModal"
+                              :deleteFunction="deleteMembership"
+                              :toBeDeleted="membershipToDelete"
+                              :toBeDeletedDisplayName="toBeDeletedDisplayName"
+                              @close="hideDeleteModal">
+        </confirm-delete-modal>
+
         <not-authenticated :auth="auth"
                            :authenticated="authenticated">
         </not-authenticated>
@@ -123,10 +130,12 @@ import 'flatpickr/dist/flatpickr.css'
 import moment from 'moment'
 import MissingRoles from './MissingRoles'
 import {KASSERER, STYRELEDER} from '../auth/Roles'
+import ConfirmDeleteModal from './ConfirmDeleteModal'
 
 export default {
     name: 'Membership',
     components: {
+        ConfirmDeleteModal,
         MissingRoles,
         NotAuthenticated,
         flatPickr
@@ -145,7 +154,9 @@ export default {
             flatPickrConfig: {
                 locale: Norwegian,
                 dateFormat: 'd.m.Y'
-            }
+            },
+            showConfirmDeleteModal: false,
+            membershipToDelete: null
         }
     },
     methods: {
@@ -203,6 +214,17 @@ export default {
                 })
             }
         },
+        membershipInfo (membership) {
+            return `${membership.year} ${membership.type}`
+        },
+        showDeleteModal (membership) {
+            this.membershipToDelete = membership
+            this.showConfirmDeleteModal = true
+        },
+        hideDeleteModal () {
+            this.membershipToDelete = null
+            this.showConfirmDeleteModal = false
+        },
         deleteMembership (membership) {
             if (this.isAuthenticatedAndHasRequiredRole()) {
                 axios.delete(`/api/memberships/${membership.id}`, {
@@ -214,8 +236,10 @@ export default {
                         this.person.memberships.splice(index, 1)
                     }
 
+                    this.hideDeleteModal()
                     this.$snotify.success('Medlemskap ble slettet')
                 }).catch(error => {
+                    this.hideDeleteModal()
                     this.$snotify.error('Feil ved sletting av medlemskap')
                     console.log(error)
                 })
@@ -225,6 +249,9 @@ export default {
     computed: {
         formIsValid: function () {
             return this.membership && this.membership.paymentDate
+        },
+        toBeDeletedDisplayName: function () {
+            return this.membershipToDelete ? `medlemskapet ${this.membershipInfo(this.membershipToDelete)}` : ''
         }
     },
     created () {
