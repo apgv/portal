@@ -30,10 +30,6 @@ export default class AuthService {
     })
 
     login () {
-        if (router.currentRoute.path !== '/reauthenticate') {
-            localStorage.setItem('current_path', router.currentRoute.path)
-        }
-
         this.auth0.authorize()
     }
 
@@ -42,13 +38,7 @@ export default class AuthService {
             this.auth0.parseHash((err, authResult) => {
                 if (authResult && authResult.accessToken && authResult.idToken) {
                     this.setSession(authResult)
-                    let currentPath = localStorage.getItem('current_path')
-
-                    if (currentPath) {
-                        router.replace(currentPath)
-                    } else {
-                        router.replace('/home')
-                    }
+                    router.replace('/home')
                 } else if (err) {
                     router.replace('/home')
                     console.log(err)
